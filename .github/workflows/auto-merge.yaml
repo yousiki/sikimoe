@@ -1,6 +1,13 @@
 name: Auto-merge Dependabot
 
-on: pull_request
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number to merge'
+        required: true
+        type: number
 
 permissions:
   pull-requests: write
@@ -9,10 +16,11 @@ permissions:
 jobs:
   automerge:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Merge PR
         run: |
-          gh pr merge -R "${{ github.repository }}" --squash --auto "${{ github.event.pull_request.number }}"
+          PR_NUMBER="${{ github.event.pull_request.number || github.event.inputs.pr_number }}"
+          gh pr merge -R "${{ github.repository }}" --squash --auto "$PR_NUMBER"
         env:
           GH_TOKEN: ${{ secrets.ACTIONS_PR_TOKEN }}
