@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Update dependencies
-        run: pnpm update --latest
+        run: pnpm update
       - name: Create Pull Request if there are changes
         uses: peter-evans/create-pull-request@v7
         id: update-packages
