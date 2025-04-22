@@ -34,12 +34,12 @@ const currentTag = allTags.find((tag) => {
 ---
 
 <BaseLayout
-    title={`带有"${currentTag?.name}"标签的文章`}
+    title={`Posts Tagged ${currentTag?.name}`}
     description={`Explore a curated collection of blog posts under ${currentTag?.name}`}
     image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
     showHeader={false}
 >
-    <h1 class="mb-12 text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">带有"{currentTag?.name}"标签的文章</h1>
+    <h1 class="mb-12 text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">Posts Tagged "{currentTag?.name}"</h1>
     {blog.map((post) => <PostPreview post={post} class="mb-10 sm:mb-12" />)}
     <Pagination page={page} class="my-16 sm:my-24" />
     <Subscribe class="my-16 sm:my-24" />

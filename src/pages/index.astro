@@ -18,11 +18,7 @@ const featuredProjects = projects.filter(({ data }) => data.isFeatured);
 ---
 
 <BaseLayout description={siteConfig.description} image={siteConfig.image}>
-    {
-        siteConfig.personalizedHero && (
-                    <TypedJs client:load/>
-        )
-    }
+    {siteConfig.personalizedHero && <TypedJs client:load />}
     <Hero />
     <!--
     {
@@ -47,7 +43,7 @@ const featuredProjects = projects.filter(({ data }) => data.isFeatured);
                     <PostPreview post={post} class="mb-10 sm:mb-12" headingLevel="h3" />
                 ))}
                 <div class="mt-12 sm:mt-16">
-                    <Button href="/blog">阅读所有文章</Button>
+                    <Button href="/blog">Read All Articles</Button>
                 </div>
             </div>
         )

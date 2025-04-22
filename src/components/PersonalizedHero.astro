@@ -2,11 +2,10 @@
 import siteConfig from '../data/site-config';
 ---
 
-
 <section class="w-full flex flex-col gap-8 mb-16 sm:mb-24">
     <div class="hero hero__bg">
         <div class="hero__content h-[40vh] flex flex-col justify-center items-center">
-            <div id="hitokoto" class="text-xl px-3"/>
+            <div id="hitokoto" class="text-xl px-3"></div>
         </div>
     </div>
 </section>
@@ -38,7 +37,7 @@ import siteConfig from '../data/site-config';
         axios.get('https://v1.hitokoto.cn/').then((res) => {
             const hitokotoRes = JSON.parse(JSON.stringify(res.data));
             const options = {
-                strings: [hitokotoRes.hitokoto, '出自 ' + hitokotoRes.from],
+                strings: [hitokotoRes.hitokoto, 'From ' + hitokotoRes.from],
                 typeSpeed: 50,
                 startDelay: 300,
                 loop: true,

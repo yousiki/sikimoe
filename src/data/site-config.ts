@@ -1,12 +1,4 @@
-import type {
-    AvailableLanguage,
-    BooleanString,
-    InputPosition,
-    Loading,
-    Mapping,
-    Repo,
-    Theme,
-} from '@giscus/vue';
+import type { AvailableLanguage, BooleanString, InputPosition, Loading, Mapping, Repo, Theme } from '@giscus/vue';
 
 export type Image = {
     src: string;
@@ -46,13 +38,13 @@ export type GiscusConfig = {
     dataThemeDark: Theme;
     dataLang: AvailableLanguage;
     dataLoading: Loading;
-}
+};
 
 export type SiteConfig = {
     logo?: Image;
     author: string;
     title: string;
-    heroTitle: string,
+    heroTitle: string;
     subtitle?: string;
     description: string;
     avatar?: Image;
@@ -70,28 +62,20 @@ export type SiteConfig = {
 };
 
 const siteConfig: SiteConfig = {
-    heroTitle: "<span class='name'>Mikan</span>'s Home",
-    title: "Mikan's Home",
+    heroTitle: "<span class='name'>YouSiki</span>'s Home",
+    title: "YouSiki's Home",
     avatar: {
-        src: "/assets/avatar.jpg",
-        alt: "Avatar"
+        src: 'https://avatars.githubusercontent.com/yousiki',
+        alt: 'Avatar'
     },
-    author: "Mikan",
-    subtitle: "彩笔懒狗一个",
-    description: '彩笔懒狗一个',
-    // image: {
-    //     src: '/dante-preview.jpg',
-    //     alt: 'Dante - Astro.js and Tailwind CSS theme'
-    // },
+    author: 'YouSiki',
+    subtitle: 'PhD student in Computer Science',
+    description: 'PhD student in Computer Science, from Peking University, China.',
     headerNavLinks: [
         {
             text: 'Home',
             href: '/'
         },
-        // {
-        //     text: 'Projects',
-        //     href: '/projects'
-        // },
         {
             text: 'Blog',
             href: '/blog'
@@ -101,8 +85,8 @@ const siteConfig: SiteConfig = {
             href: '/tags'
         },
         {
-            text: 'Link',
-            href: '/link'
+            text: 'Projects',
+            href: '/projects'
         }
     ],
     footerNavLinks: [
@@ -122,23 +106,15 @@ const siteConfig: SiteConfig = {
             text: 'RSS Feed',
             href: '/rss.xml'
         }
-        // {
-        //     text: 'Download theme',
-        //     href: 'https://github.com/JustGoodUI/dante-astro-theme'
-        // }
     ],
     socialLinks: [
         {
-            text: 'Instagram',
-            href: 'https://www.instagram.com/aaki_ig?igsh=bjA4M3RncHp3Njhz'
+            text: 'GitHub',
+            href: 'https://github.com/yousiki'
         },
         {
             text: 'X/Twitter',
-            href: 'https://twitter.com/mikan_chn'
-        },
-        {
-            text: 'GitHub',
-            href: 'https://github.com/mitian233'
+            href: 'https://twitter.com/__yousiki__'
         }
     ],
     personalizedHero: true,
@@ -163,7 +139,7 @@ const siteConfig: SiteConfig = {
     //     formUrl: '#'
     // },
     postsPerPage: 8,
-    projectsPerPage: 8,
+    projectsPerPage: 8
     // giscusConfig: {
     //     dataRepo: "",
     //     dataRepoId: "",
