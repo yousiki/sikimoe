@@ -1,17 +1,17 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import vue from "@astrojs/vue";
+import vue from '@astrojs/vue';
 import sitemap from '@astrojs/sitemap';
 import { proseRemarkPlugin } from './prose-remark-plugin.mjs';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
 import remarkgraphviz from 'remark-graphviz';
 import remarkMermaid from 'astro-diagram/remark-mermaid';
-import rehypeStringify from "rehype-stringify";
-import rehypeGraphviz from "rehype-graphviz";
-import redotStringify from "redot-stringify";
+import rehypeStringify from 'rehype-stringify';
+import rehypeGraphviz from 'rehype-graphviz';
+import redotStringify from 'redot-stringify';
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
@@ -22,8 +22,8 @@ export default defineConfig({
 
   adapter: cloudflare({
     platformProxy: {
-      enabled: true
-    }
+      enabled: true,
+    },
   }),
 
   integrations: [
@@ -31,16 +31,12 @@ export default defineConfig({
     sitemap(),
     vue(),
     robotsTxt({
-      sitemap: [
-        'https://www.siki.moe/sitemap-index.xml'
-      ]
+      sitemap: ['https://www.siki.moe/sitemap-index.xml'],
     }),
   ],
 
   markdown: {
-    redotPlugins: [
-      redotStringify,
-    ],
+    redotPlugins: [redotStringify],
     remarkPlugins: [
       proseRemarkPlugin,
       remarkMath,
@@ -53,7 +49,7 @@ export default defineConfig({
       rehypeKatex,
       //rehypeMermaid,
       rehypeStringify,
-      rehypeGraphviz
+      rehypeGraphviz,
     ],
     // syntaxHighlight: false,
   },
@@ -61,6 +57,6 @@ export default defineConfig({
   output: 'static',
 
   vite: {
-    plugins: [tailwindcss()]
-  }
+    plugins: [tailwindcss()],
+  },
 });

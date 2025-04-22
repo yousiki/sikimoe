@@ -8,8 +8,12 @@ import siteConfig from '../../data/site-config';
 import { sortItemsByDateDesc } from '../../utils/data-utils';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-    const publications = (await getCollection('publications')).sort(sortItemsByDateDesc);
-    return paginate(publications, { pageSize: siteConfig.publicationsPerPage || 6 });
+  const publications = (await getCollection('publications')).sort(
+    sortItemsByDateDesc
+  );
+  return paginate(publications, {
+    pageSize: siteConfig.publicationsPerPage || 6,
+  });
 }
 
 type Props = { page: Page<CollectionEntry<'publications'>> };
@@ -19,12 +23,20 @@ const publications = page.data;
 ---
 
 <BaseLayout
-    title="Publications"
-    description="Explore my research publications and academic work"
-    image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
-    showHeader={false}
+  title="Publications"
+  description="Explore my research publications and academic work"
+  image={{ src: '/dante-preview.jpg', alt: 'The preview of the site' }}
+  showHeader={false}
 >
-    <h1 class="mb-12 text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl">Publications</h1>
-    {publications.map((publication) => <PublicationPreview publication={publication} class="mb-10 sm:mb-12" />)}
-    <Pagination page={page} class="my-16 sm:my-24" />
+  <h1
+    class="mb-12 text-2xl leading-tight font-serif italic sm:mb-16 sm:text-4xl"
+  >
+    Publications
+  </h1>
+  {
+    publications.map((publication) => (
+      <PublicationPreview publication={publication} class="mb-10 sm:mb-12" />
+    ))
+  }
+  <Pagination page={page} class="my-16 sm:my-24" />
 </BaseLayout>

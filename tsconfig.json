@@ -1,9 +1,9 @@
 {
-    "compilerOptions": {
-        "jsx": "preserve",
-        "strictNullChecks": true
-    },
-    "exclude": ["dist"],
-    "extends": "astro/tsconfigs/strict",
-    "include": [".astro/types.d.ts", "**/*"]
+  "compilerOptions": {
+    "jsx": "preserve",
+    "strictNullChecks": true
+  },
+  "exclude": ["dist"],
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"]
 }

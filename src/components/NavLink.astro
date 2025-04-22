@@ -11,5 +11,5 @@ const isActive = href === pathname || href === pathname.replace(/\/$/, '');
 ---
 
 <a class:list={[className, { 'super-link': !isActive }]} href={href} {...props}>
-    <slot />
+  <slot />
 </a>
