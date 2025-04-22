@@ -1,0 +1,6 @@
+---
+import siteConfig from '../data/site-config';
+import Giscus from './Giscus.vue';
+---
+
+{siteConfig.giscusConfig && <Giscus client:only="vue" />}
