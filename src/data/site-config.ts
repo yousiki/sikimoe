@@ -57,6 +57,7 @@ export type SiteConfig = {
     subscribe?: Subscribe;
     postsPerPage?: number;
     projectsPerPage?: number;
+    publicationsPerPage?: number;
     giscusConfig?: GiscusConfig;
     darkmodeSwitcherMode: 'dot' | 'button';
 };
@@ -87,6 +88,10 @@ const siteConfig: SiteConfig = {
         {
             text: 'Projects',
             href: '/projects'
+        },
+        {
+            text: 'Publications',
+            href: '/publications'
         }
     ],
     footerNavLinks: [
@@ -139,7 +144,8 @@ const siteConfig: SiteConfig = {
     //     formUrl: '#'
     // },
     postsPerPage: 8,
-    projectsPerPage: 8
+    projectsPerPage: 8,
+    publicationsPerPage: 8
     // giscusConfig: {
     //     dataRepo: "",
     //     dataRepoId: "",

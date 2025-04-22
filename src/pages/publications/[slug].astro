@@ -1,0 +1,45 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PublicationPreview from '../../components/PublicationPreview.astro';
+import { sortItemsByDateDesc } from '../../utils/data-utils';
+
+export async function getStaticPaths() {
+    const publications = (await getCollection('publications')).sort(sortItemsByDateDesc);
+    const publicationCount = publications.length;
+    return publications.map((publication, index) => ({
+        params: { slug: publication.slug },
+        props: {
+            publication,
+            prevPublication: index + 1 !== publicationCount ? publications[index + 1] : null,
+            nextPublication: index !== 0 ? publications[index - 1] : null
+        }
+    }));
+}
+
+type Props = { publication: CollectionEntry<'publications'>; prevPublication: CollectionEntry<'publications'>; nextPublication: CollectionEntry<'publications'> };
+
+const { publication, prevPublication, nextPublication } = Astro.props;
+const { title, description, seo } = publication.data;
+const { Content } = await publication.render();
+---
+
+<BaseLayout title={seo?.title ?? title} description={seo?.description ?? description} image={seo?.image} pageType="article" showHeader={false}>
+    <article class="mb-16 sm:mb-24">
+        <header class="mb-8">
+            <h1 class="text-3xl leading-tight font-serif font-medium sm:text-5xl sm:leading-tight">{title}</h1>
+        </header>
+        <div class="max-w-none prose prose-dante sm:prose-lg">
+            <Content />
+        </div>
+    </article>
+    {
+        (prevPublication || nextPublication) && (
+            <div class="my-16 sm:my-24">
+                <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">View Next</h2>
+                {nextPublication && <PublicationPreview publication={nextPublication} class="mb-10 sm:mb-12" headingLevel="h3" />}
+                {prevPublication && <PublicationPreview publication={prevPublication} class="mb-10 sm:mb-12" headingLevel="h3" />}
+            </div>
+        )
+    }
+</BaseLayout>
