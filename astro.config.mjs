@@ -10,15 +10,21 @@ import remarkRehype from "remark-rehype";
 import remarkgraphviz from 'remark-graphviz';
 import remarkMermaid from 'astro-diagram/remark-mermaid';
 import rehypeStringify from "rehype-stringify";
-import rehypeMermaid from "rehype-mermaid";
 import rehypeGraphviz from "rehype-graphviz";
 import redotStringify from "redot-stringify";
 import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
+import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://blog.bangdream.moe/',
+  site: 'https://www.siki.moe/',
+
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true
+    }
+  }),
 
   integrations: [
     mdx(),
@@ -26,7 +32,7 @@ export default defineConfig({
     vue(),
     robotsTxt({
       sitemap: [
-        'https://blog.bangdream.moe/sitemap-index.xml'
+        'https://www.siki.moe/sitemap-index.xml'
       ]
     }),
   ],
