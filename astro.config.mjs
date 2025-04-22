@@ -18,7 +18,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.siki.moe/',
+  site: 'https://siki.moe/',
 
   adapter: cloudflare({
     platformProxy: {
@@ -31,7 +31,7 @@ export default defineConfig({
     sitemap(),
     vue(),
     robotsTxt({
-      sitemap: ['https://www.siki.moe/sitemap-index.xml'],
+      sitemap: ['https://siki.moe/sitemap-index.xml'],
     }),
   ],
 
