@@ -23,7 +23,7 @@ onMounted(() => {
   // Select a random image when the component loads
   selectRandomWelcomeCover();
 
-  axios.get('https://v1.hitokoto.cn/').then((res: any) => {
+  axios.get('https://v1.hitokoto.cn/?c=i').then((res: any) => {
     const hitokotoRes = JSON.parse(JSON.stringify(res.data));
     strings.value = [hitokotoRes.hitokoto, hitokotoRes.from];
     console.log(strings);
