@@ -11,6 +11,7 @@
     "lint": "eslint --format 'table' .",
     "lint:fix": "eslint --format 'table' --fix .",
     "format": "prettier --write .",
+    "check": "astro sync && tsc -noEmit",
     "prepare": "husky",
     "new:post": "node ./scripts/generate_new_post.js"
   },
