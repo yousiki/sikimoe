@@ -1,20 +1,21 @@
-import { defineConfig } from 'astro/config';
+import cloudflare from '@astrojs/cloudflare';
+import image from '@astrojs/image';
 import mdx from '@astrojs/mdx';
-import vue from '@astrojs/vue';
 import sitemap from '@astrojs/sitemap';
-import { proseRemarkPlugin } from './prose-remark-plugin.mjs';
-import remarkMath from 'remark-math';
+import vue from '@astrojs/vue';
+import tailwindcss from '@tailwindcss/vite';
+import remarkMermaid from 'astro-diagram/remark-mermaid';
+import robotsTxt from 'astro-robots-txt';
+import { defineConfig } from 'astro/config';
+import redotStringify from 'redot-stringify';
+import rehypeGraphviz from 'rehype-graphviz';
 import rehypeKatex from 'rehype-katex';
+import rehypeStringify from 'rehype-stringify';
+import remarkgraphviz from 'remark-graphviz';
+import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
-import remarkgraphviz from 'remark-graphviz';
-import remarkMermaid from 'astro-diagram/remark-mermaid';
-import rehypeStringify from 'rehype-stringify';
-import rehypeGraphviz from 'rehype-graphviz';
-import redotStringify from 'redot-stringify';
-import robotsTxt from 'astro-robots-txt';
-import tailwindcss from '@tailwindcss/vite';
-import cloudflare from '@astrojs/cloudflare';
+import { proseRemarkPlugin } from './prose-remark-plugin.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -27,6 +28,7 @@ export default defineConfig({
   }),
 
   integrations: [
+    image(),
     mdx(),
     sitemap(),
     vue(),
