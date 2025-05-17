@@ -12,10 +12,10 @@ Hi there! I'm **YouSiki**.
 
 ## About Me
 
-- 📚 I'm currently pursuing Ph.D. in Computer Science at Peking University, China.
-- 👨‍💻 All of my projects are available at [**GitHub**](https://github.com/yousiki?tab=repositories).
-- 📫 Feel free to reach me by [**Email**](mailto:you.siki@outlook.com).
-- 🌱 I’m currently learning **Nix** and **Rust**.
+- I'm currently pursuing Ph.D. in Computer Science at Peking University, China.
+- All of my projects are available at [**GitHub**](https://github.com/yousiki?tab=repositories).
+- Feel free to reach me by [**Email**](mailto:you.siki@outlook.com).
+- I’m currently learning **Nix** and **Rust**.
 
 ## Academic Interests
 
