@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { VueTypedJs } from 'vue3-typed-ts';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import { VueTypedJs } from 'vue3-typed-ts';
 
 const strings = ref<Array<string>>([]);
 
@@ -23,11 +23,27 @@ onMounted(() => {
   // Select a random image when the component loads
   selectRandomWelcomeCover();
 
-  axios.get('https://v1.hitokoto.cn/?c=i').then((res: any) => {
-    const hitokotoRes = JSON.parse(JSON.stringify(res.data));
-    strings.value = [hitokotoRes.hitokoto, hitokotoRes.from];
-    console.log(strings);
-  });
+  // Using jinrishici API instead of hitokoto
+  axios
+    .get('https://v2.jinrishici.com/one.json')
+    .then((res: any) => {
+      const poemData = res.data;
+      if (poemData.status === 'success') {
+        strings.value = [
+          poemData.data.content,
+          `《${poemData.data.origin.title}》 - ${poemData.data.origin.author}`,
+        ];
+      } else {
+        // Fallback in case API fails
+        strings.value = ['山重水复疑无路，柳暗花明又一村', '宋代 · 陆游'];
+      }
+      console.log(strings);
+    })
+    .catch((error) => {
+      console.error('Failed to fetch poem:', error);
+      // Fallback in case of error
+      strings.value = ['山重水复疑无路，柳暗花明又一村', '宋代 · 陆游'];
+    });
 });
 </script>
 
