@@ -23,7 +23,7 @@ onMounted(() => {
   // Select a random image when the component loads
   selectRandomWelcomeCover();
 
-  // Using jinrishici API instead of hitokoto
+  // Using jinrishici API
   axios
     .get('https://v2.jinrishici.com/one.json')
     .then((res: any) => {
@@ -31,7 +31,7 @@ onMounted(() => {
       if (poemData.status === 'success') {
         strings.value = [
           poemData.data.content,
-          `《${poemData.data.origin.title}》 - ${poemData.data.origin.author}`,
+          `「${poemData.data.origin.title}」 - ${poemData.data.origin.author}`,
         ];
       } else {
         // Fallback in case API fails
@@ -57,8 +57,11 @@ onMounted(() => {
           :strings="strings"
           :type-speed="50"
           :start-delay="300"
+          :back-delay="2000"
           :loop="true"
           :show-cursor="true"
+          :smartBackspace="true"
+          class="poem-text"
         >
           <span class="typing"></span>
         </VueTypedJs>
@@ -68,6 +71,21 @@ onMounted(() => {
 </template>
 
 <style scoped>
+@font-face {
+  font-family: 'JiangxiZhuokai';
+  src: url('/fonts/JiangxiZhuokai.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.poem-text {
+  font-family: 'JiangxiZhuokai', serif;
+  font-size: 1.75rem;
+  line-height: 1.75;
+  text-align: center;
+}
+
 .hero__bg {
   position: relative;
 }
