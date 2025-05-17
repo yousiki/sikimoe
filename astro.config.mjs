@@ -1,5 +1,4 @@
 import cloudflare from '@astrojs/cloudflare';
-import image from '@astrojs/image';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import vue from '@astrojs/vue';
@@ -28,7 +27,6 @@ export default defineConfig({
   }),
 
   integrations: [
-    image(),
     mdx(),
     sitemap(),
     vue(),
