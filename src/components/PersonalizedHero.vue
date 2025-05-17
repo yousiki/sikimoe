@@ -4,6 +4,31 @@ import { onMounted, ref } from 'vue';
 import { VueTypedJs } from 'vue3-typed-ts';
 
 const strings = ref<Array<string>>([]);
+const fontLoaded = ref(false);
+
+// Function to load the JiangxiZhuokai font
+const loadCustomFont = async () => {
+  try {
+    const font = new FontFace(
+      'JiangxiZhuokai',
+      'url("/fonts/JiangxiZhuokai.ttf") format("truetype")'
+    );
+
+    // Wait for the font to be loaded
+    await font.load();
+
+    // Add the font to the document
+    document.fonts.add(font);
+
+    // Mark the font as loaded
+    fontLoaded.value = true;
+    console.log('JiangxiZhuokai font loaded successfully');
+  } catch (error) {
+    console.error('Failed to load JiangxiZhuokai font:', error);
+    // Don't mark as loaded on error - we won't show the poem text at all
+    console.log('Font loading failed, poem will not be displayed');
+  }
+};
 
 // Function to randomly select a welcome cover image
 const selectRandomWelcomeCover = () => {
@@ -19,31 +44,34 @@ const selectRandomWelcomeCover = () => {
   );
 };
 
-onMounted(() => {
+// Function to fetch poem from API
+const fetchPoem = async () => {
+  try {
+    const response = await axios.get('https://v2.jinrishici.com/one.json');
+    const poemData = response.data;
+
+    if (poemData.status === 'success') {
+      strings.value = [
+        poemData.data.content,
+        `「${poemData.data.origin.title}」 - ${poemData.data.origin.author}`,
+      ];
+    } else {
+      // Fallback in case API fails
+      strings.value = ['山重水复疑无路，柳暗花明又一村', '宋代 · 陆游'];
+    }
+  } catch (error) {
+    console.error('Failed to fetch poem:', error);
+    // Fallback in case of error
+    strings.value = ['山重水复疑无路，柳暗花明又一村', '宋代 · 陆游'];
+  }
+};
+
+onMounted(async () => {
   // Select a random image when the component loads
   selectRandomWelcomeCover();
 
-  // Using jinrishici API
-  axios
-    .get('https://v2.jinrishici.com/one.json')
-    .then((res: any) => {
-      const poemData = res.data;
-      if (poemData.status === 'success') {
-        strings.value = [
-          poemData.data.content,
-          `「${poemData.data.origin.title}」 - ${poemData.data.origin.author}`,
-        ];
-      } else {
-        // Fallback in case API fails
-        strings.value = ['山重水复疑无路，柳暗花明又一村', '宋代 · 陆游'];
-      }
-      console.log(strings);
-    })
-    .catch((error) => {
-      console.error('Failed to fetch poem:', error);
-      // Fallback in case of error
-      strings.value = ['山重水复疑无路，柳暗花明又一村', '宋代 · 陆游'];
-    });
+  // Start loading the font and fetching the poem in parallel
+  await Promise.all([loadCustomFont(), fetchPoem()]);
 });
 </script>
 
@@ -54,6 +82,7 @@ onMounted(() => {
         class="hero__content h-[40vh] flex flex-col justify-center items-center"
       >
         <VueTypedJs
+          v-if="fontLoaded"
           :strings="strings"
           :type-speed="50"
           :start-delay="300"
@@ -71,13 +100,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-@font-face {
-  font-family: 'JiangxiZhuokai';
-  src: url('/fonts/JiangxiZhuokai.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* Remove the @font-face declaration since we're loading it dynamically via JS */
 
 .poem-text {
   font-family: 'JiangxiZhuokai', serif;
