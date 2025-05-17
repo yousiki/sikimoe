@@ -18,28 +18,33 @@ const featuredProjects = projects.filter(({ data }) => data.isFeatured);
 ---
 
 <BaseLayout description={siteConfig.description} image={siteConfig.image}>
-  {siteConfig.personalizedHero && <TypedJs client:load />}
-  <Hero />
-  <!--
-    {
-        featuredProjects?.length > 0 && (
-            <div class="mb-16 sm:mb-24">
-                <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">Projects</h2>
-                {featuredProjects.map((project) => (
-                    <ProjectPreview project={project} class="mb-10 sm:mb-12" headingLevel="h3" />
-                ))}
-                <div class="mt-12 sm:mt-16">
-                    <Button href="/projects">View All Projects</Button>
-                </div>
-            </div>
-        )
-    }
-    -->
+  {siteConfig.personalizedHero ? <TypedJs client:load /> : <Hero />}
+
+  {
+    featuredProjects?.length > 0 && (
+      <div class="mb-16 sm:mb-24">
+        <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">
+          Projects
+        </h2>
+        {featuredProjects.map((project) => (
+          <ProjectPreview
+            project={project}
+            class="mb-10 sm:mb-12"
+            headingLevel="h3"
+          />
+        ))}
+        <div class="mt-12 sm:mt-16">
+          <Button href="/projects">View All Projects</Button>
+        </div>
+      </div>
+    )
+  }
+
   {
     featuredPosts?.length > 0 && (
       <div class="mb-16 sm:mb-24">
         <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">
-          精选
+          Featured Posts
         </h2>
         {featuredPosts.map((post) => (
           <PostPreview post={post} class="mb-10 sm:mb-12" headingLevel="h3" />
