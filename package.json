@@ -41,7 +41,7 @@
     "remark-rehype": "^11.1.2",
     "tailwindcss": "^4.1.7",
     "typed.js": "^2.1.0",
-    "vue": "^3.5.14",
+    "vue": "^3.5.15",
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
