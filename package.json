@@ -45,12 +45,12 @@
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250614.0",
+    "@cloudflare/workers-types": "^4.20250617.0",
     "@eslint/js": "^9.29.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@typescript-eslint/eslint-plugin": "^8.34.0",
-    "@typescript-eslint/parser": "^8.34.0",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-formatter-table": "^7.32.1",
@@ -62,7 +62,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.12",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.34.0",
+    "typescript-eslint": "^8.34.1",
     "wrangler": "^4.20.0"
   },
   "lint-staged": {
