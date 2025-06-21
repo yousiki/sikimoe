@@ -28,7 +28,7 @@
     "astro-robots-txt": "^1.0.0",
     "axios": "^1.10.0",
     "marked": "^15.0.12",
-    "mermaid": "^11.6.0",
+    "mermaid": "^11.7.0",
     "redot-parse": "^0.5.0",
     "redot-stringify": "^0.5.0",
     "rehype-graphviz": "^0.3.0",
@@ -63,7 +63,7 @@
     "prettier-plugin-tailwindcss": "^0.6.13",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
-    "wrangler": "^4.20.3"
+    "wrangler": "^4.20.5"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
