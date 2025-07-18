@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.0",
-    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/mdx": "^4.3.1",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/vue": "^5.1.0",
     "@giscus/vue": "^3.1.1",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "^5.11.2",
+    "astro": "^5.12.0",
     "astro-diagram": "^0.7.0",
     "astro-robots-txt": "^1.0.0",
     "axios": "^1.10.0",
@@ -45,7 +45,7 @@
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250715.0",
+    "@cloudflare/workers-types": "^4.20250718.0",
     "@eslint/js": "^9.31.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.16",
@@ -63,7 +63,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.37.0",
-    "wrangler": "^4.24.4"
+    "wrangler": "^4.25.0"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
