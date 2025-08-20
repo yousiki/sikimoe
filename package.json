@@ -28,7 +28,7 @@
     "astro-robots-txt": "^1.0.0",
     "axios": "^1.11.0",
     "marked": "^15.0.12",
-    "mermaid": "^11.9.0",
+    "mermaid": "^11.10.0",
     "redot-parse": "^0.5.0",
     "redot-stringify": "^0.5.0",
     "rehype-graphviz": "^0.3.0",
@@ -45,7 +45,7 @@
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250819.0",
+    "@cloudflare/workers-types": "^4.20250820.0",
     "@eslint/js": "^9.33.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.16",
