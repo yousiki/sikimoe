@@ -41,11 +41,11 @@
     "remark-rehype": "^11.1.2",
     "tailwindcss": "^4.1.12",
     "typed.js": "^2.1.0",
-    "vue": "^3.5.18",
+    "vue": "^3.5.19",
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250821.0",
+    "@cloudflare/workers-types": "^4.20250822.0",
     "@eslint/js": "^9.33.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.16",
@@ -63,7 +63,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.40.0",
-    "wrangler": "^4.31.0"
+    "wrangler": "^4.32.0"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
