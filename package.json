@@ -16,14 +16,14 @@
     "new:post": "node ./scripts/generate_new_post.js"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.7",
-    "@astrojs/mdx": "^4.3.4",
+    "@astrojs/cloudflare": "^12.6.8",
+    "@astrojs/mdx": "^4.3.5",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.1",
-    "@astrojs/vue": "^5.1.0",
+    "@astrojs/vue": "^5.1.1",
     "@giscus/vue": "^3.1.1",
     "@tailwindcss/vite": "^4.1.13",
-    "astro": "^5.13.5",
+    "astro": "^5.13.6",
     "astro-diagram": "^0.7.0",
     "astro-robots-txt": "^1.0.0",
     "axios": "^1.11.0",
@@ -45,12 +45,12 @@
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250906.0",
+    "@cloudflare/workers-types": "^4.20250909.0",
     "@eslint/js": "^9.35.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@typescript-eslint/eslint-plugin": "^8.42.0",
-    "@typescript-eslint/parser": "^8.42.0",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-formatter-table": "^7.32.1",
@@ -62,7 +62,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.42.0",
+    "typescript-eslint": "^8.43.0",
     "wrangler": "^4.34.0"
   },
   "lint-staged": {
