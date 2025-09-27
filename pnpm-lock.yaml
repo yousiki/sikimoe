@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@astrojs/cloudflare':
         specifier: ^12.6.9
-        version: 12.6.9(@types/node@24.5.2)(astro@5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1)
+        version: 12.6.9(@types/node@24.5.2)(astro@5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1)
       '@astrojs/mdx':
         specifier: ^4.3.6
-        version: 4.3.6(astro@5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))
+        version: 4.3.6(astro@5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))
       '@astrojs/rss':
         specifier: ^4.0.12
         version: 4.0.12
@@ -22,7 +22,7 @@ importers:
         version: 3.6.0
       '@astrojs/vue':
         specifier: ^5.1.1
-        version: 5.1.1(@types/node@24.5.2)(astro@5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(vue@3.5.22(typescript@5.9.2))(yaml@2.8.1)
+        version: 5.1.1(@types/node@24.5.2)(astro@5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(vue@3.5.22(typescript@5.9.2))(yaml@2.8.1)
       '@giscus/vue':
         specifier: ^3.1.1
         version: 3.1.1(vue@3.5.22(typescript@5.9.2))
@@ -30,8 +30,8 @@ importers:
         specifier: ^4.1.13
         version: 4.1.13(vite@6.3.6(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1))
       astro:
-        specifier: ^5.14.0
-        version: 5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
+        specifier: ^5.14.1
+        version: 5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
       astro-diagram:
         specifier: ^0.7.0
         version: 0.7.0(mermaid@11.12.0)
@@ -91,8 +91,8 @@ importers:
         version: 1.0.6
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20250926.0
-        version: 4.20250926.0
+        specifier: ^4.20250927.0
+        version: 4.20250927.0
       '@eslint/js':
         specifier: ^9.36.0
         version: 9.36.0
@@ -145,8 +145,8 @@ importers:
         specifier: ^8.44.1
         version: 8.44.1(eslint@9.36.0(jiti@2.6.0))(typescript@5.9.2)
       wrangler:
-        specifier: ^4.40.1
-        version: 4.40.1(@cloudflare/workers-types@4.20250926.0)
+        specifier: ^4.40.2
+        version: 4.40.2(@cloudflare/workers-types@4.20250927.0)
 
 packages:
 
@@ -446,8 +446,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workers-types@4.20250926.0':
-    resolution: {integrity: sha512-DfnfgmV7glnvvSx/BzXHG7FlF08YvZTM7P6RcC3+mRmV4E53N2uLWE4HKBCA16yTf5HFqB18X5Cw3DjyyRTvKA==}
+  '@cloudflare/workers-types@4.20250927.0':
+    resolution: {integrity: sha512-XcFVTMNhHROLQ+AbmK6KQuis72iGCdQXrjVl2xX98ac7w3fzUiNfTsu+SKBXN9dSEjgJEhhj0EXSAXh0b8lSww==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1779,8 +1779,8 @@ packages:
   astro-robots-txt@1.0.0:
     resolution: {integrity: sha512-6JQSLid4gMhoWjOm85UHLkgrw0+hHIjnJVIUqxjU2D6feKlVyYukMNYjH44ZDZBK1P8hNxd33PgWlHzCASvedA==}
 
-  astro@5.14.0:
-    resolution: {integrity: sha512-p41jPzs9XhcVBPzp8ZwjU4SgxSyjgkzMq3NToRIn4CPbE/f9rb1cba5+N6TRk4A8yBudEU6MFzCMFWer7kjW3Q==}
+  astro@5.14.1:
+    resolution: {integrity: sha512-gPa8NY7/lP8j8g81iy8UwANF3+aukKRWS68IlthZQNgykpg80ne6lbHOp6FErYycxQ1TUhgEfkXVDQZAoJx8Bg==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -4482,8 +4482,8 @@ packages:
       '@cloudflare/workers-types':
         optional: true
 
-  wrangler@4.40.1:
-    resolution: {integrity: sha512-XQEHOW6g1zW2xnBq1dmhDbEiVBbPGh7mX1tQAUMqKETa61XXvxHCJSzVI3is5xuo9HzZ8ITzg4VnhB/91cg9DQ==}
+  wrangler@4.40.2:
+    resolution: {integrity: sha512-wcev8GF6GU4ME5AsYY/gUehHrGdRiUCkifuyCeuVvpOtha3TMK4/s39x+jLuJBRtibpgejDekO68rqxfamf16A==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -4614,15 +4614,15 @@ snapshots:
 
   '@antfu/utils@9.2.1': {}
 
-  '@astrojs/cloudflare@12.6.9(@types/node@24.5.2)(astro@5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1)':
+  '@astrojs/cloudflare@12.6.9(@types/node@24.5.2)(astro@5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1)':
     dependencies:
       '@astrojs/internal-helpers': 0.7.3
       '@astrojs/underscore-redirects': 1.0.0
-      '@cloudflare/workers-types': 4.20250926.0
-      astro: 5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
+      '@cloudflare/workers-types': 4.20250927.0
+      astro: 5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
       tinyglobby: 0.2.15
       vite: 6.3.6(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1)
-      wrangler: 4.37.0(@cloudflare/workers-types@4.20250926.0)
+      wrangler: 4.37.0(@cloudflare/workers-types@4.20250927.0)
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -4668,12 +4668,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@4.3.6(astro@5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))':
+  '@astrojs/mdx@4.3.6(astro@5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.7
       '@mdx-js/mdx': 3.1.1
       acorn: 8.15.0
-      astro: 5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
+      astro: 5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
       es-module-lexer: 1.7.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -4716,12 +4716,12 @@ snapshots:
 
   '@astrojs/underscore-redirects@1.0.0': {}
 
-  '@astrojs/vue@5.1.1(@types/node@24.5.2)(astro@5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(vue@3.5.22(typescript@5.9.2))(yaml@2.8.1)':
+  '@astrojs/vue@5.1.1(@types/node@24.5.2)(astro@5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1))(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(vue@3.5.22(typescript@5.9.2))(yaml@2.8.1)':
     dependencies:
       '@vitejs/plugin-vue': 5.2.1(vite@6.3.6(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.2))
       '@vitejs/plugin-vue-jsx': 4.2.0(vite@6.3.6(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.2))
       '@vue/compiler-sfc': 3.5.22
-      astro: 5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
+      astro: 5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1)
       vite: 6.3.6(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1)
       vite-plugin-vue-devtools: 7.7.7(rollup@4.52.2)(vite@6.3.6(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(yaml@2.8.1))(vue@3.5.22(typescript@5.9.2))
       vue: 3.5.22(typescript@5.9.2)
@@ -5005,7 +5005,7 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20250924.0':
     optional: true
 
-  '@cloudflare/workers-types@4.20250926.0': {}
+  '@cloudflare/workers-types@4.20250927.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -6241,7 +6241,7 @@ snapshots:
       valid-filename: 4.0.0
       zod: 3.25.76
 
-  astro@5.14.0(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1):
+  astro@5.14.1(@types/node@24.5.2)(jiti@2.6.0)(lightningcss@1.30.1)(rollup@4.52.2)(typescript@5.9.2)(yaml@2.8.1):
     dependencies:
       '@astrojs/compiler': 2.13.0
       '@astrojs/internal-helpers': 0.7.3
@@ -9585,7 +9585,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250924.0
       '@cloudflare/workerd-windows-64': 1.20250924.0
 
-  wrangler@4.37.0(@cloudflare/workers-types@4.20250926.0):
+  wrangler@4.37.0(@cloudflare/workers-types@4.20250927.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.7.3(unenv@2.0.0-rc.21)(workerd@1.20250906.0)
@@ -9596,13 +9596,13 @@ snapshots:
       unenv: 2.0.0-rc.21
       workerd: 1.20250906.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20250926.0
+      '@cloudflare/workers-types': 4.20250927.0
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  wrangler@4.40.1(@cloudflare/workers-types@4.20250926.0):
+  wrangler@4.40.2(@cloudflare/workers-types@4.20250927.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.7.4(unenv@2.0.0-rc.21)(workerd@1.20250924.0)
@@ -9613,7 +9613,7 @@ snapshots:
       unenv: 2.0.0-rc.21
       workerd: 1.20250924.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20250926.0
+      '@cloudflare/workers-types': 4.20250927.0
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil
