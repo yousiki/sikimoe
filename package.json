@@ -22,7 +22,7 @@
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/vue": "^5.1.1",
     "@giscus/vue": "^3.1.1",
-    "@tailwindcss/vite": "^4.1.13",
+    "@tailwindcss/vite": "^4.1.14",
     "astro": "^5.14.1",
     "astro-diagram": "^0.7.0",
     "astro-robots-txt": "^1.0.0",
@@ -39,7 +39,7 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
-    "tailwindcss": "^4.1.13",
+    "tailwindcss": "^4.1.14",
     "typed.js": "^2.1.0",
     "vue": "^3.5.22",
     "vue3-typed-ts": "^1.0.6"
