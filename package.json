@@ -63,7 +63,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
-    "wrangler": "^4.45.1"
+    "wrangler": "^4.45.2"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
