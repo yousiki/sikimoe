@@ -91,8 +91,8 @@ importers:
         version: 1.0.6
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20251118.0
-        version: 4.20251118.0
+        specifier: ^4.20251119.0
+        version: 4.20251119.0
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.1
@@ -145,8 +145,8 @@ importers:
         specifier: ^8.47.0
         version: 8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       wrangler:
-        specifier: ^4.48.0
-        version: 4.48.0(@cloudflare/workers-types@4.20251118.0)
+        specifier: ^4.49.0
+        version: 4.49.0(@cloudflare/workers-types@4.20251119.0)
 
 packages:
 
@@ -393,8 +393,8 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@cloudflare/workerd-darwin-64@1.20251109.0':
-    resolution: {integrity: sha512-GAYXHOgPTJm6F+mOt0/Zf+rL+xPfMp8zAxGN4pqkzJ6QVQA/mNVMMuj22dI5x8+Ey+lCulKC3rNs4K3VE12hlA==}
+  '@cloudflare/workerd-darwin-64@1.20251113.0':
+    resolution: {integrity: sha512-GBlun9onB69rDMZIJ9TdvQ9d3KS5L2FXwlzJ9+AjrbHqYnIif8eH5wyLPIR5wfkXNyrEFiWtEYses+aUQZQLWQ==}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [darwin]
@@ -405,8 +405,8 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
-  '@cloudflare/workerd-darwin-arm64@1.20251109.0':
-    resolution: {integrity: sha512-fpLJvZi3i+btgrXJcOtKYrbmdnHVTKpaZigoKIcpBX4mbwxUh/GVbrCmOqLebr57asQC+PmBfghUEYniqRgnhA==}
+  '@cloudflare/workerd-darwin-arm64@1.20251113.0':
+    resolution: {integrity: sha512-CFakh0Plmkwe8BHuc3iQ0rSIMttvJ3XpWYPjhWUL6KxA2zL6FvYUiWG0hpaEW60KPqgFMisBoPzH0kzyzSKMhg==}
     engines: {node: '>=16'}
     cpu: [arm64]
     os: [darwin]
@@ -417,8 +417,8 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  '@cloudflare/workerd-linux-64@1.20251109.0':
-    resolution: {integrity: sha512-5NjCnXQoaySFAGGn10w0rPfmEhTSKTP/k7f3aduvt1syt462+66X7luOME/k2x5EB/Z5L8xvwf3/LejSSZ4EVA==}
+  '@cloudflare/workerd-linux-64@1.20251113.0':
+    resolution: {integrity: sha512-6JqK+Csie47656Kr+48GHl8v1zK940ruOczY4Da67xvsUAsFkUEOQkes4rW5i3I3XjNbcnyf96l0gnI6lzTKlQ==}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [linux]
@@ -429,8 +429,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@cloudflare/workerd-linux-arm64@1.20251109.0':
-    resolution: {integrity: sha512-f2AeJlpSwrEvEV57+JU+vRPL8c/Dv8nwY4XW+YwnzPo2TpbI/zzqloPXQ6PY79ftDfEsJJPzQuaDDPq3UOGJQA==}
+  '@cloudflare/workerd-linux-arm64@1.20251113.0':
+    resolution: {integrity: sha512-Ye9I2AeXZ2IPcWOYD9xIrjcFrnH0UkS/ijvgI81mJCr8w7dMd4ONb+BK5oXUJtBW8IEAV3yRU7Mz7DBLaXe/AQ==}
     engines: {node: '>=16'}
     cpu: [arm64]
     os: [linux]
@@ -441,14 +441,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workerd-windows-64@1.20251109.0':
-    resolution: {integrity: sha512-IGo/lzbYoeJdfLkpaKLoeG6C7Rwcf5kXjzV0wO8fLUSmlfOLQvXTIehWc7EkbHFHjPapDqYqR0KsmbizBi68Lg==}
+  '@cloudflare/workerd-windows-64@1.20251113.0':
+    resolution: {integrity: sha512-H2sq6H2sMhjt/72S3ZAsZV+GC3chRJkwwGq7AGVjIehR66e/z5KKhxOX8u29iqtShyERvFUVHyfCzRBKfmJwfw==}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workers-types@4.20251118.0':
-    resolution: {integrity: sha512-O1BlPjaQlM5rsxf8rc8NwNrXduzXMCWZDsSelI1SEyt0zYuBYMzn0kNrrD2bXAtXeYCk6LrX98037AlVdGXBUw==}
+  '@cloudflare/workers-types@4.20251119.0':
+    resolution: {integrity: sha512-DfCMGhqhvOow3NDViL3T9SgAtogc+xjtAKCfL+aWpVcAcct31P8FSFFRqlZCjcXJ5Kqw/TOjD/87UEAXAqaQZA==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -2293,8 +2293,8 @@ packages:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
 
-  electron-to-chromium@1.5.255:
-    resolution: {integrity: sha512-Z9oIp4HrFF/cZkDPMpz2XSuVpc1THDpT4dlmATFlJUIBVCy9Vap5/rIXsASP1CscBacBqhabwh8vLctqBwEerQ==}
+  electron-to-chromium@1.5.256:
+    resolution: {integrity: sha512-uqYq1IQhpXXLX+HgiXdyOZml7spy4xfy42yPxcCCRjswp0fYM2X+JwCON07lqnpLEGVCj739B7Yr+FngmHBMEQ==}
 
   emoji-regex@10.6.0:
     resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
@@ -3347,8 +3347,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  miniflare@4.20251109.1:
-    resolution: {integrity: sha512-btcTw1pH40PGVMwn1pZDcrodQkgY8ijKJA/r7LKgJQGqVZ1k9gqfHHtbelZp8O9bJ995eQqdURyvXMflZwCo+g==}
+  miniflare@4.20251113.0:
+    resolution: {integrity: sha512-uaNiBJu8JQY27pcM7Q/E+hLggClmJCQji9uOOBdlZV+aJ7rk7tFnyIvjpLxYJRpryrMjm3aKNeMvE8ham01DtA==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -4452,8 +4452,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  workerd@1.20251109.0:
-    resolution: {integrity: sha512-VfazMiymlzos0c1t9AhNi0w8gN9+ZbCVLdEE0VDOsI22WYa6yj+pYOhpZzI/mOzCGmk/o1eNjLMkfjWli6aRVg==}
+  workerd@1.20251113.0:
+    resolution: {integrity: sha512-XLQKbzzn6DndOosyCviYc0ExQVKPem5KAqvsgY+yrsJXvQnKXojIG8rtI0JQgKflHD6sHwjjg17P+q4lPvaLGQ==}
     engines: {node: '>=16'}
     hasBin: true
 
@@ -4467,13 +4467,12 @@ packages:
       '@cloudflare/workers-types':
         optional: true
 
-  wrangler@4.48.0:
-    resolution: {integrity: sha512-qkcwysx96XNDWXl4w/5VjAZjqWatxAq9chMXVeqv/etL9e06ouPaZ+Hwwbe5XYV2GYf/XhZVZ3fHJcTBrq60gQ==}
-    engines: {node: '>=18.0.0'}
-    deprecated: Unexpected API fields cause wrangler deploy to crash in some code paths. Downgrade to wrangler@4.47
+  wrangler@4.49.0:
+    resolution: {integrity: sha512-AptJADXtZwDiYS5b0G3kYNYnW4fsoInMBxw++eCs5wot1h0Q6B7HXNaoizD11rLGkU03Tpsh49hYqYyT5qkIvg==}
+    engines: {node: '>=20.0.0'}
     hasBin: true
     peerDependencies:
-      '@cloudflare/workers-types': ^4.20251109.0
+      '@cloudflare/workers-types': ^4.20251113.0
     peerDependenciesMeta:
       '@cloudflare/workers-types':
         optional: true
@@ -4565,10 +4564,10 @@ packages:
   youch@4.1.0-beta.10:
     resolution: {integrity: sha512-rLfVLB4FgQneDr0dv1oddCVZmKjcJ6yX6mS4pU82Mq/Dt9a3cLZQ62pDBL4AUO+uVrCvtWz3ZFUL2HFAFJ/BXQ==}
 
-  zod-to-json-schema@3.24.6:
-    resolution: {integrity: sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg==}
+  zod-to-json-schema@3.25.0:
+    resolution: {integrity: sha512-HvWtU2UG41LALjajJrML6uQejQhNJx+JBO9IflpSja4R03iNWfKXrj6W2h7ljuLyc1nKS+9yDyL/9tD1U/yBnQ==}
     peerDependencies:
-      zod: ^3.24.1
+      zod: ^3.25 || ^4
 
   zod-to-ts@1.2.0:
     resolution: {integrity: sha512-x30XE43V+InwGpvTySRNz9kB7qFU8DlyEy7BsSTCHPH1R0QasMmHWZDCzYm6bVXtj/9NNJAZF3jW8rzFvH5OFA==}
@@ -4600,11 +4599,11 @@ snapshots:
     dependencies:
       '@astrojs/internal-helpers': 0.7.5
       '@astrojs/underscore-redirects': 1.0.0
-      '@cloudflare/workers-types': 4.20251118.0
+      '@cloudflare/workers-types': 4.20251119.0
       astro: 5.15.9(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.53.2)(typescript@5.9.3)(yaml@2.8.1)
       tinyglobby: 0.2.15
       vite: 6.4.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.1)
-      wrangler: 4.46.0(@cloudflare/workers-types@4.20251118.0)
+      wrangler: 4.46.0(@cloudflare/workers-types@4.20251119.0)
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -4941,11 +4940,11 @@ snapshots:
     dependencies:
       mime: 3.0.0
 
-  '@cloudflare/unenv-preset@2.7.10(unenv@2.0.0-rc.24)(workerd@1.20251109.0)':
+  '@cloudflare/unenv-preset@2.7.10(unenv@2.0.0-rc.24)(workerd@1.20251113.0)':
     dependencies:
       unenv: 2.0.0-rc.24
     optionalDependencies:
-      workerd: 1.20251109.0
+      workerd: 1.20251113.0
 
   '@cloudflare/unenv-preset@2.7.9(unenv@2.0.0-rc.24)(workerd@1.20251105.0)':
     dependencies:
@@ -4956,34 +4955,34 @@ snapshots:
   '@cloudflare/workerd-darwin-64@1.20251105.0':
     optional: true
 
-  '@cloudflare/workerd-darwin-64@1.20251109.0':
+  '@cloudflare/workerd-darwin-64@1.20251113.0':
     optional: true
 
   '@cloudflare/workerd-darwin-arm64@1.20251105.0':
     optional: true
 
-  '@cloudflare/workerd-darwin-arm64@1.20251109.0':
+  '@cloudflare/workerd-darwin-arm64@1.20251113.0':
     optional: true
 
   '@cloudflare/workerd-linux-64@1.20251105.0':
     optional: true
 
-  '@cloudflare/workerd-linux-64@1.20251109.0':
+  '@cloudflare/workerd-linux-64@1.20251113.0':
     optional: true
 
   '@cloudflare/workerd-linux-arm64@1.20251105.0':
     optional: true
 
-  '@cloudflare/workerd-linux-arm64@1.20251109.0':
+  '@cloudflare/workerd-linux-arm64@1.20251113.0':
     optional: true
 
   '@cloudflare/workerd-windows-64@1.20251105.0':
     optional: true
 
-  '@cloudflare/workerd-windows-64@1.20251109.0':
+  '@cloudflare/workerd-windows-64@1.20251113.0':
     optional: true
 
-  '@cloudflare/workers-types@4.20251118.0': {}
+  '@cloudflare/workers-types@4.20251119.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -6284,7 +6283,7 @@ snapshots:
       yargs-parser: 21.1.1
       yocto-spinner: 0.2.3
       zod: 3.25.76
-      zod-to-json-schema: 3.24.6(zod@3.25.76)
+      zod-to-json-schema: 3.25.0(zod@3.25.76)
       zod-to-ts: 1.2.0(typescript@5.9.3)(zod@3.25.76)
     optionalDependencies:
       sharp: 0.34.5
@@ -6392,7 +6391,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.29
       caniuse-lite: 1.0.30001755
-      electron-to-chromium: 1.5.255
+      electron-to-chromium: 1.5.256
       node-releases: 2.0.27
       update-browserslist-db: 1.1.4(browserslist@4.28.0)
 
@@ -6818,7 +6817,7 @@ snapshots:
       es-errors: 1.3.0
       gopd: 1.2.0
 
-  electron-to-chromium@1.5.255: {}
+  electron-to-chromium@1.5.256: {}
 
   emoji-regex@10.6.0: {}
 
@@ -8356,7 +8355,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  miniflare@4.20251109.1:
+  miniflare@4.20251113.0:
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       acorn: 8.14.0
@@ -8366,7 +8365,7 @@ snapshots:
       sharp: 0.33.5
       stoppable: 1.1.0
       undici: 7.14.0
-      workerd: 1.20251109.0
+      workerd: 1.20251113.0
       ws: 8.18.0
       youch: 4.1.0-beta.10
       zod: 3.22.3
@@ -9530,15 +9529,15 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20251105.0
       '@cloudflare/workerd-windows-64': 1.20251105.0
 
-  workerd@1.20251109.0:
+  workerd@1.20251113.0:
     optionalDependencies:
-      '@cloudflare/workerd-darwin-64': 1.20251109.0
-      '@cloudflare/workerd-darwin-arm64': 1.20251109.0
-      '@cloudflare/workerd-linux-64': 1.20251109.0
-      '@cloudflare/workerd-linux-arm64': 1.20251109.0
-      '@cloudflare/workerd-windows-64': 1.20251109.0
+      '@cloudflare/workerd-darwin-64': 1.20251113.0
+      '@cloudflare/workerd-darwin-arm64': 1.20251113.0
+      '@cloudflare/workerd-linux-64': 1.20251113.0
+      '@cloudflare/workerd-linux-arm64': 1.20251113.0
+      '@cloudflare/workerd-windows-64': 1.20251113.0
 
-  wrangler@4.46.0(@cloudflare/workers-types@4.20251118.0):
+  wrangler@4.46.0(@cloudflare/workers-types@4.20251119.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.7.9(unenv@2.0.0-rc.24)(workerd@1.20251105.0)
@@ -9549,24 +9548,24 @@ snapshots:
       unenv: 2.0.0-rc.24
       workerd: 1.20251105.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251118.0
+      '@cloudflare/workers-types': 4.20251119.0
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  wrangler@4.48.0(@cloudflare/workers-types@4.20251118.0):
+  wrangler@4.49.0(@cloudflare/workers-types@4.20251119.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
-      '@cloudflare/unenv-preset': 2.7.10(unenv@2.0.0-rc.24)(workerd@1.20251109.0)
+      '@cloudflare/unenv-preset': 2.7.10(unenv@2.0.0-rc.24)(workerd@1.20251113.0)
       blake3-wasm: 2.1.5
       esbuild: 0.25.4
-      miniflare: 4.20251109.1
+      miniflare: 4.20251113.0
       path-to-regexp: 6.3.0
       unenv: 2.0.0-rc.24
-      workerd: 1.20251109.0
+      workerd: 1.20251113.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251118.0
+      '@cloudflare/workers-types': 4.20251119.0
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil
@@ -9642,7 +9641,7 @@ snapshots:
       cookie: 1.0.2
       youch-core: 0.3.3
 
-  zod-to-json-schema@3.24.6(zod@3.25.76):
+  zod-to-json-schema@3.25.0(zod@3.25.76):
     dependencies:
       zod: 3.25.76
 
