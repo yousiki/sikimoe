@@ -28,7 +28,7 @@
     "astro-robots-txt": "^1.0.0",
     "axios": "^1.13.2",
     "marked": "^15.0.12",
-    "mermaid": "^11.12.1",
+    "mermaid": "^11.12.2",
     "redot-parse": "^0.5.0",
     "redot-stringify": "^0.5.0",
     "rehype-graphviz": "^0.3.0",
@@ -49,8 +49,8 @@
     "@eslint/js": "^9.39.1",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.19",
-    "@typescript-eslint/eslint-plugin": "^8.48.0",
-    "@typescript-eslint/parser": "^8.48.0",
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
+    "@typescript-eslint/parser": "^8.48.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-formatter-table": "^7.32.1",
@@ -62,7 +62,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0",
+    "typescript-eslint": "^8.48.1",
     "wrangler": "^4.51.0"
   },
   "lint-staged": {
