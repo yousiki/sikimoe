@@ -23,7 +23,7 @@
     "@astrojs/vue": "^5.1.4",
     "@giscus/vue": "^3.1.1",
     "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.16.8",
+    "astro": "^5.16.9",
     "astro-diagram": "^0.7.0",
     "astro-robots-txt": "^1.0.0",
     "axios": "^1.13.2",
@@ -45,12 +45,12 @@
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260111.0",
+    "@cloudflare/workers-types": "^4.20260113.0",
     "@eslint/js": "^9.39.2",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.19",
-    "@typescript-eslint/eslint-plugin": "^8.52.0",
-    "@typescript-eslint/parser": "^8.52.0",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-formatter-table": "^7.32.1",
@@ -62,7 +62,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.52.0",
+    "typescript-eslint": "^8.53.0",
     "wrangler": "^4.58.0"
   },
   "lint-staged": {
