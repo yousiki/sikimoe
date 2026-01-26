@@ -26,7 +26,7 @@
     "astro": "^5.16.15",
     "astro-diagram": "^0.7.0",
     "astro-robots-txt": "^1.0.0",
-    "axios": "^1.13.2",
+    "axios": "^1.13.3",
     "marked": "^15.0.12",
     "mermaid": "^11.12.2",
     "redot-parse": "^0.5.0",
