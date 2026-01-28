@@ -26,7 +26,7 @@
     "astro": "^5.16.15",
     "astro-diagram": "^0.7.0",
     "astro-robots-txt": "^1.0.0",
-    "axios": "^1.13.3",
+    "axios": "^1.13.4",
     "marked": "^15.0.12",
     "mermaid": "^11.12.2",
     "redot-parse": "^0.5.0",
@@ -45,7 +45,7 @@
     "vue3-typed-ts": "^1.0.6"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260127.0",
+    "@cloudflare/workers-types": "^4.20260128.0",
     "@eslint/js": "^9.39.2",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@tailwindcss/typography": "^0.5.19",
@@ -63,7 +63,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0",
-    "wrangler": "^4.60.0"
+    "wrangler": "^4.61.0"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
