@@ -17,16 +17,14 @@ import { profile } from '../../data/profile';
   >
   </div>
 
-  {/* Vertical index rule — fills the right margin the way a print grid would. */}
-  <div
-    class="text-faint pointer-events-none absolute inset-y-0 right-8 hidden flex-col items-center justify-center gap-6 lg:flex xl:right-12"
-    aria-hidden="true"
-  >
-    <span class="bg-line h-16 w-px"></span>
-    <span class="font-mono text-[0.65rem] tracking-[0.42em] uppercase [writing-mode:vertical-rl]">
-      Computational Photography
-    </span>
-    <span class="bg-line h-16 w-px"></span>
+  {
+    /* Vertical rule — fills the right margin the way a print grid would.
+      Decorative: the same voice runs through the about section. */
+  }
+  <div class="hero-margin" aria-hidden="true">
+    <span class="hero-margin__rule"></span>
+    <span class="hero-margin__text">{profile.tagline}</span>
+    <span class="hero-margin__rule"></span>
   </div>
 
   <div class="container-page flex flex-1 flex-col justify-between pt-28 pb-10 md:pt-32 md:pb-14">
@@ -130,6 +128,59 @@ import { profile } from '../../data/profile';
 </section>
 
 <style>
+  /* ── right margin ─────────────────────────────────────────────────────
+     A 40-character line set vertically is tall, so the rules shrink before
+     the text does and the whole column steps aside on short windows rather
+     than colliding with the header. */
+  .hero-margin {
+    display: none;
+  }
+
+  @media (width >= 64rem) {
+    .hero-margin {
+      position: absolute;
+      inset-block: 0;
+      right: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      color: var(--faint);
+      pointer-events: none;
+    }
+  }
+
+  @media (width >= 80rem) {
+    .hero-margin {
+      right: 3rem;
+    }
+  }
+
+  /* Below this the column would run into the header and the scroll cue. */
+  @media (height < 40rem) {
+    .hero-margin {
+      display: none;
+    }
+  }
+
+  /* Left in sentence case on purpose: uppercasing turns `PhD` into `PHD`, and
+     a personal line reads better as an aside than as a spine label. */
+  .hero-margin__text {
+    writing-mode: vertical-rl;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+
+  .hero-margin__rule {
+    width: 1px;
+    flex: 0 1 3.5rem;
+    min-height: 0.75rem;
+    background: var(--line);
+  }
+
   /* Keep the sensor readout away from the header and the name, so it reads as
      atmosphere rather than as noise laid over the type. */
   .spike-canvas {

@@ -64,6 +64,8 @@ export interface Profile {
   readonly timezone: string;
   /** Caption under the portrait in the about section. */
   readonly portrait: { readonly alt: string; readonly caption: string };
+  /** Short personal line, set vertically in the hero margin. */
+  readonly tagline: string;
   readonly rotatingWords: readonly string[];
   readonly bio: readonly string[];
   readonly now: readonly { readonly label: string; readonly value: string }[];
@@ -96,6 +98,9 @@ export const profile: Profile = {
     // Date and body are read straight off the original file's EXIF.
     caption: 'April 2026 · Canon EOS R5',
   },
+
+  // Mirrors the bio on https://github.com/yousiki.
+  tagline: 'PhD student by day. Vibe coder by night.',
 
   rotatingWords: ['spike cameras', 'inverse rendering', 'world models', 'light & pixels'],
 
