@@ -10,7 +10,7 @@ export const SITE_TITLE = 'Siqi Yang — Computational Photography & Vision';
 export const SITE_SHORT_TITLE = 'Siqi Yang';
 
 export const SITE_DESCRIPTION =
-  'Ph.D. candidate at Peking University working on neuromorphic imaging, inverse rendering, and video world models.';
+  'Ph.D. candidate at Peking University working on neuromorphic imaging, video generation, and world models.';
 
 export const SITE_LOCALE = 'en';
 

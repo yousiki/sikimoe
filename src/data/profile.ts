@@ -102,11 +102,11 @@ export const profile: Profile = {
   // Mirrors the bio on https://github.com/yousiki.
   tagline: 'PhD student by day. Vibe coder by night.',
 
-  rotatingWords: ['spike cameras', 'inverse rendering', 'world models', 'light & pixels'],
+  rotatingWords: ['spike cameras', 'video generation', 'world models', 'light & pixels'],
 
   bio: [
     'I teach cameras to see what human eyes cannot — microsecond-scale light, recovered as colour, motion and geometry.',
-    'My research sits between computational photography and computer vision: neuromorphic **spike cameras** that fire asynchronously at tens of thousands of frames per second, **inverse rendering** that pulls material and illumination back out of a photograph, and generative **world models** that render playable video.',
+    'My research sits between computational photography and computer vision: neuromorphic **spike cameras** that fire asynchronously at tens of thousands of frames per second, **video generation** steered by camera paths and audio rather than prose alone, and **world models** that hold a generated world still enough for more than one person to walk around in.',
     'Before the Ph.D. I spent a decade in competitive programming, which is probably why I still enjoy a well-shaped abstraction more than a well-tuned hyperparameter.',
   ],
 
@@ -156,9 +156,9 @@ export const profile: Profile = {
     },
     {
       index: '02',
-      title: 'Inverse Rendering',
+      title: 'Video Generation',
       blurb:
-        'Given a photograph, recover the scene that made it — geometry, reflectance, and the light that fell on it — so the whole thing can be relit and re-photographed.',
+        'Diffusion models that make video you can steer rather than only prompt — 360° panoramas with no seam at the poles, and edits that stay locked to the audio and to the frame before.',
     },
     {
       index: '03',
