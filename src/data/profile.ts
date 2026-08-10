@@ -427,8 +427,15 @@ export const profile: Profile = {
     { title: 'Peking University Academic Excellence Award', year: '2019' },
     { title: 'China Collegiate Programming Contest, Guilin', detail: 'Gold Medal', year: '2018' },
     { title: 'National Olympiad in Informatics (NOI)', detail: 'Silver Medal', year: '2017' },
+    // Split apart: a NOIP first prize is not a bronze medal, and the single
+    // combined row put 'Bronze Medals' against both.
     {
-      title: 'NOIP First Prize ×2 · APIO / CTSC / WC',
+      title: 'National Olympiad in Informatics in Provinces (NOIP)',
+      detail: 'First Prize ×2',
+      year: '2016–2017',
+    },
+    {
+      title: 'APIO, CTSC, and Winter Camp',
       detail: 'Bronze Medals',
       year: '2016–2017',
     },
