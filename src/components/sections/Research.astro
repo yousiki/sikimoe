@@ -7,8 +7,8 @@ import { profile } from '../../data/profile';
 import { emphasise } from '../../utils/text';
 ---
 
-<section id="about" class="container-page scroll-mt-24 py-24 md:py-36">
-  <SectionHeading index="01 — About" title="Light, sampled differently." />
+<section id="research" class="container-page scroll-mt-24 py-24 md:py-36">
+  <SectionHeading index="01 — Research" title="Light, sampled differently." />
 
   <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-7 xl:col-span-6">
@@ -24,17 +24,6 @@ import { emphasise } from '../../utils/text';
           ))
         }
       </div>
-
-      <dl class="border-line mt-12 grid gap-px border-t sm:grid-cols-2">
-        {
-          profile.now.map((item) => (
-            <div class="border-line border-b py-4 pr-6" data-reveal data-reveal-group="now">
-              <dt class="eyebrow">{item.label}</dt>
-              <dd class="mt-1.5 text-sm leading-relaxed sm:text-base">{item.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
     </div>
 
     <div class="lg:col-span-5 lg:col-start-8 xl:col-start-8">
@@ -55,7 +44,7 @@ import { emphasise } from '../../utils/text';
         <figcaption
           class="text-faint mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 font-mono text-[0.7rem] tracking-[0.16em] uppercase"
         >
-          <span>{profile.nameLocal} · {profile.alias}</span>
+          <span>{profile.name}</span>
           <span class="normal-case">{profile.portrait.caption}</span>
         </figcaption>
       </figure>

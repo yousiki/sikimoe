@@ -48,8 +48,14 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # `public/cv/` is committed, so this builds without the secret — it just
+      # ships the CV as of the last `bun run cv` instead of the newest release.
+      # Add a `RESUME_TOKEN` secret with read access to `yousiki/resume` to have
+      # every deploy pick up the current one.
       - name: Build
         run: bun run build
+        env:
+          CV_GITHUB_TOKEN: ${{ secrets.RESUME_TOKEN }}
 
       - name: Resolve target project
         id: target

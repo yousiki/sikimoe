@@ -1,4 +1,5 @@
 ---
+import CvMenu from '../CvMenu.astro';
 import Icon from '../Icon.astro';
 import { profile } from '../../data/profile';
 ---
@@ -31,24 +32,7 @@ import { profile } from '../../data/profile';
           <span data-copy-label>{profile.email}</span>
         </button>
 
-        <a
-          href={profile.cv.en}
-          target="_blank"
-          rel="noopener"
-          class="border-line hover:border-ink inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-[0.1em] uppercase transition-colors duration-300"
-        >
-          Curriculum Vitae
-          <Icon name="arrow" size={13} />
-        </a>
-
-        <a
-          href={profile.cv.zh}
-          target="_blank"
-          rel="noopener"
-          class="text-faint hover:text-ink inline-flex items-center gap-2 px-2 py-2 font-mono text-xs tracking-[0.1em] transition-colors duration-300"
-        >
-          中文简历
-        </a>
+        <CvMenu id="cv-contact" label="Curriculum Vitae" align="start" />
       </div>
     </div>
 

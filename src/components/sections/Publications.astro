@@ -2,34 +2,34 @@
 import Icon from '../Icon.astro';
 import PublicationRow from '../PublicationRow.astro';
 import SectionHeading from '../SectionHeading.astro';
-import { profile, publicationsByYear, selectedPublications } from '../../data/profile';
-
-const selectedKeys = new Set(selectedPublications.map((p) => p.title));
-const rest = publicationsByYear.filter((p) => !selectedKeys.has(p.title));
+import { profile, publicationsByYear } from '../../data/profile';
 
 const scholar = profile.socials.find((s) => s.icon === 'scholar');
 ---
 
-<section id="work" class="container-page scroll-mt-24 py-24 md:py-36">
+<section id="publications" class="container-page scroll-mt-24 py-24 md:py-36">
   <SectionHeading
-    index="04 — Work"
+    index="04 — Publication"
     title="Selected publications."
     lead={`${publicationsByYear.length} papers across CVPR, ICCV, ECCV, NeurIPS, SIGGRAPH Asia and TPAMI.`}
   />
 
-  <ul class="border-line border-t">
+  {
+    /* One list, newest first, whether or not it is expanded: the unselected rows
+      are collapsed where they belong in the order rather than appended after it,
+      so pressing the toggle never restarts the years from the top. */
+  }
+  <ul id="all-publications" class="border-line border-t" data-disclosure-panel>
     {
-      selectedPublications.map((publication) => (
-        <PublicationRow publication={publication} group="pubs" />
+      publicationsByYear.map((publication) => (
+        <PublicationRow
+          publication={publication}
+          extra={!publication.selected}
+          group={publication.selected ? 'pubs' : undefined}
+        />
       ))
     }
   </ul>
-
-  <div id="all-publications" data-disclosure-panel hidden>
-    <ul>
-      {rest.map((publication) => <PublicationRow publication={publication} />)}
-    </ul>
-  </div>
 
   <div class="mt-10 flex flex-wrap items-center gap-4" data-reveal>
     <button

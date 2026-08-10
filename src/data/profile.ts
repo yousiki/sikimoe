@@ -1,7 +1,7 @@
 /**
  * The single source of truth for everything the site renders about its author.
  *
- * Mirrors `yousiki-cv.typ` in the companion `resume` repository. When the CV
+ * Mirrors `resume-en.typ` in the companion `resume` repository. When the CV
  * changes, change this file — nothing else on the site hardcodes biography.
  */
 
@@ -53,6 +53,15 @@ export interface SkillGroup {
   readonly items: readonly string[];
 }
 
+export interface CvEdition {
+  /** Matches the `resume-<id>.typ` entry point and the released asset name. */
+  readonly id: 'en' | 'zh' | 'en-zh';
+  /** Set in the language of the document itself, so it needs no gloss. */
+  readonly label: string;
+  /** Path under `public/`, filled in by `bun run cv`. Never a GitHub URL. */
+  readonly href: string;
+}
+
 export interface Profile {
   readonly name: string;
   readonly nameLocal: string;
@@ -68,8 +77,13 @@ export interface Profile {
   readonly tagline: string;
   readonly rotatingWords: readonly string[];
   readonly bio: readonly string[];
-  readonly now: readonly { readonly label: string; readonly value: string }[];
-  readonly cv: { readonly en: string; readonly zh: string };
+  /**
+   * What I am expert in, for `schema.org/knowsAbout` and the social card.
+   * Separate from `interests`, which is hobbies — a machine reading this page
+   * should not conclude that serverless infrastructure is my field.
+   */
+  readonly researchAreas: readonly string[];
+  readonly cv: readonly CvEdition[];
   readonly email: string;
   readonly socials: readonly SocialLink[];
   readonly interests: readonly Interest[];
@@ -83,6 +97,14 @@ export interface Profile {
 /** Name used to mark the author's own entry in an author list. */
 export const SELF = 'Siqi Yang';
 
+/**
+ * The site serves the CV itself. The `resume` repository is private, so its
+ * release assets 404 for visitors; `bun run cv` vendors them into `public/cv/`
+ * ahead of every build. Named for whoever ends up with the file in a downloads
+ * folder, not for the release asset it came from.
+ */
+const CV = '/cv/siqi-yang-cv';
+
 export const profile: Profile = {
   name: 'Siqi Yang',
   nameLocal: '杨思祺',
@@ -95,8 +117,8 @@ export const profile: Profile = {
   timezone: 'Asia/Tokyo',
   portrait: {
     alt: 'Siqi Yang sitting on a grassy riverbank beneath cherry blossoms, camera in hand, looking up into the branches',
-    // Date and body are read straight off the original file's EXIF.
-    caption: 'April 2026 · Canon EOS R5',
+    // Date, place, and body are read straight off the original file's EXIF.
+    caption: 'April 2026 · Kyoto · Canon EOS R5',
   },
 
   // Mirrors the bio on https://github.com/yousiki.
@@ -105,33 +127,42 @@ export const profile: Profile = {
   rotatingWords: ['spike cameras', 'video generation', 'world models', 'light & pixels'],
 
   /**
-   * General to specific. The first paragraph states the question and places
-   * both halves of the work against it — the earlier recovery line and the
-   * three current areas. The second expands what I do now, the third what came
-   * before, the fourth is background.
+   * General to specific, on three verbs: recover, capture, generate. The first
+   * paragraph names all three; the next three take them in that order, which is
+   * also the order I came to them. Relighting sits under generate rather than
+   * recover — it synthesises an appearance the scene never had.
    *
-   * The expansions argue why each problem is hard rather than describing what
-   * it produces: the focus cards already describe the output, and the two
-   * sections sit close enough together that repeating it would read as padding.
+   * The three expansions share one shape — verb, colon, the work under it — so
+   * they read as three answers to the same question rather than three separate
+   * remarks. One sentence each, and deliberately no more: the cards below carry
+   * the detail, and anything longer here was competing with them.
    */
   bio: [
-    'My research asks one question about light from two sides: how little of it you need to recover a scene, and how much you have to invent to render one that was never photographed. I came in from the recovery side, and now work mostly on **neuromorphic imaging**, **video generation**, and **world models**.',
-    'Imaging comes first. A spike camera throws the frame away, so nothing downstream of it still applies and the reconstruction stack has to be rebuilt from the sensor up. Generation is the mirror image: the model can produce any pixel it likes, and the difficulty is making it obey a camera path, a soundtrack, and the frame before. World models are where the two meet — a generated world only holds together if it stays consistent for everyone looking at it.',
-    'Before that, recovery was the whole of it: **neural radiance fields** and **outdoor relighting**, putting a scene back under illumination it was never shot in, and some **inverse rendering** for interiors lit by the objects standing in them.',
-    'Earlier still I spent a decade in competitive programming, which is probably why I enjoy a well-shaped abstraction more than a well-tuned hyperparameter.',
+    'Everything I work on is one question about light, asked three ways: how to **recover** a scene, how to **capture** one, and how to **generate** one that was never there.',
+    'Recovery is the inverse problem: **intrinsic decomposition** and **inverse rendering** prise geometry, material and light apart, and **neural radiance fields** do it in three dimensions.',
+    'Capture stops treating the sensor as given: a **spike camera** fires the instant a pixel has seen enough light, tens of thousands of times a second, which is what brings **HDR** and **high-frame-rate** imaging to scenes too fast and too contrasty for a shutter to hold.',
+    'Generation runs the arrow backwards: **video generation** that follows a camera and a soundtrack, **relighting** under a sun the scene never saw, **world models** consistent for everyone inside them.',
   ],
 
-  now: [
-    { label: 'Research Intern', value: 'Alaya Lab, Shanda AI Research Tokyo' },
-    { label: 'Building', value: 'Multiplayer world models & panoramic video generation' },
-    { label: 'Learning', value: 'Nix, Rust, and how to take better photographs' },
-    { label: 'Graduating', value: 'July 2027 (expected)' },
+  researchAreas: [
+    'Neuromorphic imaging',
+    'Video generation',
+    'World models',
+    'Inverse rendering',
+    'Neural radiance fields',
+    'Computational photography',
   ],
 
-  cv: {
-    en: 'https://github.com/yousiki/resume/releases/latest/download/yousiki-cv.pdf',
-    zh: 'https://github.com/yousiki/resume/releases/latest/download/yousiki-cv-zh.pdf',
-  },
+  /**
+   * Three editions built from three Typst entry points. English leads because
+   * the site is written in it; the bilingual edition is the two documents in one
+   * file, which is what most applications ask for.
+   */
+  cv: [
+    { id: 'en', label: 'English', href: `${CV}-en.pdf` },
+    { id: 'zh', label: '中文', href: `${CV}-zh.pdf` },
+    { id: 'en-zh', label: 'English + 中文', href: `${CV}-en-zh.pdf` },
+  ],
 
   email: 'you.siki@outlook.com',
 
@@ -158,24 +189,29 @@ export const profile: Profile = {
     { label: 'X', handle: '@__yousiki__', href: 'https://x.com/__yousiki__', icon: 'x' },
   ],
 
+  /**
+   * Side interests, not research. The about section already states the research;
+   * these are here to show the other half. Deliberately kept out of
+   * `researchAreas`, which is what the structured data and the social card read.
+   */
   interests: [
     {
       index: '01',
-      title: 'Neuromorphic Imaging',
+      title: 'Agent Harness',
       blurb:
-        'Spike cameras sample light continuously instead of in frames. I build the reconstruction stack that turns those sub-millisecond binary streams back into colour, high-dynamic-range video.',
+        'Harnesses tuned to one task rather than all of them, mixing models instead of betting on a single one: cheap work routed to cheap models, budget spent only where it changes the answer. The likes of oh-my-openagent and oh-my-pi.',
     },
     {
       index: '02',
-      title: 'Video Generation',
+      title: 'Game Generation',
       blurb:
-        'Diffusion models that make video you can steer rather than only prompt — 360° panoramas with no seam at the poles, and edits that stay locked to the audio and to the frame before.',
+        'Handing the last two years of LLM and coding-agent progress to players and makers rather than researchers, so anyone can build the game already in their head — at a cost they can predict and a quality they can count on.',
     },
     {
       index: '03',
-      title: 'World Models',
+      title: 'Serverless Infra',
       blurb:
-        'Video generators that hold a consistent, controllable, and shared state, so more than one person can walk around inside the same generated world.',
+        'Serverless primitives on Cloudflare, used to keep services small, cheap, and forgettable. I would rather pay per request than spend the next decade keeping a machine alive.',
     },
   ],
 
@@ -211,13 +247,13 @@ export const profile: Profile = {
     },
     {
       kind: 'education',
-      organisation: 'School of EECS, Peking University',
+      organisation: 'Turing Class, Peking University',
       role: 'B.S. in Computer Science',
       location: 'Beijing, China',
       start: '2018.09',
       end: '2022.07',
-      detail: 'Turing Honor Class.',
-      href: 'https://eecs.pku.edu.cn/',
+      detail: 'Honours track in the School of EECS.',
+      href: 'https://cfcs.pku.edu.cn/english/research/turing_program/introduction1/index.htm',
     },
     {
       kind: 'experience',

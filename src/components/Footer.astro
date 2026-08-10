@@ -10,10 +10,11 @@ const buildDate = new Date().toISOString().slice(0, 10);
   <div
     class="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between"
   >
-    <p class="text-faint font-mono text-xs tracking-wide">
-      © {year}
-      {profile.name} · {profile.nameLocal}
-    </p>
+    {
+      /* One expression: a line break between two of them collapses to nothing,
+        which is what turned this into "© 2026Siqi Yang". */
+    }
+    <p class="text-faint font-mono text-xs tracking-wide">{`© ${year} ${profile.name}`}</p>
 
     <div class="text-faint flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs">
       <span>Built with Astro · Deployed on Cloudflare</span>

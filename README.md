@@ -28,7 +28,7 @@ reduced motion.
 | Type      | Instrument Serif · Geist · Geist Mono, self-hosted via Fontsource                                                                           |
 | Language  | TypeScript everywhere — including `astro.config.ts`, `eslint.config.ts` and `prettier.config.ts`. There is no `.js` file in this repository |
 | Runtime   | [Bun](https://bun.com) for installs, scripts, and the local static server                                                                   |
-| Tests     | Vitest (units) · Playwright (Chromium + WebKit e2e, plus screenshot capture)                                                                |
+| Tests     | Vitest (units). Playwright is kept for screenshots only — there is no browser suite                                                         |
 | Hosting   | Cloudflare Pages                                                                                                                            |
 
 Total shipped JavaScript is one ~30 kB gzipped module; the page renders and reads
@@ -43,24 +43,24 @@ bun run dev          # http://localhost:4321
 
 ### Everyday commands
 
-| Command            | What it does                                    |
-| ------------------ | ----------------------------------------------- |
-| `bun run dev`      | Dev server with HMR                             |
-| `bun run build`    | Static build into `dist/`                       |
-| `bun run serve`    | Serve `dist/` exactly as it will ship           |
-| `bun run check`    | `astro check` — types across `.ts` and `.astro` |
-| `bun run lint`     | ESLint 10, flat config                          |
-| `bun run format`   | Prettier                                        |
-| `bun run test`     | Vitest unit tests                               |
-| `bun run test:e2e` | Playwright, Chromium + mobile WebKit            |
-| `bun run shots`    | Write review screenshots to `screenshots/`      |
-| `bun run assets`   | Regenerate `public/og.png` and the icons        |
-| `bun run verify`   | Everything above that can fail CI, in order     |
+| Command          | What it does                                    |
+| ---------------- | ----------------------------------------------- |
+| `bun run dev`    | Dev server with HMR                             |
+| `bun run build`  | Static build into `dist/`                       |
+| `bun run serve`  | Serve `dist/` exactly as it will ship           |
+| `bun run check`  | `astro check` — types across `.ts` and `.astro` |
+| `bun run lint`   | ESLint 10, flat config                          |
+| `bun run format` | Prettier                                        |
+| `bun run test`   | Vitest unit tests                               |
+| `bun run shots`  | Write review screenshots to `screenshots/`      |
+| `bun run assets` | Regenerate `public/og.png` and the icons        |
+| `bun run cv`     | Pull the CV PDFs into `public/cv/`              |
+| `bun run verify` | Everything above that can fail CI, in order     |
 
-First Playwright run only:
+Before the first `shots` or `assets` run, which drive a real browser:
 
 ```bash
-bunx playwright install chromium webkit
+bunx playwright install chromium
 ```
 
 ## Editing the content
@@ -72,6 +72,22 @@ reverse-chronological, every publication lists the author, every link is absolut
 and HTTPS, equal-contribution asterisks come with a matching note. Adding a paper
 is one object in the `publications` array; set `selected: true` to surface it
 before the "show all" toggle.
+
+`profile.cv` lists three CV editions — English, 中文, and the bilingual document —
+rendered by [`CvMenu.astro`](src/components/CvMenu.astro) in both the header and
+the contact section. The site serves its own copies from `public/cv/`, because
+the [`resume`](https://github.com/yousiki/resume) repository they are built in is
+private and its release assets 404 for visitors:
+
+```bash
+bun run cv            # pull the latest release into public/cv/
+```
+
+`bun run build` runs it first, so a deploy always ships the newest CV it can
+reach. The PDFs are committed, like `public/og.png` — a build with no GitHub
+credentials keeps the vendored copies and only warns. `SKIP_CV_SYNC=1` skips the
+sync entirely. Authentication is `gh auth login` locally, or `CV_GITHUB_TOKEN` in
+CI.
 
 Regenerate the social card after changing the name, role, or palette:
 
@@ -86,7 +102,7 @@ It screenshots the real `/og` route, so the card can never drift from the site.
 - Single `<h1>`, ordered headings, skip link, visible focus rings.
 - `prefers-reduced-motion: reduce` disables Lenis, the pointer effects, the
   marquee, the character stagger, and the spike animation; all content renders
-  immediately. This is covered by an e2e test.
+  immediately.
 - Theme is an explicit choice stored in `localStorage`, resolved by a blocking
   inline script before first paint, and falls back to the OS preference.
 - The full-screen index on narrow viewports traps focus and returns it to its
@@ -113,8 +129,8 @@ bun run build
 bun run deploy:preview
 ```
 
-CI (`.github/workflows/ci.yml`) runs format, lint, typecheck, unit tests, build,
-and the browser suite on every push and pull request.
+CI (`.github/workflows/ci.yml`) runs format, lint, typecheck, unit tests and
+build on every push and pull request.
 
 `public/_headers` sets a strict Content-Security-Policy and immutable caching for
 fingerprinted assets; Cloudflare Pages applies it at the edge.

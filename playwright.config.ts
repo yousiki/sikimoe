@@ -4,7 +4,11 @@ const PORT = 4321;
 const LOCAL_URL = `http://localhost:${PORT}`;
 
 /**
- * Point the suite at a deployment instead of the local build:
+ * Playwright is kept for screenshots only — `bun run shots` captures the pages
+ * for design review, and `scripts/generate-assets.ts` renders the social card.
+ * Nothing here asserts anything; there is no behavioural suite to run.
+ *
+ * Point it at a deployment instead of the local build:
  *
  *   PLAYWRIGHT_BASE_URL=https://siki-moe-preview.pages.dev bun run shots
  *
@@ -14,7 +18,7 @@ const EXTERNAL_URL = process.env['PLAYWRIGHT_BASE_URL'];
 const BASE_URL = EXTERNAL_URL ?? LOCAL_URL;
 
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: './tests/visual',
   outputDir: './test-results',
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],
@@ -32,16 +36,6 @@ export default defineConfig({
   },
 
   projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-      testIgnore: /visual\.spec\.ts/,
-    },
-    {
-      name: 'mobile',
-      use: { ...devices['iPhone 15'] },
-      testIgnore: /visual\.spec\.ts/,
-    },
     {
       // Screenshot capture for design review — run with `bun run shots`.
       name: 'visual',

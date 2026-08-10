@@ -1,5 +1,3 @@
-import { animate } from 'motion';
-
 import { hasFinePointer, prefersReducedMotion, queryAll } from './env';
 
 /** Releases the staggered per-character hero animation once fonts are ready. */
@@ -73,46 +71,73 @@ export const initClock = (): void => {
   setInterval(tick, 1000);
 };
 
-/** "Show all publications" — expands the remainder with a height transition. */
+/**
+ * "Show all publications". The rows it reveals are already in the list, in date
+ * order, collapsed to zero height by CSS — so this only has to flip a flag and
+ * relabel the button, and the animation belongs entirely to the stylesheet.
+ */
 export const initDisclosure = (): void => {
   for (const button of queryAll<HTMLButtonElement>('[data-disclosure-toggle]')) {
     const id = button.getAttribute('aria-controls');
     const panel = id ? document.getElementById(id) : null;
     if (!panel) continue;
 
-    panel.style.overflow = 'hidden';
-    panel.style.height = '0px';
-    panel.hidden = false;
-    panel.setAttribute('aria-hidden', 'true');
-
     button.addEventListener('click', () => {
       const expanded = button.getAttribute('aria-expanded') === 'true';
       button.setAttribute('aria-expanded', String(!expanded));
-      panel.setAttribute('aria-hidden', String(expanded));
+
+      if (expanded) delete panel.dataset['expanded'];
+      else panel.dataset['expanded'] = '';
 
       const label = button.querySelector<HTMLElement>('[data-disclosure-label]');
       if (label) {
         label.textContent = expanded
           ? (button.dataset['labelClosed'] ?? 'Show all')
-          : (button.dataset['labelOpen'] ?? 'Show less');
+          : (button.dataset['labelOpen'] ?? 'Show fewer');
       }
-
-      const target = expanded ? 0 : panel.scrollHeight;
-
-      if (prefersReducedMotion()) {
-        panel.style.height = expanded ? '0px' : 'auto';
-        return;
-      }
-
-      void animate(
-        panel,
-        { height: `${target}px`, opacity: expanded ? 0 : 1 },
-        { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-      ).then(() => {
-        if (!expanded) panel.style.height = 'auto';
-      });
     });
   }
+};
+
+/**
+ * The two behaviours a native `<details>` dropdown lacks: it closes when the
+ * pointer lands elsewhere, on Escape, and when a sibling dropdown opens. Opening
+ * and closing themselves stay with the element, so this is purely additive.
+ */
+export const initDropdowns = (): void => {
+  const dropdowns = queryAll<HTMLDetailsElement>('[data-dropdown]');
+  if (dropdowns.length === 0) return;
+
+  const close = (dropdown: HTMLDetailsElement, moveFocus = false): void => {
+    if (!dropdown.open) return;
+    dropdown.open = false;
+    if (moveFocus) dropdown.querySelector('summary')?.focus();
+  };
+
+  for (const dropdown of dropdowns) {
+    // `toggle` rather than a click handler on the summary: it also fires for the
+    // keyboard and for `open` being set from here.
+    dropdown.addEventListener('toggle', () => {
+      if (!dropdown.open) return;
+      for (const other of dropdowns) if (other !== dropdown) close(other);
+    });
+  }
+
+  document.addEventListener('pointerdown', (event) => {
+    const target = event.target as Node;
+    for (const dropdown of dropdowns) {
+      if (!dropdown.contains(target)) close(dropdown);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    for (const dropdown of dropdowns) {
+      // Focus goes back to the summary only if it was inside the panel, which is
+      // also what stops this from stealing focus from the section overlay.
+      close(dropdown, dropdown.contains(document.activeElement));
+    }
+  });
 };
 
 /** Subtle pointer-tracked tilt + spotlight on cards. */

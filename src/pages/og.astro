@@ -34,7 +34,11 @@ import { SITE_DESCRIPTION } from '../data/site';
         </div>
 
         <div class="card__bottom">
-          {profile.interests.map((i) => <span class="card__tag">{i.title}</span>)}
+          {
+            /* Research areas, not the side interests — this card is what gets
+               pasted into a chat when someone shares the page. */
+            profile.researchAreas.slice(0, 3).map((area) => <span class="card__tag">{area}</span>)
+          }
         </div>
       </div>
     </div>

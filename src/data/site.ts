@@ -5,9 +5,7 @@
 
 export const SITE_URL = 'https://siki.moe';
 
-export const SITE_TITLE = 'Siqi Yang — Computational Photography & Vision';
-
-export const SITE_SHORT_TITLE = 'Siqi Yang';
+export const SITE_TITLE = 'Siki';
 
 export const SITE_DESCRIPTION =
   'Ph.D. candidate at Peking University working on neuromorphic imaging, video generation, and world models.';

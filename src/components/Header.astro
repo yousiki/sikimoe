@@ -1,17 +1,29 @@
 ---
 import { Image } from 'astro:assets';
 
+import CvMenu from './CvMenu.astro';
 import Icon from './Icon.astro';
 import avatar from '../assets/avatar.jpg';
 import { profile } from '../data/profile';
 
+/**
+ * `About` is the hero itself — the name, the role and the affiliation are the
+ * whole of it, so the link goes to the top of the page rather than to a section
+ * of its own. `short` is what the desktop bar shows when the full label would
+ * crowd its neighbours; the overlay always sets the full one.
+ */
 const sections = [
-  { id: 'about', label: 'About' },
-  { id: 'focus', label: 'Focus' },
+  { id: 'top', label: 'About' },
+  { id: 'research', label: 'Research' },
+  { id: 'interests', label: 'Interests' },
   { id: 'path', label: 'Path' },
-  { id: 'work', label: 'Work' },
+  { id: 'publications', label: 'Publication', short: 'Pub' },
   { id: 'contact', label: 'Contact' },
 ] as const;
+
+/** The bar shows the abbreviation; the accessible name stays the full word. */
+const abbreviated = (section: (typeof sections)[number]): { text: string; label?: string } =>
+  'short' in section ? { text: section.short, label: section.label } : { text: section.label };
 ---
 
 <div
@@ -55,9 +67,10 @@ const sections = [
             <a
               href={`#${section.id}`}
               data-section-link
-              class="text-muted hover:text-ink relative rounded-full px-3 py-1.5 font-mono text-xs tracking-wider uppercase transition-colors duration-300"
+              aria-label={abbreviated(section).label}
+              class="text-muted hover:text-ink relative rounded-full px-3 py-1.5 font-mono text-xs tracking-wider whitespace-nowrap uppercase transition-colors duration-300"
             >
-              {section.label}
+              {abbreviated(section).text}
             </a>
           </li>
         ))
@@ -65,15 +78,7 @@ const sections = [
     </ul>
 
     <div class="flex items-center gap-2">
-      <a
-        href={profile.cv.en}
-        target="_blank"
-        rel="noopener"
-        class="border-line hover:border-ink hidden items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wider uppercase transition-colors duration-300 sm:inline-flex"
-      >
-        CV
-        <Icon name="arrow" size={12} />
-      </a>
+      <CvMenu id="cv-nav" label="CV" size="sm" align="end" class="hidden sm:block" />
 
       <button
         type="button"
@@ -112,7 +117,12 @@ const sections = [
   aria-label="Section index"
   class="menu md:hidden"
 >
-  <ul class="container-page flex h-full flex-col justify-center gap-2">
+  {
+    /* `min-h-full` rather than `h-full`: the index centres itself in the window
+      while it fits, and grows past it — scrolling, rather than cropping its ends
+      — on a short viewport. */
+  }
+  <ul class="container-page flex min-h-full flex-col justify-center gap-2 py-6">
     {
       sections.map((section, index) => (
         <li class="menu__item border-line border-b" style={`--menu-index:${index}`}>
@@ -126,16 +136,29 @@ const sections = [
         </li>
       ))
     }
+    {
+      /* Already inside an overlay, so the three editions are simply listed —
+        a nested disclosure would be one more tap for no gain. */
+    }
     <li class="menu__item pt-8" style={`--menu-index:${sections.length}`}>
-      <a
-        href={profile.cv.en}
-        target="_blank"
-        rel="noopener"
-        class="border-line inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-mono text-xs tracking-[0.14em] uppercase"
-      >
-        Curriculum Vitae
-        <Icon name="arrow" size={13} />
-      </a>
+      <span class="eyebrow block">Curriculum Vitae</span>
+      <ul class="mt-4 flex flex-wrap gap-2">
+        {
+          profile.cv.map((edition) => (
+            <li>
+              <a
+                href={edition.href}
+                target="_blank"
+                rel="noopener"
+                class="border-line inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-[0.1em]"
+              >
+                {edition.label}
+                <Icon name="arrow" size={13} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </li>
   </ul>
 </div>
@@ -265,6 +288,8 @@ const sections = [
     z-index: 39;
     background-color: var(--paper);
     padding-top: 4rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     opacity: 0;
     transform: translate3d(0, -1.5rem, 0);
     pointer-events: none;

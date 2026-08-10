@@ -5,6 +5,7 @@
 @import '@fontsource-variable/geist-mono/wght.css';
 @import '@fontsource/instrument-serif/latin-400.css';
 @import '@fontsource/instrument-serif/latin-400-italic.css';
+@import './fonts/lxgw-wenkai-tc-subset.css';
 
 /*
  * Theme is an explicit attribute on <html> rather than a media query so the
@@ -14,9 +15,16 @@
 @custom-variant light ([data-theme='light'] &);
 
 @theme {
-  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
-  --font-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  /* LXGW WenKai TC sits in every stack, directly behind the Latin face and ahead
+     of any system keyword: its `unicode-range` covers only the handful of Han
+     characters this site sets, so it can never touch Latin, and putting it
+     before `ui-sans-serif` keeps macOS from answering for CJK first. One kai
+     face for every Chinese glyph, whatever the surrounding family is. */
+  --font-sans:
+    'Geist Variable', 'LXGW WenKai TC', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+  --font-mono: 'Geist Mono Variable', 'LXGW WenKai TC', ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: 'Instrument Serif', 'LXGW WenKai TC', 'Iowan Old Style', Georgia, serif;
 
   --color-paper: var(--paper);
   --color-raised: var(--raised);

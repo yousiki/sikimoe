@@ -5,15 +5,26 @@ import { authorSegments } from '../utils/text';
 
 interface Props {
   publication: Publication;
-  group?: string;
+  group?: string | undefined;
+  /** Hidden until the section's "show all" toggle is pressed. */
+  extra?: boolean | undefined;
 }
 
-const { publication, group } = Astro.props;
+const { publication, group, extra = false } = Astro.props;
 const authors = authorSegments(publication.authors, SELF);
 const Tag = publication.href ? 'a' : 'div';
 ---
 
-<li class="pub" data-reveal data-reveal-group={group}>
+{
+  /* An extra row is collapsed by CSS from the first paint, so it carries no
+    `data-reveal`: a zero-height element never satisfies the reveal observer's
+    threshold, and it would stay at `opacity: 0` after being expanded. */
+}
+<li
+  class:list={['pub', extra && 'pub--extra']}
+  data-reveal={extra ? undefined : true}
+  data-reveal-group={group}
+>
   <Tag
     href={publication.href}
     target={publication.href ? '_blank' : undefined}
@@ -55,6 +66,46 @@ const Tag = publication.href ? 'a' : 'div';
 <style>
   .pub {
     border-bottom: 1px solid var(--line);
+  }
+
+  /* Collapsed to a zero-height grid track, which is the one way to animate
+     "closed to as-tall-as-the-content" without measuring anything in script.
+     The track is `minmax(0, …)` rather than a bare `0fr`, because a flexible
+     track otherwise floors at its item's minimum contribution — and the row's
+     own vertical padding is part of that, which left 48px of nothing behind.
+     `visibility` keeps the link out of the tab order and the a11y tree while
+     it is closed, and — being discretely interpolated — flips to visible at
+     the very start of the opening transition and only at the end of the
+     closing one, which is exactly the timing this needs. */
+  .pub--extra {
+    display: grid;
+    grid-template-rows: minmax(0, 0fr);
+    border-bottom-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      grid-template-rows 0.55s var(--ease-out-expo),
+      border-bottom-width 0.55s var(--ease-out-expo),
+      opacity 0.4s ease,
+      visibility 0.55s;
+  }
+
+  .pub--extra > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  :global([data-disclosure-panel][data-expanded]) .pub--extra {
+    grid-template-rows: minmax(0, 1fr);
+    border-bottom-width: 1px;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pub--extra {
+      transition: none;
+    }
   }
 
   .pub__link {

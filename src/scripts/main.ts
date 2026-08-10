@@ -5,7 +5,15 @@ import { initReveal } from './reveal';
 import { initScrollUi, initSmoothScroll } from './scroll';
 import { initSpikeField } from './spike-field';
 import { initTheme } from './theme';
-import { initClock, initCopy, initDisclosure, initHero, initRotator, initTilt } from './widgets';
+import {
+  initClock,
+  initCopy,
+  initDisclosure,
+  initDropdowns,
+  initHero,
+  initRotator,
+  initTilt,
+} from './widgets';
 
 onReady(() => {
   initTheme();
@@ -15,6 +23,7 @@ onReady(() => {
   initRotator();
   initClock();
   initDisclosure();
+  initDropdowns();
   initTilt();
   initCopy();
   initCursor();

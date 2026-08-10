@@ -1,6 +1,23 @@
 ---
 import '../styles/global.css';
 
+/*
+ * Every `@font-face` lives in a linked stylesheet, so left alone the browser
+ * cannot discover a single font until that CSS has downloaded and parsed —
+ * HTML, then CSS, then woff2, three round trips deep. Importing the files here
+ * lets Vite hand back their hashed build URLs, which the preloads below hoist
+ * into the first response.
+ *
+ * These four are what a cold load actually requests, measured rather than
+ * assumed: the CJK subset is inlined as a data URI and needs nothing, and the
+ * remaining nine faces in the bundle are gated behind `unicode-range` for
+ * scripts this site never sets.
+ */
+import geistSans from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import geistMono from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url';
+import serifItalic from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
+import serifRoman from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+
 import { SITE_DESCRIPTION, SITE_LOCALE, SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '../data/site';
 import { profile } from '../data/profile';
 
@@ -29,7 +46,8 @@ const personSchema = {
     name: 'Peking University',
     url: 'https://english.pku.edu.cn/',
   },
-  knowsAbout: profile.interests.map((i) => i.title),
+  // Research areas, not the side interests in `profile.interests`.
+  knowsAbout: profile.researchAreas,
   sameAs: profile.socials.filter((s) => s.icon !== 'mail').map((s) => s.href),
 };
 ---
@@ -37,6 +55,15 @@ const personSchema = {
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="generator" content={Astro.generator} />
+
+{
+  /* `crossorigin` is not optional here even though these are same-origin: fonts
+     are always fetched in CORS mode, and a preload whose mode disagrees with the
+     eventual request is discarded and downloaded a second time. */
+  [geistSans, geistMono, serifRoman, serifItalic].map((href) => (
+    <link rel="preload" as="font" type="font/woff2" href={href} crossorigin="anonymous" />
+  ))
+}
 
 <title>{title}</title>
 <meta name="description" content={description} />
@@ -102,8 +129,11 @@ const personSchema = {
       opacity: 1 !important;
       transform: none !important;
     }
-    [data-disclosure-panel] {
-      height: auto !important;
+    [data-disclosure-panel] .pub--extra {
+      grid-template-rows: minmax(0, 1fr) !important;
+      border-bottom-width: 1px !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
   </style>
 </noscript>

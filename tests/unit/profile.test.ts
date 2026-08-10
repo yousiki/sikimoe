@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { describe, expect, it } from 'vitest';
 
 import { profile, publicationsByYear, selectedPublications, SELF } from '../../src/data/profile';
@@ -35,8 +38,6 @@ describe('links', () => {
     ...profile.socials.map((s) => s.href),
     ...profile.timeline.flatMap((t) => (t.href ? [t.href] : [])),
     ...publicationsByYear.flatMap((p) => (p.href ? [p.href] : [])),
-    profile.cv.en,
-    profile.cv.zh,
     profile.affiliationHref,
   ];
 
@@ -49,6 +50,40 @@ describe('links', () => {
   it('never fall back to plain http', () => {
     for (const href of hrefs) {
       expect(new URL(href).protocol).toMatch(/^(https|mailto):$/);
+    }
+  });
+});
+
+describe('cv editions', () => {
+  it('offers English, Chinese and the bilingual edition, English first', () => {
+    expect(profile.cv.map((edition) => edition.id)).toEqual(['en', 'zh', 'en-zh']);
+  });
+
+  it('names every file after the edition it holds', () => {
+    // The id is what the menu, the release asset, the vendored file and the
+    // Typst entry point all agree on; a drifting href is the failure to catch.
+    for (const edition of profile.cv) {
+      expect(edition.href, edition.label).toMatch(
+        new RegExp(`^/cv/[a-z0-9-]+-${edition.id}\\.pdf$`),
+      );
+    }
+  });
+
+  it('is served by this site, not by a third party', () => {
+    // The resume repository is private, so a GitHub release URL 404s for every
+    // visitor. This is the regression that put a dead CV link on the site.
+    for (const edition of profile.cv) {
+      expect(edition.href, edition.label).toMatch(/^\//);
+    }
+  });
+
+  it('has every edition vendored into public/', () => {
+    // `bun run cv` writes these; the build copies `public/` verbatim. A missing
+    // file here is a 404 on the deployed site.
+    for (const edition of profile.cv) {
+      const file = join(process.cwd(), 'public', edition.href);
+      expect(existsSync(file), `${file} — run \`bun run cv\``).toBe(true);
+      expect(readFileSync(file).subarray(0, 5).toString(), edition.label).toBe('%PDF-');
     }
   });
 });
@@ -109,5 +144,29 @@ describe('interests', () => {
     expect(profile.interests.map((i) => i.index)).toEqual(
       profile.interests.map((_, n) => String(n + 1).padStart(2, '0')),
     );
+  });
+
+  it('never stand in for the research areas', () => {
+    // `interests` is hobbies and `researchAreas` is expertise. The social card
+    // and schema.org/knowsAbout read the latter; an overlap would mean one of
+    // them is pointed at the wrong list.
+    const areas = new Set(profile.researchAreas.map((a) => a.toLowerCase()));
+    for (const interest of profile.interests) {
+      expect(areas.has(interest.title.toLowerCase()), interest.title).toBe(false);
+    }
+  });
+});
+
+describe('research areas', () => {
+  it('are non-empty and free of duplicates', () => {
+    expect(profile.researchAreas.length).toBeGreaterThan(0);
+    expect(new Set(profile.researchAreas).size).toBe(profile.researchAreas.length);
+  });
+
+  it('keeps the first three short enough for the social card', () => {
+    // og.astro renders three tags on one row; long labels wrap and break it.
+    for (const area of profile.researchAreas.slice(0, 3)) {
+      expect(area.length, area).toBeLessThanOrEqual(24);
+    }
   });
 });

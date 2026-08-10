@@ -49,12 +49,18 @@ import { profile } from '../../data/profile';
 
     {/* ── name block ───────────────────────────────────────────────── */}
     <div class="flex flex-col gap-6 py-12 md:py-16">
-      <p class="text-muted font-mono text-sm tracking-[0.3em] sm:text-base">
+      {
+        /* No `font-mono` here: the string is pure Han, so the mono family never
+          applied to it — the kai face answers for it instead. Set larger and
+          more widely tracked than a caption would be, so it reads as the
+          superscription to the Latin name rather than a label above it. */
+      }
+      <p class="name-local text-muted text-lg tracking-[0.4em] sm:text-xl">
         <SplitText text={profile.nameLocal} baseDelay={120} />
       </p>
 
       <h1 class="font-display text-[clamp(3.4rem,15vw,11.5rem)] leading-[0.82] tracking-[-0.03em]">
-        <span class="block"><SplitText text="Siqi" baseDelay={220} /></span>
+        <span class="block italic"><SplitText text="Siqi" baseDelay={220} /></span>
         <span class="block pl-[0.08em] italic"><SplitText text="Yang" baseDelay={380} /></span>
       </h1>
 
@@ -65,8 +71,10 @@ import { profile } from '../../data/profile';
             href={profile.affiliationHref}
             target="_blank"
             rel="noopener"
-            class="link-underline text-ink">Camera Intelligence Lab</a
-          >, Peking University. I work on{' '}
+            class="link-underline text-ink">Camera&nbsp;Intelligence&nbsp;Lab</a
+          >, Peking&nbsp;University.
+          <br />
+          I work on{' '}
           <span class="rotator" data-rotator>
             {
               profile.rotatingWords.map((word) => (
@@ -113,7 +121,7 @@ import { profile } from '../../data/profile';
       </ul>
 
       <a
-        href="#about"
+        href="#research"
         class="text-faint hover:text-ink group inline-flex items-center gap-3 self-start font-mono text-[0.7rem] tracking-[0.2em] uppercase transition-colors sm:self-auto"
       >
         Scroll
@@ -128,6 +136,16 @@ import { profile } from '../../data/profile';
 </section>
 
 <style>
+  /* Pinned to the one weight LXGW WenKai TC ships. The Song face this replaced
+     was variable, and carried its horizontals as hairlines that needed 500 to
+     survive light-on-dark; a kai face is brush-derived and holds an even stroke,
+     so it does not. Kept explicit because any other value here would be inert —
+     only 400 is loaded, and `font-synthesis-weight: none` in global.css means a
+     heavier request renders at 400 rather than faking it. */
+  .name-local {
+    font-weight: 400;
+  }
+
   /* ── right margin ─────────────────────────────────────────────────────
      A 40-character line set vertically is tall, so the rules shrink before
      the text does and the whole column steps aside on short windows rather

@@ -17,10 +17,10 @@ const VIEWPORTS = [
 
 const SECTIONS = [
   'top',
-  'about',
-  'focus',
+  'research',
+  'interests',
   'path',
-  'work',
+  'publications',
   'recognition',
   'toolkit',
   'contact',

@@ -1,0 +1,166 @@
+---
+/**
+ * The CV ships in three language editions, so the link is a disclosure rather
+ * than a single download.
+ *
+ * Built on `<details>`/`<summary>`: it opens, closes and announces its expanded
+ * state with no JavaScript at all, and `initDropdowns` only adds the two
+ * behaviours the element does not have natively — click-away and Escape.
+ */
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+
+interface Props {
+  /** Unique per instance; the menu is rendered more than once per page. */
+  id: string;
+  label?: string | undefined;
+  /** Edge of the trigger the panel lines up with. */
+  align?: 'start' | 'end' | undefined;
+  /** `sm` matches the header chrome, `md` the buttons in a section. */
+  size?: 'sm' | 'md' | undefined;
+  class?: string | undefined;
+}
+
+const { id, label = 'CV', align = 'end', size = 'md', class: className } = Astro.props;
+---
+
+<details class:list={['cv', className]} id={id} data-dropdown data-align={align}>
+  <summary
+    class:list={[
+      'cv__summary border-line hover:border-ink inline-flex items-center gap-2 rounded-full border font-mono text-xs tracking-[0.14em] uppercase transition-colors duration-300',
+      size === 'sm' ? 'px-3.5 py-1.5' : 'px-4 py-2',
+    ]}
+  >
+    {label}
+    <Icon name="chevron" size={12} class="cv__chevron" />
+  </summary>
+
+  <ul class="cv__panel">
+    {
+      profile.cv.map((edition) => (
+        <li>
+          <a href={edition.href} target="_blank" rel="noopener" class="cv__item">
+            <span class="cv__label">{edition.label}</span>
+            <Icon name="arrow" size={13} class="cv__arrow" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<style>
+  .cv {
+    position: relative;
+  }
+
+  /* The default disclosure triangle would sit inside the pill; the chevron on
+     the right replaces it. Both prefixes are still needed for WebKit. */
+  .cv__summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .cv__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .cv__summary::marker {
+    content: '';
+  }
+
+  .cv__chevron {
+    color: var(--faint);
+    transition:
+      rotate 0.35s var(--ease-out-expo),
+      color 0.3s ease;
+  }
+
+  .cv:hover .cv__chevron {
+    color: inherit;
+  }
+
+  .cv[open] .cv__chevron {
+    rotate: 180deg;
+  }
+
+  .cv__panel {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    z-index: 45;
+    min-width: 12.5rem;
+    padding: 0.375rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 1rem;
+    background-color: color-mix(in oklab, var(--raised) 92%, transparent);
+    box-shadow: 0 24px 50px -28px rgb(0 0 0 / 55%);
+    backdrop-filter: blur(16px);
+  }
+
+  .cv[data-align='end'] .cv__panel {
+    right: 0;
+  }
+
+  .cv[data-align='start'] .cv__panel {
+    left: 0;
+  }
+
+  .cv[open] .cv__panel {
+    animation: cv-panel-in 0.32s var(--ease-out-expo) both;
+  }
+
+  @keyframes cv-panel-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, -0.4rem, 0);
+    }
+  }
+
+  .cv__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.6rem;
+    font-size: 0.875rem;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .cv__item:hover,
+  .cv__item:focus-visible {
+    background-color: color-mix(in oklab, var(--ink) 8%, transparent);
+  }
+
+  .cv__label {
+    flex: 1;
+    /* Two scripts on one line: keep the Latin metrics and let the CJK glyphs
+       fall back, rather than letting a CJK font set the line box. */
+    white-space: nowrap;
+  }
+
+  .cv__arrow {
+    color: var(--faint);
+    transform: translate3d(-0.2rem, 0.2rem, 0);
+    opacity: 0;
+    transition:
+      opacity 0.3s var(--ease-out-expo),
+      transform 0.3s var(--ease-out-expo),
+      color 0.3s ease;
+  }
+
+  .cv__item:hover .cv__arrow,
+  .cv__item:focus-visible .cv__arrow {
+    color: var(--accent);
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (pointer: coarse) {
+    .cv__arrow {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
