@@ -1,0 +1,88 @@
+name: Release
+
+# Publishing a GitHub Release is the only thing that changes what siki.moe
+# serves. Pushing to `main` produces a preview version and nothing more.
+#
+# `workflow_dispatch` is the escape hatch: it deploys whatever ref you pick,
+# which is how the site gets restored if a release goes out broken and there is
+# no good version to roll back to.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+# Never cancel a production deploy in flight — an interrupted one can leave the
+# active version and the release describing it out of step.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml
+    with:
+      artifact: dist-${{ github.sha }}
+    secrets: inherit
+
+  deploy:
+    name: Deploy to siki.moe
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://siki.moe
+
+    steps:
+      # wrangler.jsonc carries the Worker name and the `custom_domain` route, so
+      # the deploy needs the repository as well as the build output.
+      - uses: actions/checkout@v7
+
+      - name: Download dist/
+        uses: actions/download-artifact@v8
+        with:
+          name: dist-${{ github.sha }}
+          path: dist
+
+      # A tag name is author-controlled text on its way to a command line, so it
+      # is reduced to characters that cannot escape a shell word before use.
+      - name: Resolve deployment message
+        id: message
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          tag="$(printf '%s' "${TAG:-}" | tr -cd 'A-Za-z0-9._-')"
+          echo "text=release ${tag:-manual} ($GITHUB_SHA)" >> "$GITHUB_OUTPUT"
+
+      # `deploy`, not `versions upload`: this is the only command that applies
+      # the `routes` entry, and therefore the only one that can attach siki.moe.
+      # On a first run it also writes the DNS record and turns off workers.dev.
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: bun
+          wranglerVersion: '4'
+          command: deploy --message "${{ steps.message.outputs.text }}"
+
+      # A deploy that reports success while the domain answers 5xx is the failure
+      # mode worth catching, so the job does not go green until siki.moe does.
+      # The retries cover certificate issuance on a freshly attached domain.
+      - name: Smoke check siki.moe
+        run: |
+          for _ in $(seq 1 20); do
+            code="$(curl -sS -o /dev/null -w '%{http_code}' https://siki.moe || true)"
+            if [ "$code" = "200" ]; then
+              echo "siki.moe answered 200"
+              exit 0
+            fi
+            echo "siki.moe answered ${code:-nothing}, retrying"
+            sleep 9
+          done
+          echo "::error::siki.moe never answered 200 after the deploy"
+          exit 1

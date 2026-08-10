@@ -1,8 +1,13 @@
 name: CI
 
+# Verify everything, then publish a *preview version* of it. Nothing here can
+# change what siki.moe serves: `wrangler versions upload` has no `--routes`,
+# `--domain` or `--triggers` flag, so it cannot apply the `custom_domain` entry
+# in wrangler.jsonc. Only `wrangler deploy` can, and only release.yml runs it.
+
 on:
   push:
-    branches: [main, redesign]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -15,32 +20,88 @@ permissions:
 
 jobs:
   verify:
-    name: Lint, typecheck, test, build
+    uses: ./.github/workflows/verify.yml
+    with:
+      artifact: dist-${{ github.sha }}
+    secrets: inherit
+
+  preview:
+    name: Upload preview version
+    needs: verify
+    # A pull request from a fork cannot read the Cloudflare secrets, so there is
+    # nothing it could upload — skip it rather than fail the run.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+    environment:
+      name: preview
+      url: ${{ steps.alias.outputs.url }}
 
     steps:
-      - uses: actions/checkout@v5
+      # wrangler.jsonc is what names the Worker and points at ./dist, so the
+      # deploy needs the repository as well as the build output.
+      - uses: actions/checkout@v7
 
-      - name: Set up Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Download dist/
+        uses: actions/download-artifact@v8
         with:
-          bun-version-file: .bun-version
+          name: dist-${{ github.sha }}
+          path: dist
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+      # An alias becomes a DNS label, so `<alias>-siki-moe` has to fit in 63
+      # characters and stay lowercase. A branch name would not reliably do
+      # either; a PR number always does. The resulting URL is deterministic,
+      # which is why it can be computed here instead of scraped from wrangler's
+      # output. `yousiki` is the account's workers.dev subdomain.
+      - name: Resolve preview alias
+        id: alias
+        env:
+          EVENT: ${{ github.event_name }}
+          NUMBER: ${{ github.event.number }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            alias="pr-$NUMBER"
+          else
+            alias="main"
+          fi
+          echo "alias=$alias" >> "$GITHUB_OUTPUT"
+          echo "url=https://$alias-siki-moe.yousiki.workers.dev" >> "$GITHUB_OUTPUT"
 
-      - name: Check formatting
-        run: bun run format:check
+      # The message is built from the alias and the commit SHA only. Both are
+      # safe to interpolate into a command line; a branch name or PR title is
+      # not, and neither is worth a shell injection.
+      - name: Upload version
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: bun
+          # Pinned to the major so a wrangler release cannot change deploy
+          # behaviour unannounced, while patches still arrive.
+          wranglerVersion: '4'
+          command: >-
+            versions upload
+            --preview-alias ${{ steps.alias.outputs.alias }}
+            --message "${{ steps.alias.outputs.alias }} @ ${{ github.sha }}"
 
-      - name: Lint
-        run: bun run lint
-
-      - name: Typecheck
-        run: bun run check
-
-      - name: Unit tests
-        run: bun run test
-
-      - name: Build
-        run: bun run build
+      # One comment per pull request, edited in place on every push, so the
+      # thread does not fill up with dead links.
+      - name: Comment the preview link
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NUMBER: ${{ github.event.number }}
+          URL: ${{ steps.alias.outputs.url }}
+        run: |
+          {
+            echo "**Preview:** $URL"
+            echo
+            echo "Built from \`$GITHUB_SHA\`. siki.moe is unaffected — only"
+            echo "publishing a GitHub Release deploys to production."
+          } > comment.md
+          gh pr comment "$NUMBER" --edit-last --create-if-none --body-file comment.md

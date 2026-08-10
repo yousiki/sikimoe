@@ -1,0 +1,72 @@
+name: Verify
+
+# The single definition of "good enough to ship". Both `ci.yml` and `release.yml`
+# call it, so a preview and a production deploy are gated on exactly the same
+# checks — and `dist/` is built once here and handed to whichever deploy job
+# asked for it, so the bytes that were verified are the bytes that ship.
+
+on:
+  workflow_call:
+    inputs:
+      artifact:
+        description: Name to upload the built dist/ under. Empty skips the upload.
+        type: string
+        default: ''
+    secrets:
+      CV_GITHUB_TOKEN:
+        description: Read access to yousiki/resume, so the build picks up the newest CV.
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check formatting
+        run: bun run format:check
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Typecheck
+        run: bun run check
+
+      - name: Unit tests
+        run: bun run test
+
+      # `public/cv/` is committed, so this builds without the secret — it just
+      # ships the CV as of the last `bun run cv` instead of the newest release.
+      # See scripts/sync-cv.ts, which warns and exits 0 when the copies are there.
+      - name: Build
+        run: bun run build
+        env:
+          CV_GITHUB_TOKEN: ${{ secrets.CV_GITHUB_TOKEN }}
+
+      - name: Upload dist/
+        if: inputs.artifact != ''
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.artifact }}
+          path: dist
+          retention-days: 7
+          # A missing or silently-thinned artifact would deploy as a green build,
+          # so fail loudly instead: `if-no-files-found` catches an empty `dist/`,
+          # and `include-hidden-files` stops the upload from dropping anything
+          # dot-prefixed the site may grow later (`.well-known/`, say).
+          if-no-files-found: error
+          include-hidden-files: true
