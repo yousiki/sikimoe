@@ -511,17 +511,3 @@ export const profile: Profile = {
 export const publicationsByYear: readonly Publication[] = [...profile.publications].sort(
   (a, b) => b.year - a.year,
 );
-
-/** The subset rendered before the reader asks for the full list. */
-export const selectedPublications: readonly Publication[] = publicationsByYear.filter(
-  (p) => p.selected,
-);
-
-/** Distinct venues, for the stat strip. */
-export const publicationVenues: readonly string[] = [
-  ...new Set(
-    profile.publications
-      .map((p) => p.venue)
-      .filter((v) => !v.includes('arXiv') && !v.includes('Chapter')),
-  ),
-];

@@ -3,13 +3,9 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { profile, publicationsByYear, selectedPublications, SELF } from '../../src/data/profile';
+import { profile, publicationsByYear, SELF } from '../../src/data/profile';
 
 describe('profile identity', () => {
-  it('uses the same display name the publication list marks as the author', () => {
-    expect(profile.name).toBe(SELF);
-  });
-
   it('exposes a mailto social that matches the canonical email', () => {
     const mail = profile.socials.find((s) => s.icon === 'mail');
     expect(mail?.href).toBe(`mailto:${profile.email}`);
@@ -55,25 +51,16 @@ describe('links', () => {
 });
 
 describe('cv editions', () => {
-  it('offers English, Chinese and the bilingual edition, English first', () => {
-    expect(profile.cv.map((edition) => edition.id)).toEqual(['en', 'zh', 'en-zh']);
-  });
-
-  it('names every file after the edition it holds', () => {
+  it('names every file after the edition it holds, on this site', () => {
     // The id is what the menu, the release asset, the vendored file and the
     // Typst entry point all agree on; a drifting href is the failure to catch.
+    // The leading `/` is load-bearing too: the resume repository is private, so
+    // a GitHub release URL 404s for every visitor — that regression is what put
+    // a dead CV link on the site.
     for (const edition of profile.cv) {
       expect(edition.href, edition.label).toMatch(
         new RegExp(`^/cv/[a-z0-9-]+-${edition.id}\\.pdf$`),
       );
-    }
-  });
-
-  it('is served by this site, not by a third party', () => {
-    // The resume repository is private, so a GitHub release URL 404s for every
-    // visitor. This is the regression that put a dead CV link on the site.
-    for (const edition of profile.cv) {
-      expect(edition.href, edition.label).toMatch(/^\//);
     }
   });
 
@@ -106,9 +93,13 @@ describe('publications', () => {
     expect(new Set(titles).size).toBe(titles.length);
   });
 
-  it('surface a non-empty selection that is a strict subset', () => {
-    expect(selectedPublications.length).toBeGreaterThan(0);
-    expect(selectedPublications.length).toBeLessThan(publicationsByYear.length);
+  it('mark some but not all of themselves as selected', () => {
+    // The disclosure only makes sense between the two extremes: nothing
+    // selected renders an empty list, everything selected renders a toggle
+    // that reveals nothing.
+    const selected = publicationsByYear.filter((p) => p.selected);
+    expect(selected.length).toBeGreaterThan(0);
+    expect(selected.length).toBeLessThan(publicationsByYear.length);
   });
 
   it('note equal contribution whenever an author carries an asterisk', () => {

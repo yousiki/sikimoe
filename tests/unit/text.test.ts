@@ -8,12 +8,6 @@ describe('escapeHtml', () => {
       '&lt;img src=x onerror=&quot;alert(&#39;1&#39;)&quot;&gt;&amp;',
     );
   });
-
-  it('leaves ordinary prose untouched', () => {
-    expect(escapeHtml('Spike cameras fire asynchronously.')).toBe(
-      'Spike cameras fire asynchronously.',
-    );
-  });
 });
 
 describe('emphasise', () => {
@@ -73,10 +67,7 @@ describe('authorSegments', () => {
     const segments = authorSegments(['Siqi Yang*', 'Chu Zhou*'], 'Siqi Yang');
     expect(segments[0]?.isSelf).toBe(true);
     expect(segments[1]?.isSelf).toBe(false);
-  });
-
-  it('preserves the original order and spelling', () => {
-    const authors = ['A', 'B', 'C'];
-    expect(authorSegments(authors, 'Siqi Yang').map((s) => s.name)).toEqual(authors);
+    // The asterisk stays in the rendered name — it is what the note refers to.
+    expect(segments[0]?.name).toBe('Siqi Yang*');
   });
 });

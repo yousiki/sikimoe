@@ -3,8 +3,8 @@ import Lenis from 'lenis';
 import { prefersReducedMotion, queryAll } from './env';
 
 /** Momentum scrolling, unless the visitor asked for reduced motion. */
-export const initSmoothScroll = (): Lenis | null => {
-  if (prefersReducedMotion()) return null;
+export const initSmoothScroll = (): void => {
+  if (prefersReducedMotion()) return;
 
   const lenis = new Lenis({
     duration: 1.05,
@@ -30,8 +30,6 @@ export const initSmoothScroll = (): Lenis | null => {
       history.replaceState(null, '', id);
     });
   }
-
-  return lenis;
 };
 
 /**
