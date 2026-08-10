@@ -1,0 +1,99 @@
+---
+import { profile } from '../../data/profile';
+
+/**
+ * Two counter-scrolling rows. Both carry the full tag list — a half-list is
+ * short enough that its own duplicate shows up on the same screen — and the
+ * second row is reversed as well as counter-scrolled, so the two rows never
+ * line up as near-copies of each other.
+ */
+const flat = profile.skills.flatMap((group) => group.items);
+const rows = [flat, [...flat].reverse()];
+---
+
+<section
+  id="toolkit"
+  class="border-line scroll-mt-24 overflow-hidden border-y py-16 md:py-20"
+  aria-labelledby="toolkit-heading"
+>
+  <h2 id="toolkit-heading" class="sr-only">Toolkit</h2>
+
+  <div class="container-page mb-10">
+    <p class="eyebrow" data-reveal>06 — Toolkit</p>
+  </div>
+
+  {/* Decorative: every tag is also listed, once, in the grid below. */}
+  {
+    rows.map((row, rowIndex) => (
+      <div
+        class="marquee"
+        data-direction={rowIndex % 2 === 1 ? 'reverse' : 'forward'}
+        aria-hidden="true"
+      >
+        <div
+          class="marquee-track flex w-max items-center gap-4 pr-4"
+          style={`--marquee-duration:${44 + rowIndex * 12}s`}
+        >
+          {[0, 1].map(() => row.map((item) => <span class="tag">{item}</span>))}
+        </div>
+      </div>
+    ))
+  }
+
+  <div class="container-page mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      profile.skills.map((group) => (
+        <div data-reveal data-reveal-group="skills">
+          <p class="eyebrow">{group.label}</p>
+          <p class="text-muted mt-2 text-sm leading-relaxed">{group.items.join(' · ')}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .marquee {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    padding-block: 0.5rem;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .marquee[data-direction='reverse'] .marquee-track {
+    animation-direction: reverse;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    border-radius: 9999px;
+    border: 1px solid var(--line);
+    padding: 0.5rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  .tag:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      overflow-x: auto;
+      mask-image: none;
+    }
+
+    .marquee-track {
+      animation: none;
+    }
+  }
+</style>

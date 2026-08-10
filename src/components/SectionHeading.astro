@@ -1,0 +1,38 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  lead?: string;
+  id?: string;
+}
+
+const { index, title, lead, id } = Astro.props;
+---
+
+<header class="mb-12 md:mb-16">
+  <div class="flex items-center gap-4" data-reveal>
+    <span class="eyebrow tabular-nums">{index}</span>
+    <span class="hairline h-px flex-1 opacity-70"></span>
+  </div>
+
+  <h2
+    id={id}
+    class="font-display mt-5 text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
+    data-reveal
+    style="--reveal-delay:80ms"
+  >
+    {title}
+  </h2>
+
+  {
+    lead && (
+      <p
+        class="text-muted mt-5 max-w-xl text-base leading-relaxed sm:text-lg"
+        data-reveal
+        style="--reveal-delay:160ms"
+      >
+        {lead}
+      </p>
+    )
+  }
+</header>

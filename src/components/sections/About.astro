@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+
+import SectionHeading from '../SectionHeading.astro';
+import avatar from '../../assets/avatar.jpg';
+import { profile } from '../../data/profile';
+import { emphasise } from '../../utils/text';
+---
+
+<section id="about" class="container-page scroll-mt-24 py-24 md:py-36">
+  <SectionHeading index="01 — About" title="Light, sampled differently." />
+
+  <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-7 xl:col-span-6">
+      <div class="space-y-6">
+        {
+          profile.bio.map((paragraph) => (
+            <p
+              class="text-muted text-lg leading-[1.75] sm:text-xl"
+              data-reveal
+              data-reveal-group="bio"
+              set:html={emphasise(paragraph)}
+            />
+          ))
+        }
+      </div>
+
+      <dl class="border-line mt-12 grid gap-px border-t sm:grid-cols-2">
+        {
+          profile.now.map((item) => (
+            <div class="border-line border-b py-4 pr-6" data-reveal data-reveal-group="now">
+              <dt class="eyebrow">{item.label}</dt>
+              <dd class="mt-1.5 text-sm leading-relaxed sm:text-base">{item.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="lg:col-span-5 lg:col-start-9 xl:col-span-4 xl:col-start-9">
+      <figure class="portrait" data-reveal style="--reveal-delay:180ms">
+        <div class="portrait__frame">
+          <Image
+            src={avatar}
+            alt={`Portrait of ${profile.name}`}
+            width={520}
+            height={520}
+            loading="lazy"
+            decoding="async"
+            class="portrait__img"
+          />
+          <div class="portrait__wash" aria-hidden="true"></div>
+        </div>
+        <figcaption class="text-faint mt-4 font-mono text-[0.7rem] tracking-[0.18em] uppercase">
+          {profile.nameLocal} · {profile.alias}
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .portrait__frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid var(--line);
+    isolation: isolate;
+    aspect-ratio: 1 / 1;
+  }
+
+  .portrait__img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: grayscale(0.9) contrast(1.05);
+    transform: scale(1.02);
+    transition:
+      filter 0.7s var(--ease-out-expo),
+      transform 0.9s var(--ease-out-expo);
+  }
+
+  .portrait:hover .portrait__img {
+    filter: grayscale(0.15) contrast(1);
+    transform: scale(1.06);
+  }
+
+  .portrait__wash {
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: color;
+    background: linear-gradient(150deg, var(--accent) 0%, transparent 55%, var(--accent-2) 100%);
+    opacity: 0.22;
+    transition: opacity 0.7s var(--ease-out-expo);
+  }
+
+  .portrait:hover .portrait__wash {
+    opacity: 0.06;
+  }
+</style>

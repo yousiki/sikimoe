@@ -1,0 +1,144 @@
+---
+/**
+ * Source for the 1200×630 social card. Not linked from anywhere and excluded
+ * from the sitemap — `bun run scripts/generate-assets.ts` screenshots it into
+ * `public/og.png`.
+ */
+import '../styles/global.css';
+
+import { profile } from '../data/profile';
+import { SITE_DESCRIPTION } from '../data/site';
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>OG card</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <div class="card" data-og-card>
+      <canvas data-spike-field class="card__canvas"></canvas>
+      <div class="card__wash"></div>
+
+      <div class="card__inner">
+        <div class="card__top">
+          <span class="card__mono">{profile.nameLocal}</span>
+          <span class="card__mono">siki.moe</span>
+        </div>
+
+        <div>
+          <h1 class="card__name">Siqi <em>Yang</em></h1>
+          <p class="card__role">{SITE_DESCRIPTION}</p>
+        </div>
+
+        <div class="card__bottom">
+          {profile.interests.map((i) => <span class="card__tag">{i.title}</span>)}
+        </div>
+      </div>
+    </div>
+
+    <script>
+      import { initSpikeField } from '../scripts/spike-field';
+
+      const canvas = document.querySelector<HTMLCanvasElement>('[data-spike-field]');
+      if (canvas) initSpikeField(canvas);
+    </script>
+
+    <style>
+      body {
+        margin: 0;
+        background: var(--paper);
+      }
+
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      .card__canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .card__wash {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(120% 80% at 20% 10%, transparent 30%, var(--paper) 100%);
+      }
+
+      .card__inner {
+        position: relative;
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 64px 72px;
+      }
+
+      .card__top {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .card__mono {
+        font-family: var(--font-mono);
+        font-size: 18px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--faint);
+      }
+
+      .card__name {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 156px;
+        line-height: 0.88;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+      }
+
+      .card__name em {
+        font-style: italic;
+        background-image: linear-gradient(
+          100deg,
+          var(--accent),
+          var(--accent-2) 55%,
+          var(--accent-3)
+        );
+        background-clip: text;
+        color: transparent;
+      }
+
+      .card__role {
+        margin: 24px 0 0;
+        max-width: 720px;
+        font-family: var(--font-sans);
+        font-size: 26px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      .card__bottom {
+        display: flex;
+        gap: 12px;
+      }
+
+      .card__tag {
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-family: var(--font-mono);
+        font-size: 16px;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+    </style>
+  </body>
+</html>

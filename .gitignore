@@ -1,27 +1,37 @@
 # build output
 dist/
-# generated types
 .astro/
+.output/
 
 # dependencies
 node_modules/
 
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+# tooling / caches
+.wrangler/
+.vercel/
+.netlify/
+*.tsbuildinfo
 
-# environment variables
+# test artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+screenshots/
+
+# environment
 .env
 .env.production
+.dev.vars
 
-# macOS-specific files
+# editors / OS
 .DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 
-# jetbrains setting folder
-.idea
-
-# wrangler files
-.wrangler
-.dev.vars*
+# logs
+*.log
+npm-debug.log*
+bun-debug.log*

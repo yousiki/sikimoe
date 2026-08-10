@@ -1,72 +1,34 @@
 ---
-import siteConfig from '../data/site-config';
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
 
-const socialLinks = siteConfig.socialLinks || [];
-const navLinks = siteConfig.footerNavLinks || [];
+const year = new Date().getFullYear();
+const buildDate = new Date().toISOString().slice(0, 10);
 ---
 
-<footer class="w-full max-w-3xl mx-auto pt-12 pb-10 sm:pt-24 sm:pb-14">
-  {
-    navLinks.length > 0 && (
-      <div class="mb-4 flex flex-wrap gap-x-6 gap-y-1">
-        {navLinks.map((link) => (
-          <a
-            class="font-sans hover:underline hover:underline-offset-2"
-            href={link.href}
-          >
-            {link.text}
-          </a>
-        ))}
-      </div>
-    )
-  }
+<footer class="border-line border-t">
   <div
-    class:list={[
-      'pt-6 flex flex-col gap-4 border-t border-main',
-      {
-        'sm:flex-row-reverse sm:justify-between sm:items-center':
-          socialLinks.length > 0,
-      },
-    ]}
+    class="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between"
   >
-    {
-      socialLinks.length > 0 && (
-        <div class="flex flex-wrap gap-x-4 gap-y-1">
-          {socialLinks.map((link) => (
-            <a
-              class="inline-flex items-center justify-center text-sm hover:underline hover:underline-offset-2"
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferer"
-            >
-              {link.text}
-            </a>
-          ))}
-        </div>
-      )
-    }
-    <div class="text-sm">
-      <p>
-        &copy; {new Date().getFullYear()}&nbsp;<a
-          class="hover:underline hover:underline-offset-2"
-          href="/">{siteConfig.author}</a
-        > All rights reserved.
-      </p>
-      <p>
-        Powered by
-        <a
-          class="hover:underline hover:underline-offset-2"
-          href="https://astro.build/">Astro</a
-        > |
-        <a
-          class="hover:underline hover:underline-offset-2"
-          href="https://github.com/mitian233/astro-theme-akiba">Akiba</a
-        > |
-        <a
-          class="hover:underline hover:underline-offset-2"
-          href="https://pages.cloudflare.com">Cloudflare Pages</a
-        >
-      </p>
+    <p class="text-faint font-mono text-xs tracking-wide">
+      © {year}
+      {profile.name} · {profile.nameLocal}
+    </p>
+
+    <div class="text-faint flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs">
+      <span>Built with Astro · Deployed on Cloudflare</span>
+      <span class="hidden sm:inline" aria-hidden="true">·</span>
+      <a
+        href="https://github.com/yousiki/siki.moe"
+        target="_blank"
+        rel="noopener"
+        class="link-underline hover:text-ink inline-flex items-center gap-1.5 transition-colors"
+      >
+        <Icon name="github" size={13} />
+        Source
+      </a>
+      <span class="hidden sm:inline" aria-hidden="true">·</span>
+      <time datetime={buildDate}>{buildDate}</time>
     </div>
   </div>
 </footer>

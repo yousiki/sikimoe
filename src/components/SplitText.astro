@@ -1,0 +1,29 @@
+---
+/**
+ * Splits a string into per-character spans at build time so the staggered
+ * entrance costs no layout shift and degrades to plain text without JS.
+ */
+interface Props {
+  text: string;
+  /** Milliseconds added before this block's first character animates. */
+  baseDelay?: number;
+  class?: string;
+}
+
+const { text, baseDelay = 0, class: className } = Astro.props;
+const characters = [...text];
+---
+
+<span class={className} style={`--char-base:${baseDelay}ms`} aria-label={text} data-split-text>
+  {
+    characters.map((char, index) =>
+      char === ' ' ? (
+        <span class="char char--space" style={`--char-index:${index}`} aria-hidden="true" />
+      ) : (
+        <span class="char" style={`--char-index:${index}`} aria-hidden="true">
+          {char}
+        </span>
+      ),
+    )
+  }
+</span>

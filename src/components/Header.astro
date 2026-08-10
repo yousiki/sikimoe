@@ -1,60 +1,242 @@
 ---
-import siteConfig from '../data/site-config';
-import { marked } from 'marked';
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+
+const sections = [
+  { id: 'about', label: 'About' },
+  { id: 'focus', label: 'Focus' },
+  { id: 'path', label: 'Path' },
+  { id: 'work', label: 'Work' },
+  { id: 'contact', label: 'Contact' },
+] as const;
 ---
 
-<header class="w-full max-w-3xl mx-auto mb-12 sm:mb-16">
-  {
-    siteConfig.logo && siteConfig.logo?.src ? (
-      <a href="/">
-        <img
-          src={siteConfig.logo.src}
-          alt={siteConfig.logo.alt || ''}
-          class="max-h-12"
-        />
-      </a>
-    ) : (
-      <div
-        class={
-          siteConfig.avatar &&
-          siteConfig.avatar?.src &&
-          'flex flex-col md:flex-row-reverse md:justify-between md:items-center'
-        }
+<div
+  class="bg-accent fixed inset-x-0 top-0 z-50 h-[2px] origin-left scale-x-0"
+  data-scroll-progress
+  aria-hidden="true"
+>
+</div>
+
+<header
+  class="fixed inset-x-0 top-0 z-40 transition-[background-color,backdrop-filter,border-color] duration-500 data-scrolled:border-b data-scrolled:backdrop-blur-xl"
+  data-header
+>
+  <nav
+    class="container-page flex h-16 items-center justify-between gap-6 md:h-20"
+    aria-label="Primary"
+  >
+    <a
+      href="#top"
+      class="group flex items-center gap-3"
+      aria-label={`${profile.name} — back to top`}
+    >
+      <span
+        class="border-line text-accent grid size-9 place-items-center rounded-full border font-mono text-[0.7rem] font-medium transition-colors duration-300 group-hover:border-current"
       >
-        {siteConfig.avatar && siteConfig.avatar?.src && (
-          <div class="rounded-full w-[10em] mb-5 overflow-hidden">
-            <img src={siteConfig.avatar.src} alt={siteConfig.avatar.alt} />
-          </div>
-        )}
-        <div>
-          <div class="font-serif text-2xl leading-tight font-medium text-theme-foreground sm:text-4xl flex flex-row items-center gap-1">
-            <a href="/">
-              <p set:html={marked.parse(siteConfig.heroTitle)} />
+        SY
+      </span>
+      <span class="hidden font-mono text-xs tracking-widest uppercase sm:inline">siki.moe</span>
+    </a>
+
+    <ul class="hidden items-center gap-1 md:flex">
+      {
+        sections.map((section) => (
+          <li>
+            <a
+              href={`#${section.id}`}
+              data-section-link
+              class="text-muted hover:text-ink relative rounded-full px-3 py-1.5 font-mono text-xs tracking-wider uppercase transition-colors duration-300"
+            >
+              {section.label}
             </a>
-            <a href="/rss.xml">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-rss"
-              >
-                <path d="M4 11a9 9 0 0 1 9 9" />
-                <path d="M4 4a16 16 0 0 1 16 16" />
-                <circle cx="5" cy="19" r="1" />
-              </svg>
-            </a>
-          </div>
-          {siteConfig.subtitle && (
-            <p class="text-sm leading-tight mt-1">{siteConfig.subtitle}</p>
-          )}
-        </div>
-      </div>
-    )
-  }
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={profile.cv.en}
+        target="_blank"
+        rel="noopener"
+        class="border-line hover:border-ink hidden items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-xs tracking-wider uppercase transition-colors duration-300 sm:inline-flex"
+      >
+        CV
+        <Icon name="arrow" size={12} />
+      </a>
+
+      <button
+        type="button"
+        data-theme-toggle
+        class="border-line hover:border-ink relative grid size-9 place-items-center rounded-full border transition-colors duration-300"
+        aria-label="Switch theme"
+        aria-pressed="false"
+      >
+        <Icon name="sun" size={15} class="theme-icon theme-icon--sun" />
+        <Icon name="moon" size={15} class="theme-icon theme-icon--moon" />
+      </button>
+
+      <button
+        type="button"
+        data-menu-toggle
+        aria-controls="section-index"
+        aria-expanded="false"
+        class="border-line hover:border-ink grid size-9 place-items-center rounded-full border transition-colors duration-300 md:hidden"
+      >
+        <span class="sr-only">Open section index</span>
+        <span class="burger" aria-hidden="true">
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
+  </nav>
 </header>
+
+{/* Section index for narrow viewports. */}
+<div
+  id="section-index"
+  data-menu
+  hidden
+  aria-hidden="true"
+  aria-label="Section index"
+  class="menu md:hidden"
+>
+  <ul class="container-page flex h-full flex-col justify-center gap-2">
+    {
+      sections.map((section, index) => (
+        <li class="menu__item border-line border-b" style={`--menu-index:${index}`}>
+          <a
+            href={`#${section.id}`}
+            class="flex items-baseline gap-5 py-4 transition-colors duration-300"
+          >
+            <span class="text-faint font-mono text-xs tabular-nums">0{index + 1}</span>
+            <span class="font-display text-4xl leading-tight">{section.label}</span>
+          </a>
+        </li>
+      ))
+    }
+    <li class="menu__item pt-8" style={`--menu-index:${sections.length}`}>
+      <a
+        href={profile.cv.en}
+        target="_blank"
+        rel="noopener"
+        class="border-line inline-flex items-center gap-2 rounded-full border px-5 py-2.5 font-mono text-xs tracking-[0.14em] uppercase"
+      >
+        Curriculum Vitae
+        <Icon name="arrow" size={13} />
+      </a>
+    </li>
+  </ul>
+</div>
+
+<style>
+  header[data-scrolled] {
+    background-color: color-mix(in oklab, var(--paper) 72%, transparent);
+  }
+
+  [data-section-link][data-current] {
+    color: var(--ink);
+  }
+
+  [data-section-link][data-current]::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.75rem;
+    bottom: 0.15rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .theme-icon {
+    position: absolute;
+    transition:
+      opacity 0.35s var(--ease-out-expo),
+      transform 0.45s var(--ease-out-expo);
+  }
+
+  .theme-icon--sun {
+    opacity: 0;
+    transform: rotate(-70deg) scale(0.5);
+  }
+
+  .theme-icon--moon {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global([data-theme='light']) .theme-icon--sun {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global([data-theme='light']) .theme-icon--moon {
+    opacity: 0;
+    transform: rotate(70deg) scale(0.5);
+  }
+
+  /* ── burger ─────────────────────────────────────────────────────────── */
+
+  .burger {
+    display: grid;
+    gap: 4px;
+    width: 15px;
+  }
+
+  .burger span {
+    display: block;
+    height: 1.5px;
+    background: currentcolor;
+    transition: transform 0.4s var(--ease-out-expo);
+  }
+
+  [data-menu-toggle][aria-expanded='true'] .burger span:first-child {
+    transform: translateY(2.75px) rotate(45deg);
+  }
+
+  [data-menu-toggle][aria-expanded='true'] .burger span:last-child {
+    transform: translateY(-2.75px) rotate(-45deg);
+  }
+
+  /* ── overlay ────────────────────────────────────────────────────────── */
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 39;
+    background-color: var(--paper);
+    padding-top: 4rem;
+    opacity: 0;
+    transform: translate3d(0, -1.5rem, 0);
+    pointer-events: none;
+    transition:
+      opacity 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo);
+  }
+
+  .menu[data-open='true'] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .menu__item {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+    transition:
+      opacity 0.5s var(--ease-out-expo),
+      transform 0.5s var(--ease-out-expo);
+    transition-delay: calc(var(--menu-index) * 45ms + 80ms);
+  }
+
+  .menu[data-open='true'] .menu__item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .menu__item a:hover,
+  .menu__item a:focus-visible {
+    color: var(--accent);
+  }
+</style>

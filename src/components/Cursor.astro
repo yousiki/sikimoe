@@ -1,0 +1,67 @@
+---
+/** Custom pointer. Hidden until `initCursor` decides the device qualifies. */
+---
+
+<div data-cursor hidden aria-hidden="true" class="cursor-root">
+  <div data-cursor-ring class="cursor-ring"></div>
+  <div data-cursor-dot class="cursor-dot"></div>
+</div>
+
+<style>
+  .cursor-root {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .cursor-root[data-active] {
+    opacity: 1;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 9999px;
+    will-change: transform;
+  }
+
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    transition: opacity 0.25s ease;
+  }
+
+  .cursor-ring {
+    width: 30px;
+    height: 30px;
+    border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+    transition:
+      width 0.28s var(--ease-out-expo),
+      height 0.28s var(--ease-out-expo),
+      background-color 0.28s ease,
+      border-color 0.28s ease;
+  }
+
+  .cursor-root[data-hover] .cursor-ring {
+    width: 52px;
+    height: 52px;
+    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+    border-color: color-mix(in oklab, var(--accent) 80%, transparent);
+  }
+
+  .cursor-root[data-hover] .cursor-dot {
+    opacity: 0;
+  }
+
+  @media (pointer: coarse) {
+    .cursor-root {
+      display: none;
+    }
+  }
+</style>

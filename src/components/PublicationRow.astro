@@ -1,0 +1,168 @@
+---
+import Icon from './Icon.astro';
+import { SELF, type Publication } from '../data/profile';
+import { authorSegments } from '../utils/text';
+
+interface Props {
+  publication: Publication;
+  group?: string;
+}
+
+const { publication, group } = Astro.props;
+const authors = authorSegments(publication.authors, SELF);
+const Tag = publication.href ? 'a' : 'div';
+---
+
+<li class="pub" data-reveal data-reveal-group={group}>
+  <Tag
+    href={publication.href}
+    target={publication.href ? '_blank' : undefined}
+    rel={publication.href ? 'noopener' : undefined}
+    class="pub__link"
+  >
+    <span class="pub__year font-mono tabular-nums">{publication.year}</span>
+
+    <span class="pub__main">
+      <span class="pub__title font-display">{publication.title}</span>
+
+      <span class="pub__authors">
+        {
+          authors.map((author, index) => (
+            <>
+              {index > 0 && <span class="text-faint">, </span>}
+              <span class={author.isSelf ? 'text-ink font-medium' : undefined}>{author.name}</span>
+            </>
+          ))
+        }
+      </span>
+
+      <span class="pub__meta">
+        <span class="pub__venue">{publication.venue}</span>
+        {publication.note && <span class="text-faint">· {publication.note}</span>}
+      </span>
+    </span>
+
+    {
+      publication.href && (
+        <span class="pub__arrow" aria-hidden="true">
+          <Icon name="arrow" size={15} />
+        </span>
+      )
+    }
+  </Tag>
+</li>
+
+<style>
+  .pub {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pub__link {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3.5rem 1fr auto;
+    align-items: start;
+    gap: 1rem;
+    padding: 1.5rem 0.75rem 1.5rem 0.25rem;
+    transition: background-color 0.4s var(--ease-out-expo);
+  }
+
+  a.pub__link:hover {
+    background-color: color-mix(in oklab, var(--raised) 80%, transparent);
+  }
+
+  .pub__link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  a.pub__link:hover::before,
+  a.pub__link:focus-visible::before {
+    transform: scaleY(1);
+  }
+
+  .pub__year {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+    padding-top: 0.35rem;
+  }
+
+  .pub__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+
+  .pub__title {
+    font-size: 1.125rem;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  @media (width >= 640px) {
+    .pub__title {
+      font-size: 1.375rem;
+    }
+
+    .pub__link {
+      grid-template-columns: 5rem 1fr auto;
+      padding-inline: 1rem 1.25rem;
+    }
+  }
+
+  .pub__authors {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .pub__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .pub__venue {
+    color: var(--accent);
+  }
+
+  .pub__arrow {
+    color: var(--faint);
+    padding-top: 0.35rem;
+    opacity: 0;
+    transform: translate3d(-0.35rem, 0.35rem, 0);
+    transition:
+      opacity 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo),
+      color 0.4s ease;
+  }
+
+  a.pub__link:hover .pub__arrow,
+  a.pub__link:focus-visible .pub__arrow {
+    opacity: 1;
+    transform: none;
+    color: var(--accent);
+  }
+
+  @media (pointer: coarse) {
+    .pub__arrow {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

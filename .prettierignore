@@ -1,1 +1,8 @@
-pnpm-lock.yaml
+dist
+node_modules
+.astro
+.wrangler
+bun.lock
+test-results
+playwright-report
+screenshots

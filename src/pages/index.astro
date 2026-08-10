@@ -1,57 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
-import Button from '../components/Button.astro';
-import Hero from '../components/Hero.astro';
-import PostPreview from '../components/PostPreview.astro';
-import ProjectPreview from '../components/ProjectPreview.astro';
-import PersonalizedHero from '../components/PersonalizedHero.vue';
-import siteConfig from '../data/site-config';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { sortItemsByDateDesc } from '../utils/data-utils';
-
-const posts = (await getCollection('blog')).sort(sortItemsByDateDesc);
-const featuredPosts = posts.filter(({ data }) => data.isFeatured);
-
-const projects = (await getCollection('projects')).sort(sortItemsByDateDesc);
-const featuredProjects = projects.filter(({ data }) => data.isFeatured);
+import About from '../components/sections/About.astro';
+import Contact from '../components/sections/Contact.astro';
+import Focus from '../components/sections/Focus.astro';
+import Hero from '../components/sections/Hero.astro';
+import Path from '../components/sections/Path.astro';
+import Recognition from '../components/sections/Recognition.astro';
+import Toolkit from '../components/sections/Toolkit.astro';
+import Work from '../components/sections/Work.astro';
 ---
 
-<BaseLayout description={siteConfig.description} image={siteConfig.image}>
-  {siteConfig.personalizedHero ? <PersonalizedHero client:load /> : <Hero />}
-
-  {
-    featuredProjects?.length > 0 && (
-      <div class="mb-16 sm:mb-24">
-        <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">
-          Projects
-        </h2>
-        {featuredProjects.map((project) => (
-          <ProjectPreview
-            project={project}
-            class="mb-10 sm:mb-12"
-            headingLevel="h3"
-          />
-        ))}
-        <div class="mt-12 sm:mt-16">
-          <Button href="/projects">View All Projects</Button>
-        </div>
-      </div>
-    )
-  }
-
-  {
-    featuredPosts?.length > 0 && (
-      <div class="mb-16 sm:mb-24">
-        <h2 class="mb-12 text-xl font-serif italic sm:mb-16 sm:text-2xl">
-          Featured Posts
-        </h2>
-        {featuredPosts.map((post) => (
-          <PostPreview post={post} class="mb-10 sm:mb-12" headingLevel="h3" />
-        ))}
-        <div class="mt-12 sm:mt-16">
-          <Button href="/blog">Read All Articles</Button>
-        </div>
-      </div>
-    )
-  }
+<BaseLayout>
+  <Hero />
+  <About />
+  <Focus />
+  <Path />
+  <Work />
+  <Recognition />
+  <Toolkit />
+  <Contact />
 </BaseLayout>

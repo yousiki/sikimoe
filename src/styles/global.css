@@ -1,154 +1,348 @@
 @import 'tailwindcss';
-@import 'tailwindcss/preflight' layer(base);
-@import 'tailwindcss/utilities' layer(utilities);
-@config '../../tailwind.config.cjs';
 
-html {
-  scroll-behavior: smooth;
-}
+/* Self-hosted variable fonts — no third-party requests at runtime. */
+@import '@fontsource-variable/geist/wght.css';
+@import '@fontsource-variable/geist-mono/wght.css';
+@import '@fontsource/instrument-serif/latin-400.css';
+@import '@fontsource/instrument-serif/latin-400-italic.css';
 
-body {
-  @apply ease-in-out duration-200;
-}
+/*
+ * Theme is an explicit attribute on <html> rather than a media query so the
+ * toggle can override the OS preference; an inline script in BaseHead resolves
+ * it before first paint.
+ */
+@custom-variant light ([data-theme='light'] &);
 
-.super-link {
-  @apply cursor-pointer inline-block;
-  position: relative;
-  transition: all 0.2s ease;
-}
-.super-link::before {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: -2%;
-  bottom: 10%;
-  left: -2%;
-  background-color: #647eff;
-  opacity: 0.3;
-  transition: all 0.2s ease;
-}
-.super-link:hover::before {
-  top: 83%;
-  opacity: 1;
-  right: 0;
-  left: 0;
-}
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
 
-.name {
-  z-index: 0;
-  background-image: -webkit-linear-gradient(315deg, #f2973b 25%, #fef1b4);
-  background-clip: text;
-  position: relative;
-  -webkit-text-fill-color: transparent;
-}
-.name::before {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  top: 60%;
-  right: 0;
-  bottom: 10%;
-  left: 0;
-  background-image: -webkit-linear-gradient(315deg, #b42392 25%, #647eff);
-  opacity: 0.5;
-  transition: all 0.5s ease;
-}
-.name:hover::before {
-  top: 83%;
-  opacity: 1;
+  --color-paper: var(--paper);
+  --color-raised: var(--raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --breakpoint-xs: 26rem;
 }
 
-@media (max-width: 767px) {
-  .menu {
-    @apply flex-col gap-1 absolute -top-2.5 -left-2.5 max-w-64 px-3 pt-16 pb-10 z-20 bg-main border-t-2 border-l-2 border-b-4 border-r-4 border-main invisible opacity-0;
-    transform: translateY(-10%);
-    width: calc(100% + 1.25rem);
-  }
-  .menu.is-visible {
-    @apply visible opacity-100;
-    transform: translateY(0);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
-  }
-  .menu-toggle-icon {
-    transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-  }
-  .menu-toggle.is-active .menu-toggle-icon {
-    @apply w-0;
-    transition: width 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .menu-toggle-icon:before,
-  .menu-toggle-icon:after {
-    @apply w-6 h-px absolute left-1/2 top-0 origin-center -translate-x-1/2 bg-current;
-    content: '';
-    transition:
-      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-      margin 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
-  }
-  .menu-toggle-icon:before {
-    @apply -mt-1.5;
-  }
-  .menu-toggle-icon:after {
-    @apply mt-1.5;
-  }
-  .menu-toggle.is-active .menu-toggle-icon:before,
-  .menu-toggle.is-active .menu-toggle-icon:after {
-    @apply mt-0;
-    transition:
-      margin 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s,
-      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-  }
-  .menu-toggle.is-active .menu-toggle-icon:before {
-    @apply rotate-45;
-  }
-  .menu-toggle.is-active .menu-toggle-icon:after {
-    @apply -rotate-45;
-  }
+/* ── Palette ─────────────────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: dark;
+
+  --paper: #08080a;
+  --raised: #101014;
+  --ink: #f3f1ed;
+  --muted: #9b9aa5;
+  --faint: #5a5964;
+  --line: rgb(255 255 255 / 9%);
+  --line-strong: rgb(255 255 255 / 18%);
+
+  --accent: #b7a2ff;
+  --accent-2: #6fe7cf;
+  --accent-3: #ffb26b;
+
+  --glow: rgb(183 162 255 / 22%);
+  --grain-opacity: 0.05;
+  --selection: rgb(183 162 255 / 30%);
+
+  /* Fractal-noise tile used by `.grain`. Inlined so it costs no request. */
+  --grain-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --paper: #f5f3ee;
+  --raised: #fffdf9;
+  --ink: #14131a;
+  --muted: #56545f;
+  --faint: #9c99a4;
+  --line: rgb(20 18 28 / 12%);
+  --line-strong: rgb(20 18 28 / 22%);
+
+  --accent: #5a3ded;
+  --accent-2: #0d8f7f;
+  --accent-3: #c2610a;
+
+  --glow: rgb(90 61 237 / 14%);
+  --grain-opacity: 0.035;
+  --selection: rgb(90 61 237 / 18%);
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
 
 @layer base {
-  /* Default */
-  :root {
-    --color-text-main: 23 23 23;
-    --color-bg-main: 242 241 236;
-    --color-bg-muted: 234 233 225;
-    --color-border-main: 23 23 23;
-  }
-  html.dark {
-    --color-text-main: 242 241 236;
-    --color-bg-main: 23 23 23;
-    --color-bg-muted: 36 36 36;
-    --color-border-main: 242 241 236;
+  * {
+    border-color: var(--line);
   }
 
-  /* Cyan */
-  /*
-    :root {
-        --color-text-main: 22 42 43;
-        --color-bg-main: 214 224 226;
-        --color-bg-muted: 204 216 219;
-        --color-border-main: 22 42 43;
-    }
-    html.dark {
-        --color-text-main: 214 224 226;
-        --color-bg-main: 22 42 43;
-        --color-bg-muted: 28 53 55;
-        --color-border-main: 214 224 226;
-    }
-    */
-  /* Green */
-  /*
-    :root {
-        --color-text-main: 58 66 56;
-        --color-bg-main: 243 239 230;
-        --color-bg-muted: 238 233 220;
-        --color-border-main: 58 66 56;
-    }
-    html.dark {
-        --color-text-main: 243 239 230;
-        --color-bg-main: 94 108 91;
-        --color-bg-muted: 89 103 86;
-        --color-border-main: 243 239 230;
-    }
-    */
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Lenis drives scrolling itself; native smooth scroll fights it. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  html.lenis {
+    scroll-behavior: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    transition:
+      background-color 0.5s var(--ease-out-quint),
+      color 0.5s var(--ease-out-quint);
+  }
+
+  ::selection {
+    background-color: var(--selection);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ── Utilities ───────────────────────────────────────────────────────────── */
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 76rem;
+  padding-inline: 1.5rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 3rem;
+  }
+
+  @media (width >= 80rem) {
+    padding-inline: 4rem;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+@utility hairline {
+  background-image: linear-gradient(to right, transparent, var(--line-strong), transparent);
+  height: 1px;
+  border: 0;
+}
+
+/* Gradient wash used on accent words. Two stops only — three read as rainbow
+   at body-copy size. */
+@utility text-gradient {
+  background-image: linear-gradient(96deg, var(--accent) 0%, var(--accent-2) 100%);
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Components ──────────────────────────────────────────────────────────── */
+
+/* Scroll-reveal: elements start hidden and are released by IntersectionObserver
+   adding `data-revealed`. The no-JS fallback in BaseHead removes the hiding. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 1.75rem), 0);
+  transition:
+    opacity 0.9s var(--ease-out-expo) var(--reveal-delay, 0ms),
+    transform 0.9s var(--ease-out-expo) var(--reveal-delay, 0ms),
+    filter 0.9s var(--ease-out-expo) var(--reveal-delay, 0ms);
+  filter: blur(6px);
+  will-change: opacity, transform;
+}
+
+[data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Character-level hero reveal. */
+.char {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.9em, 0) rotate(4deg);
+  will-change: opacity, transform;
+}
+
+.char--space {
+  width: 0.28em;
+}
+
+[data-hero-ready] .char {
+  animation: char-in 1s var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--char-index) * 32ms + var(--char-base, 0ms));
+}
+
+@keyframes char-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Animated underline used on every outbound link. */
+.link-underline {
+  background-image: linear-gradient(currentcolor, currentcolor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.45s var(--ease-out-expo);
+  padding-bottom: 0.08em;
+}
+
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+/* Marquee track — duplicated content scrolls one full copy then resets. */
+.marquee-track {
+  animation: marquee var(--marquee-duration, 42s) linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Film grain, layered over everything at very low opacity. */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: var(--grain-url);
+  background-size: 180px 180px;
+  animation: grain-shift 6s steps(6) infinite;
+}
+
+@keyframes grain-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-4%, 3%);
+  }
+
+  40% {
+    transform: translate(3%, -5%);
+  }
+
+  60% {
+    transform: translate(-2%, 4%);
+  }
+
+  80% {
+    transform: translate(5%, 2%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .char {
+    opacity: 1;
+    transform: none;
+  }
+
+  .grain::after {
+    display: none;
+  }
 }

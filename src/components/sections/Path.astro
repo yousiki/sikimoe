@@ -1,0 +1,142 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+import { profile } from '../../data/profile';
+import { rangeLabel } from '../../utils/text';
+---
+
+<section id="path" class="container-page scroll-mt-24 py-24 md:py-36">
+  <SectionHeading index="03 — Path" title="Where I have been." />
+
+  <ol class="timeline" data-timeline>
+    {
+      profile.timeline.map((entry) => (
+        <li class="timeline__item" data-reveal data-reveal-group="path">
+          <div class="timeline__marker" aria-hidden="true">
+            <span class="timeline__dot" />
+          </div>
+
+          <div class="timeline__body">
+            <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <span class="text-faint font-mono text-xs tracking-[0.14em] tabular-nums">
+                {rangeLabel(entry.start, entry.end)}
+              </span>
+              <span class="border-line text-faint rounded-full border px-2 py-0.5 font-mono text-[0.6rem] tracking-[0.14em] uppercase">
+                {entry.kind}
+              </span>
+            </div>
+
+            <h3 class="font-display mt-2 text-2xl leading-snug sm:text-3xl">
+              {entry.href ? (
+                <a
+                  href={entry.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="link-underline inline-flex items-center gap-2"
+                >
+                  {entry.organisation}
+                  <Icon name="arrow" size={14} class="text-faint" />
+                </a>
+              ) : (
+                entry.organisation
+              )}
+            </h3>
+
+            <p class="text-muted mt-1 text-sm sm:text-base">
+              {entry.role}
+              <span class="text-faint"> · {entry.location}</span>
+            </p>
+
+            {entry.detail && (
+              <p class="text-faint mt-2 max-w-xl text-sm leading-relaxed">{entry.detail}</p>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    margin-left: 0.25rem;
+  }
+
+  /* Track. */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.3125rem;
+    top: 0.6rem;
+    bottom: 2rem;
+    width: 1px;
+    background: var(--line);
+  }
+
+  /* Fill, driven by `--timeline-progress` as the section scrolls past. */
+  .timeline::after {
+    content: '';
+    position: absolute;
+    left: 0.3125rem;
+    top: 0.6rem;
+    bottom: 2rem;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+    transform-origin: top;
+    transform: scaleY(var(--timeline-progress, 0));
+    transition: transform 0.15s linear;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .timeline::after {
+      transform: scaleY(1);
+    }
+  }
+
+  .timeline__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.75rem 1fr;
+    padding-bottom: 3rem;
+  }
+
+  .timeline__item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline__marker {
+    position: relative;
+    padding-top: 0.45rem;
+  }
+
+  .timeline__dot {
+    position: relative;
+    display: block;
+    width: 0.6875rem;
+    height: 0.6875rem;
+    border-radius: 9999px;
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    transition:
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .timeline__item:first-child .timeline__dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+  }
+
+  .timeline__item:hover .timeline__dot {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 14%, transparent);
+  }
+
+  @media (width >= 768px) {
+    .timeline__item {
+      grid-template-columns: 2.5rem 1fr;
+    }
+  }
+</style>

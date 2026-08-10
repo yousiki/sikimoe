@@ -1,0 +1,128 @@
+---
+import Icon from '../Icon.astro';
+import { profile } from '../../data/profile';
+---
+
+<section id="contact" class="container-page scroll-mt-24 py-28 md:py-40">
+  <div class="flex items-center gap-4" data-reveal>
+    <span class="eyebrow tabular-nums">07 — Contact</span>
+    <span class="hairline h-px flex-1 opacity-70"></span>
+  </div>
+
+  <div class="mt-10 grid gap-16 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <a
+        href={`mailto:${profile.email}`}
+        class="say-hello font-display block text-[clamp(3rem,11vw,8rem)] leading-[0.9] tracking-[-0.03em]"
+        data-magnetic="0.14"
+        data-reveal
+      >
+        <span class="say-hello__line">Say</span>
+        <span class="say-hello__line italic">hello<span class="text-gradient">.</span></span>
+      </a>
+
+      <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal style="--reveal-delay:120ms">
+        <button
+          type="button"
+          data-copy={profile.email}
+          class="border-line hover:border-ink data-copied:border-accent data-copied:text-accent inline-flex items-center gap-2.5 rounded-full border px-4 py-2 font-mono text-xs tracking-[0.1em] transition-colors duration-300"
+        >
+          <Icon name="copy" size={13} />
+          <span data-copy-label>{profile.email}</span>
+        </button>
+
+        <a
+          href={profile.cv.en}
+          target="_blank"
+          rel="noopener"
+          class="border-line hover:border-ink inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs tracking-[0.1em] uppercase transition-colors duration-300"
+        >
+          Curriculum Vitae
+          <Icon name="arrow" size={13} />
+        </a>
+
+        <a
+          href={profile.cv.zh}
+          target="_blank"
+          rel="noopener"
+          class="text-faint hover:text-ink inline-flex items-center gap-2 px-2 py-2 font-mono text-xs tracking-[0.1em] transition-colors duration-300"
+        >
+          中文简历
+        </a>
+      </div>
+    </div>
+
+    <ul class="lg:col-span-4 lg:col-start-9">
+      {
+        profile.socials.map((social) => (
+          <li class="border-line border-b first:border-t" data-reveal data-reveal-group="socials">
+            <a
+              href={social.href}
+              target={social.icon === 'mail' ? undefined : '_blank'}
+              rel="noopener"
+              class="social group flex items-center gap-4 py-4"
+            >
+              <Icon name={social.icon} size={16} class="text-faint transition-colors" />
+              <span class="min-w-0 flex-1">
+                <span class="block text-sm sm:text-base">{social.label}</span>
+                <span class="text-faint block truncate font-mono text-xs">{social.handle}</span>
+              </span>
+              <Icon name="arrow" size={15} class="social__arrow text-faint" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .say-hello {
+    position: relative;
+    width: fit-content;
+  }
+
+  .say-hello__line {
+    display: block;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+
+  .say-hello:hover .say-hello__line:last-child {
+    transform: translateX(0.12em);
+  }
+
+  .social {
+    transition:
+      padding-inline-start 0.4s var(--ease-out-expo),
+      color 0.3s ease;
+  }
+
+  .social:hover {
+    padding-inline-start: 0.5rem;
+  }
+
+  .social:hover :global(svg) {
+    color: var(--accent);
+  }
+
+  .social__arrow {
+    opacity: 0;
+    transform: translate3d(-0.35rem, 0.35rem, 0);
+    transition:
+      opacity 0.4s var(--ease-out-expo),
+      transform 0.4s var(--ease-out-expo);
+  }
+
+  .social:hover .social__arrow,
+  .social:focus-visible .social__arrow {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (pointer: coarse) {
+    .social__arrow {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

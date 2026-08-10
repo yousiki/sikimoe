@@ -1,0 +1,64 @@
+---
+import Icon from '../Icon.astro';
+import PublicationRow from '../PublicationRow.astro';
+import SectionHeading from '../SectionHeading.astro';
+import { profile, publicationsByYear, selectedPublications } from '../../data/profile';
+
+const selectedKeys = new Set(selectedPublications.map((p) => p.title));
+const rest = publicationsByYear.filter((p) => !selectedKeys.has(p.title));
+
+const scholar = profile.socials.find((s) => s.icon === 'scholar');
+---
+
+<section id="work" class="container-page scroll-mt-24 py-24 md:py-36">
+  <SectionHeading
+    index="04 — Work"
+    title="Selected publications."
+    lead={`${publicationsByYear.length} papers across CVPR, ICCV, ECCV, NeurIPS, SIGGRAPH Asia and TPAMI.`}
+  />
+
+  <ul class="border-line border-t">
+    {
+      selectedPublications.map((publication) => (
+        <PublicationRow publication={publication} group="pubs" />
+      ))
+    }
+  </ul>
+
+  <div id="all-publications" data-disclosure-panel hidden>
+    <ul>
+      {rest.map((publication) => <PublicationRow publication={publication} />)}
+    </ul>
+  </div>
+
+  <div class="mt-10 flex flex-wrap items-center gap-4" data-reveal>
+    <button
+      type="button"
+      data-disclosure-toggle
+      data-label-closed={`Show all ${publicationsByYear.length}`}
+      data-label-open="Show fewer"
+      aria-expanded="false"
+      aria-controls="all-publications"
+      class="border-line hover:border-ink group inline-flex items-center gap-2.5 rounded-full border px-5 py-2.5 font-mono text-xs tracking-[0.14em] uppercase transition-colors duration-300"
+    >
+      <span data-disclosure-label>Show all {publicationsByYear.length}</span>
+      <span
+        class="bg-faint size-1 rounded-full transition-colors group-hover:bg-[var(--accent)]"
+        aria-hidden="true"></span>
+    </button>
+
+    {
+      scholar && (
+        <a
+          href={scholar.href}
+          target="_blank"
+          rel="noopener"
+          class="text-muted hover:text-ink inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
+        >
+          <span class="link-underline">Google Scholar</span>
+          <Icon name="arrow" size={13} />
+        </a>
+      )
+    }
+  </div>
+</section>

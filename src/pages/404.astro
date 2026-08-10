@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import SplitText from '../components/SplitText.astro';
+---
+
+<BaseLayout title="404 — Siqi Yang" description="This page did not integrate enough light to fire.">
+  <section
+    class="container-page flex min-h-[100svh] flex-col items-start justify-center gap-8 py-32"
+    data-hero
+  >
+    <p class="eyebrow">Error 404</p>
+
+    <h1 class="font-display text-[clamp(4rem,18vw,13rem)] leading-[0.82] tracking-[-0.03em]">
+      <SplitText text="404" baseDelay={100} />
+    </h1>
+
+    <p class="text-muted max-w-md text-lg leading-relaxed">
+      This pixel never accumulated enough charge to fire. Nothing here — but the rest of the sensor
+      is still reading out.
+    </p>
+
+    <a
+      href="/"
+      class="border-line hover:border-ink group inline-flex items-center gap-3 rounded-full border px-5 py-2.5 font-mono text-xs tracking-[0.14em] uppercase transition-colors duration-300"
+      data-magnetic="0.22"
+    >
+      Back home
+      <Icon name="arrow" size={13} />
+    </a>
+  </section>
+</BaseLayout>
