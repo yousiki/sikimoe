@@ -104,9 +104,16 @@ export const profile: Profile = {
 
   rotatingWords: ['spike cameras', 'video generation', 'world models', 'light & pixels'],
 
+  /**
+   * General to specific: the first paragraph names all three directions, the
+   * second takes them one at a time in the same order, the third is the
+   * background. The expansion deliberately argues why each is hard rather than
+   * describing what it produces — the focus cards already do that, and the two
+   * sections are close enough together to notice the repetition.
+   */
   bio: [
-    'I teach cameras to see what human eyes cannot — microsecond-scale light, recovered as colour, motion and geometry.',
-    'My research sits between computational photography and computer vision: neuromorphic **spike cameras** that fire asynchronously at tens of thousands of frames per second, **video generation** steered by camera paths and audio rather than prose alone, and **world models** that hold a generated world still enough for more than one person to walk around in.',
+    'My research covers three areas — **neuromorphic imaging**, **video generation**, and **world models** — held together by one question about light: how little of it you need to reconstruct a moment, and how much you have to invent to render one that never happened.',
+    'Imaging comes first. A spike camera throws the frame away, so nothing downstream of it still applies and the reconstruction stack has to be rebuilt from the sensor up. Generation is the mirror image: the model can produce any pixel it likes, and the difficulty is making it obey a camera path, a soundtrack, and the frame before. World models are where the two meet — a generated world only holds together if it stays consistent for everyone looking at it.',
     'Before the Ph.D. I spent a decade in competitive programming, which is probably why I still enjoy a well-shaped abstraction more than a well-tuned hyperparameter.',
   ],
 
