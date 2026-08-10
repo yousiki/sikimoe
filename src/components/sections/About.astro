@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 
 import SectionHeading from '../SectionHeading.astro';
-import avatar from '../../assets/avatar.jpg';
+import portrait from '../../assets/portrait.jpg';
 import { profile } from '../../data/profile';
 import { emphasise } from '../../utils/text';
 ---
@@ -37,22 +37,26 @@ import { emphasise } from '../../utils/text';
       </dl>
     </div>
 
-    <div class="lg:col-span-5 lg:col-start-9 xl:col-span-4 xl:col-start-9">
+    <div class="lg:col-span-5 lg:col-start-8 xl:col-start-8">
       <figure class="portrait" data-reveal style="--reveal-delay:180ms">
         <div class="portrait__frame">
           <Image
-            src={avatar}
-            alt={`Portrait of ${profile.name}`}
-            width={520}
-            height={520}
+            src={portrait}
+            alt={profile.portrait.alt}
+            widths={[400, 640, 900, 1400]}
+            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 60vw, 88vw"
             loading="lazy"
             decoding="async"
             class="portrait__img"
           />
-          <div class="portrait__wash" aria-hidden="true"></div>
+          <div class="portrait__scrim" aria-hidden="true"></div>
         </div>
-        <figcaption class="text-faint mt-4 font-mono text-[0.7rem] tracking-[0.18em] uppercase">
-          {profile.nameLocal} · {profile.alias}
+
+        <figcaption
+          class="text-faint mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 font-mono text-[0.7rem] tracking-[0.16em] uppercase"
+        >
+          <span>{profile.nameLocal} · {profile.alias}</span>
+          <span class="normal-case">{profile.portrait.caption}</span>
         </figcaption>
       </figure>
     </div>
@@ -60,41 +64,60 @@ import { emphasise } from '../../utils/text';
 </section>
 
 <style>
+  /* Matches the source file's aspect ratio, so the frame crops nothing. */
   .portrait__frame {
     position: relative;
     overflow: hidden;
     border-radius: 1.25rem;
     border: 1px solid var(--line);
     isolation: isolate;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 2 / 3;
   }
 
   .portrait__img {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    filter: grayscale(0.9) contrast(1.05);
-    transform: scale(1.02);
+    /* Held back just far enough to sit inside the palette, then released on
+       hover — the blossom and the grass are the whole point of the picture. */
+    filter: saturate(0.72) contrast(1.02);
+    transform: scale(1.015);
     transition:
-      filter 0.7s var(--ease-out-expo),
-      transform 0.9s var(--ease-out-expo);
+      filter 0.8s var(--ease-out-expo),
+      transform 1s var(--ease-out-expo);
   }
 
-  .portrait:hover .portrait__img {
-    filter: grayscale(0.15) contrast(1);
-    transform: scale(1.06);
+  .portrait:hover .portrait__img,
+  .portrait:focus-within .portrait__img {
+    filter: none;
+    transform: scale(1.04);
   }
 
-  .portrait__wash {
+  /* Seats the photograph on the page background instead of letting it float as
+     a bright rectangle — strongest in dark mode, barely there in light. */
+  .portrait__scrim {
     position: absolute;
     inset: 0;
-    mix-blend-mode: color;
-    background: linear-gradient(150deg, var(--accent) 0%, transparent 55%, var(--accent-2) 100%);
-    opacity: 0.22;
-    transition: opacity 0.7s var(--ease-out-expo);
+    background: linear-gradient(
+      175deg,
+      color-mix(in oklab, var(--paper) 26%, transparent) 0%,
+      transparent 42%,
+      color-mix(in oklab, var(--paper) 40%, transparent) 100%
+    );
+    transition: opacity 0.8s var(--ease-out-expo);
   }
 
-  .portrait:hover .portrait__wash {
-    opacity: 0.06;
+  :global([data-theme='light']) .portrait__scrim {
+    background: linear-gradient(
+      175deg,
+      transparent 0%,
+      transparent 55%,
+      color-mix(in oklab, var(--paper) 30%, transparent) 100%
+    );
+  }
+
+  .portrait:hover .portrait__scrim,
+  .portrait:focus-within .portrait__scrim {
+    opacity: 0;
   }
 </style>

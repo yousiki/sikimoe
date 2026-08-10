@@ -63,7 +63,8 @@ export interface Profile {
   readonly affiliationHref: string;
   readonly location: string;
   readonly timezone: string;
-  readonly avatar: string;
+  /** Caption under the portrait in the about section. */
+  readonly portrait: { readonly alt: string; readonly caption: string };
   readonly rotatingWords: readonly string[];
   readonly bio: readonly string[];
   readonly now: readonly { readonly label: string; readonly value: string }[];
@@ -92,7 +93,11 @@ export const profile: Profile = {
   affiliationHref: 'https://camera.pku.edu.cn',
   location: 'Beijing, China',
   timezone: 'Asia/Shanghai',
-  avatar: 'https://avatars.githubusercontent.com/yousiki',
+  portrait: {
+    alt: 'Siqi Yang sitting on a grassy riverbank beneath cherry blossoms, camera in hand, looking up into the branches',
+    // Date and body are read straight off the original file's EXIF.
+    caption: 'April 2026 · Canon EOS R5',
+  },
 
   rotatingWords: ['spike cameras', 'inverse rendering', 'world models', 'light & pixels'],
 
