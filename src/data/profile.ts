@@ -111,7 +111,7 @@ export const profile: Profile = {
   ],
 
   now: [
-    { label: 'Research Intern', value: 'Shanda AI Research, Tokyo' },
+    { label: 'Research Intern', value: 'Alaya Lab, Shanda AI Research Tokyo' },
     { label: 'Building', value: 'Multiplayer world models & panoramic video generation' },
     { label: 'Learning', value: 'Nix, Rust, and how to take better photographs' },
     { label: 'Graduating', value: 'July 2027 (expected)' },
@@ -171,21 +171,22 @@ export const profile: Profile = {
   timeline: [
     {
       kind: 'experience',
-      organisation: 'Shanda AI Research',
+      organisation: 'Alaya Lab, Shanda AI Research Tokyo',
       role: 'Research Intern',
-      location: 'Tokyo, Japan',
+      // The org's own name carries the city, so repeating it here would stutter.
+      location: 'Japan',
       start: '2025.12',
       end: 'Present',
       detail: 'Multiplayer world models, panoramic video generation, generative game platform.',
     },
     {
       kind: 'education',
-      organisation: 'Peking University',
+      organisation: 'Camera Intelligence Lab, Peking University',
       role: 'Ph.D. in Computer Science',
       location: 'Beijing, China',
       start: '2022.09',
       end: '2027.07',
-      detail: 'Camera Intelligence Lab, advised by Prof. Boxin Shi and Prof. Zhaofei Yu.',
+      detail: 'Advised by Prof. Boxin Shi and Prof. Zhaofei Yu.',
       href: 'https://camera.pku.edu.cn',
     },
     {
@@ -199,13 +200,13 @@ export const profile: Profile = {
     },
     {
       kind: 'education',
-      organisation: 'Peking University',
+      organisation: 'School of EECS, Peking University',
       role: 'B.S. in Computer Science',
       location: 'Beijing, China',
       start: '2018.09',
       end: '2022.07',
-      detail: 'Turing Honor Class, School of EECS.',
-      href: 'https://cfcs.pku.edu.cn/english/research/turing_program/introduction1/index.htm',
+      detail: 'Turing Honor Class.',
+      href: 'https://eecs.pku.edu.cn/',
     },
     {
       kind: 'experience',
