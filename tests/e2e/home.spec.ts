@@ -92,6 +92,34 @@ test.describe('theme', () => {
     await expect(html).toHaveAttribute('data-theme', after);
   });
 
+  test('shows one glyph only, and it is the theme the press would give', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto('/');
+
+    const sun = page.locator('[data-theme-toggle] .theme-icon--sun');
+    const moon = page.locator('[data-theme-toggle] .theme-icon--moon');
+    const opacityOf = (l: typeof sun) => l.evaluate((el) => Number(getComputedStyle(el).opacity));
+
+    // Dark now, so pressing yields light: the sun is the one on show.
+    await expect.poll(() => opacityOf(sun)).toBe(1);
+    await expect.poll(() => opacityOf(moon)).toBe(0);
+
+    // Both glyphs occupy the same centred box, so only one is ever legible.
+    const box = await page.locator('[data-theme-toggle]').boundingBox();
+    for (const glyph of [sun, moon]) {
+      const g = await glyph.boundingBox();
+      expect(g, 'glyph should be laid out').toBeTruthy();
+      if (!g || !box) continue;
+      expect(Math.abs(g.x + g.width / 2 - (box.x + box.width / 2))).toBeLessThan(1.5);
+      expect(Math.abs(g.y + g.height / 2 - (box.y + box.height / 2))).toBeLessThan(1.5);
+    }
+
+    await page.locator('[data-theme-toggle]').first().click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect.poll(() => opacityOf(sun)).toBe(0);
+    await expect.poll(() => opacityOf(moon)).toBe(1);
+  });
+
   test('applies the stored theme before first paint', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('siki-theme', 'light'));
     await page.goto('/');

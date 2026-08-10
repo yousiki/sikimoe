@@ -31,6 +31,10 @@ export default defineConfig([
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      // TypeScript already resolves every identifier, and `no-undef` cannot see
+      // ambient type-only namespaces such as Astro's `astroHTML`. `astro check`
+      // is the check that matters here — this rule only adds false positives.
+      'no-undef': 'off',
     },
   },
   {

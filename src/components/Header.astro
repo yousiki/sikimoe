@@ -193,31 +193,45 @@ const sections = [
     background: var(--accent);
   }
 
+  /* Exactly one glyph is visible, and it shows the theme you get by pressing:
+     sun while dark, moon while light. Both are stacked in the same centred
+     cell so the swap is a crossfade rather than a reflow. */
+  /* Centred by `translate` so the standalone `rotate`/`scale` properties are
+     free to animate without the two fighting over `transform`. Rotation is
+     about the glyph's own centre, which is what makes the swap read as a turn. */
   .theme-icon {
     position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
     transition:
       opacity 0.35s var(--ease-out-expo),
-      transform 0.45s var(--ease-out-expo);
+      rotate 0.45s var(--ease-out-expo),
+      scale 0.45s var(--ease-out-expo);
   }
 
   .theme-icon--sun {
-    opacity: 0;
-    transform: rotate(-70deg) scale(0.5);
+    opacity: 1;
+    rotate: 0deg;
+    scale: 1;
   }
 
   .theme-icon--moon {
-    opacity: 1;
-    transform: none;
+    opacity: 0;
+    rotate: 70deg;
+    scale: 0.5;
   }
 
   :global([data-theme='light']) .theme-icon--sun {
-    opacity: 1;
-    transform: none;
+    opacity: 0;
+    rotate: -70deg;
+    scale: 0.5;
   }
 
   :global([data-theme='light']) .theme-icon--moon {
-    opacity: 0;
-    transform: rotate(70deg) scale(0.5);
+    opacity: 1;
+    rotate: 0deg;
+    scale: 1;
   }
 
   /* ── burger ─────────────────────────────────────────────────────────── */

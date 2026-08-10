@@ -15,13 +15,19 @@ export type IconName =
   | 'moon'
   | 'copy';
 
-interface Props {
+interface Props extends astroHTML.JSX.SVGAttributes {
   name: IconName;
-  class?: string;
-  size?: number;
+  class?: string | undefined;
+  size?: number | undefined;
 }
 
-const { name, class: className, size = 16 } = Astro.props;
+/**
+ * `rest` must be spread onto the <svg>. Astro hands a child component the
+ * parent's `data-astro-cid-*` as a prop, and that attribute is what makes the
+ * parent's scoped styles match — drop it here and every scoped rule aimed at an
+ * icon silently matches nothing.
+ */
+const { name, class: className, size = 16, ...rest } = Astro.props;
 
 const paths: Record<IconName, string> = {
   github:
@@ -50,5 +56,6 @@ const paths: Record<IconName, string> = {
   fill="currentColor"
   aria-hidden="true"
   focusable="false"
+  {...rest}
   set:html={paths[name]}
 />
