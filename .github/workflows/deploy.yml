@@ -61,7 +61,7 @@ jobs:
         id: target
         run: |
           if [ "${{ inputs.target }}" = "production" ]; then
-            echo "project=sikimoe" >> "$GITHUB_OUTPUT"
+            echo "project=siki-moe" >> "$GITHUB_OUTPUT"
           else
             echo "project=siki-moe-preview" >> "$GITHUB_OUTPUT"
           fi

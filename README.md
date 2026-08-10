@@ -116,7 +116,7 @@ The site is static: `dist/` can be served by anything. In practice it is
 | Project            | URL                                  | When                                               |
 | ------------------ | ------------------------------------ | -------------------------------------------------- |
 | `siki-moe-preview` | `https://siki-moe-preview.pages.dev` | Pushes to `redesign`, and `bun run deploy:preview` |
-| `sikimoe`          | `https://siki.moe`                   | Manual `workflow_dispatch` only                    |
+| `siki-moe`         | `https://siki.moe`                   | Manual `workflow_dispatch` only                    |
 
 Production is intentionally never deployed automatically — see the comment at the
 top of [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) for the
