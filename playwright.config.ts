@@ -1,7 +1,17 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4321;
-const BASE_URL = `http://localhost:${PORT}`;
+const LOCAL_URL = `http://localhost:${PORT}`;
+
+/**
+ * Point the suite at a deployment instead of the local build:
+ *
+ *   PLAYWRIGHT_BASE_URL=https://siki-moe-preview.pages.dev bun run shots
+ *
+ * The local static server is skipped when an external target is given.
+ */
+const EXTERNAL_URL = process.env['PLAYWRIGHT_BASE_URL'];
+const BASE_URL = EXTERNAL_URL ?? LOCAL_URL;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -41,12 +51,16 @@ export default defineConfig({
   ],
 
   // Serve the real production build so the screenshots match what ships.
-  webServer: {
-    command: `bun run scripts/serve.ts ${PORT}`,
-    url: BASE_URL,
-    reuseExistingServer: !process.env['CI'],
-    timeout: 120_000,
-    stdout: 'ignore',
-    stderr: 'pipe',
-  },
+  ...(EXTERNAL_URL
+    ? {}
+    : {
+        webServer: {
+          command: `bun run scripts/serve.ts ${PORT}`,
+          url: LOCAL_URL,
+          reuseExistingServer: !process.env['CI'],
+          timeout: 120_000,
+          stdout: 'ignore' as const,
+          stderr: 'pipe' as const,
+        },
+      }),
 });
