@@ -105,16 +105,20 @@ export const profile: Profile = {
   rotatingWords: ['spike cameras', 'video generation', 'world models', 'light & pixels'],
 
   /**
-   * General to specific: the first paragraph names all three directions, the
-   * second takes them one at a time in the same order, the third is the
-   * background. The expansion deliberately argues why each is hard rather than
-   * describing what it produces — the focus cards already do that, and the two
-   * sections are close enough together to notice the repetition.
+   * General to specific. The first paragraph states the question and places
+   * both halves of the work against it — the earlier recovery line and the
+   * three current areas. The second expands what I do now, the third what came
+   * before, the fourth is background.
+   *
+   * The expansions argue why each problem is hard rather than describing what
+   * it produces: the focus cards already describe the output, and the two
+   * sections sit close enough together that repeating it would read as padding.
    */
   bio: [
-    'My research covers three areas — **neuromorphic imaging**, **video generation**, and **world models** — held together by one question about light: how little of it you need to reconstruct a moment, and how much you have to invent to render one that never happened.',
+    'My research asks one question about light from two sides: how little of it you need to recover a scene, and how much you have to invent to render one that was never photographed. I came in from the recovery side, and now work mostly on **neuromorphic imaging**, **video generation**, and **world models**.',
     'Imaging comes first. A spike camera throws the frame away, so nothing downstream of it still applies and the reconstruction stack has to be rebuilt from the sensor up. Generation is the mirror image: the model can produce any pixel it likes, and the difficulty is making it obey a camera path, a soundtrack, and the frame before. World models are where the two meet — a generated world only holds together if it stays consistent for everyone looking at it.',
-    'Before the Ph.D. I spent a decade in competitive programming, which is probably why I still enjoy a well-shaped abstraction more than a well-tuned hyperparameter.',
+    'Before that, recovery was the whole of it: **neural radiance fields** and **outdoor relighting**, putting a scene back under illumination it was never shot in, and some **inverse rendering** for interiors lit by the objects standing in them.',
+    'Earlier still I spent a decade in competitive programming, which is probably why I enjoy a well-shaped abstraction more than a well-tuned hyperparameter.',
   ],
 
   now: [
