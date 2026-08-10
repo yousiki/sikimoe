@@ -1,9 +1,24 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // Cloudflare Pages project that serves the *preview* build. The production
-  // project (siki.moe) is deployed separately and is intentionally not the
-  // default target here — see README.md § Deployment.
-  "name": "siki-moe-preview",
+  /*
+   * siki.moe as an assets-only Worker: no `main`, so no script is ever invoked
+   * and no request is billable — it is a static file server with a config file.
+   *
+   * A Worker rather than a Pages project for exactly one reason: the custom
+   * domain can be declared here, so it is version-controlled instead of a
+   * dashboard setting nobody remembers clicking. Pages has no equivalent field.
+   */
+  "name": "siki-moe",
   "compatibility_date": "2026-08-01",
-  "pages_build_output_dir": "./dist",
+  "assets": {
+    "directory": "./dist",
+    // Astro emits 404.html; without this, Workers answers with its own bare 404.
+    "not_found_handling": "404-page",
+  },
+  /*
+   * `custom_domain` attaches the hostname and writes the DNS record on deploy.
+   * The name must not be attached to another Worker or Pages project, or the
+   * deploy fails — see README.md § Deployment.
+   */
+  "routes": [{ "pattern": "siki.moe", "custom_domain": true }],
 }

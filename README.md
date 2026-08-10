@@ -29,7 +29,7 @@ reduced motion.
 | Language  | TypeScript everywhere — including `astro.config.ts`, `eslint.config.ts` and `prettier.config.ts`. There is no `.js` file in this repository |
 | Runtime   | [Bun](https://bun.com) for installs, scripts, and the local static server                                                                   |
 | Tests     | Vitest (units). Playwright is kept for screenshots only — there is no browser suite                                                         |
-| Hosting   | Cloudflare Pages                                                                                                                            |
+| Hosting   | Cloudflare Workers, assets-only — the custom domain lives in `wrangler.jsonc`                                                               |
 
 Total shipped JavaScript is one ~30 kB gzipped module; the page renders and reads
 completely without it.
@@ -86,8 +86,8 @@ bun run cv            # pull the latest release into public/cv/
 `bun run build` runs it first, so a deploy always ships the newest CV it can
 reach. The PDFs are committed, like `public/og.png` — a build with no GitHub
 credentials keeps the vendored copies and only warns. `SKIP_CV_SYNC=1` skips the
-sync entirely. Authentication is `gh auth login` locally, or `CV_GITHUB_TOKEN` in
-CI.
+sync entirely. Authentication is `gh auth login` locally, or `CV_GITHUB_TOKEN` as
+a build variable in Cloudflare.
 
 Regenerate the social card after changing the name, role, or palette:
 
@@ -110,30 +110,42 @@ It screenshots the real `/og` route, so the card can never drift from the site.
 
 ## Deployment
 
-The site is static: `dist/` can be served by anything. In practice it is
-[Cloudflare Pages](https://pages.cloudflare.com), with two projects:
+The site is static: `dist/` can be served by anything. In practice it is a
+Cloudflare Worker with [static
+assets](https://developers.cloudflare.com/workers/static-assets/) — assets-only,
+with no `main`, so no script is ever invoked and no request is billable.
 
-| Project            | URL                                  | When                                               |
-| ------------------ | ------------------------------------ | -------------------------------------------------- |
-| `siki-moe-preview` | `https://siki-moe-preview.pages.dev` | Pushes to `redesign`, and `bun run deploy:preview` |
-| `siki-moe`         | `https://siki.moe`                   | Manual `workflow_dispatch` only                    |
+It is a Worker rather than a Pages project for one reason: the custom domain is
+declared in [`wrangler.jsonc`](wrangler.jsonc) as a `routes` entry with
+`custom_domain: true`, which attaches the hostname and writes the DNS record on
+deploy. `siki.moe` is therefore version-controlled rather than a dashboard
+setting nobody remembers clicking. Pages has no equivalent field.
 
-Production is intentionally never deployed automatically — see the comment at the
-top of [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) for the
-one-line change that makes `main` publish to it.
+Cloudflare builds and deploys straight from this repository — Workers Builds,
+connected to `main`:
 
-Deploy a preview from your machine:
+| Build setting  | Value                 |
+| -------------- | --------------------- |
+| Build command  | `bun run build`       |
+| Deploy command | `npx wrangler deploy` |
+| Git branch     | `main`                |
+| Build variable | `CV_GITHUB_TOKEN`     |
 
-```bash
-bun run build
-bun run deploy:preview
-```
+So **every push to `main` publishes**. There is no manual gate and no deploy
+workflow; `.github/workflows/ci.yml` runs format, lint, typecheck, unit tests and
+build on every push and pull request, and that is all GitHub does. Nothing waits
+for it — keep `bun run verify` green before pushing.
 
-CI (`.github/workflows/ci.yml`) runs format, lint, typecheck, unit tests and
-build on every push and pull request.
+`CV_GITHUB_TOKEN` is a _build_ variable, not a runtime one. Without it the build
+keeps the CV PDFs committed to `public/cv/` and only warns.
+
+To preview a branch instead of publishing it, enable non-production branch builds
+and set that deploy command to `npx wrangler versions upload`, which returns a
+preview URL without touching the active deployment.
 
 `public/_headers` sets a strict Content-Security-Policy and immutable caching for
-fingerprinted assets; Cloudflare Pages applies it at the edge.
+fingerprinted assets; Workers parses it rather than serving it, and applies it at
+the edge.
 
 ## Licence
 
