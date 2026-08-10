@@ -13,6 +13,23 @@ describe('profile identity', () => {
   });
 });
 
+describe('location', () => {
+  it('names a timezone the browser clock can actually format', () => {
+    // `Intl` throws on an unknown zone, which would take the hero clock down.
+    expect(() => new Intl.DateTimeFormat('en-GB', { timeZone: profile.timezone })).not.toThrow();
+  });
+
+  it('is a timezone in the same place the location claims', () => {
+    const region = profile.location.split(',').pop()?.trim();
+    const zoneCity = profile.timezone.split('/').pop()?.replace(/_/g, ' ');
+    const city = profile.location.split(',')[0]?.trim();
+    expect(region, 'location should read "City, Country"').toBeTruthy();
+    // Not every IANA zone is named after its own city, but ours should be —
+    // it is the pairing that goes stale when only one of the two is edited.
+    expect(zoneCity).toBe(city);
+  });
+});
+
 describe('links', () => {
   const hrefs = [
     ...profile.socials.map((s) => s.href),

@@ -91,8 +91,9 @@ export const profile: Profile = {
   role: 'Ph.D. Candidate in Computer Science',
   affiliation: 'Camera Intelligence Lab, Peking University',
   affiliationHref: 'https://camera.pku.edu.cn',
-  location: 'Beijing, China',
-  timezone: 'Asia/Shanghai',
+  // Where I am right now, not where the Ph.D. is — the hero clock runs on this.
+  location: 'Tokyo, Japan',
+  timezone: 'Asia/Tokyo',
   portrait: {
     alt: 'Siqi Yang sitting on a grassy riverbank beneath cherry blossoms, camera in hand, looking up into the branches',
     // Date and body are read straight off the original file's EXIF.
