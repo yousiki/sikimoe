@@ -47,6 +47,13 @@ jobs:
       # deploy needs the repository as well as the build output.
       - uses: actions/checkout@v7
 
+      # bun.lock makes wrangler-action reach for bun whether or not
+      # `packageManager` says so, and the runner has no bun until this runs.
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
       - name: Download dist/
         uses: actions/download-artifact@v8
         with:
