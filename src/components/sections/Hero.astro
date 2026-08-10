@@ -47,11 +47,6 @@ import { profile } from '../../data/profile';
         <span class="text-faint/70">Local</span>
         <span class="text-muted tabular-nums" data-clock={profile.timezone}>--:--:--</span>
       </span>
-      {/* Tone marks must not be uppercased — `Sīqí` would become `SĪQÍ`. */}
-      <span class="hidden items-center gap-2 normal-case sm:flex">
-        <span class="text-faint/70 uppercase">Said</span>
-        <span class="text-muted">{profile.pronunciation}</span>
-      </span>
     </div>
 
     {/* ── name block ───────────────────────────────────────────────── */}

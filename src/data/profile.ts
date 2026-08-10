@@ -57,7 +57,6 @@ export interface Profile {
   readonly name: string;
   readonly nameLocal: string;
   readonly alias: string;
-  readonly pronunciation: string;
   readonly role: string;
   readonly affiliation: string;
   readonly affiliationHref: string;
@@ -86,8 +85,6 @@ export const profile: Profile = {
   name: 'Siqi Yang',
   nameLocal: '杨思祺',
   alias: 'YouSiki',
-  /** Pinyin with tone marks, family name first — as it is said in Mandarin. */
-  pronunciation: 'Yáng Sīqí',
   role: 'Ph.D. Candidate in Computer Science',
   affiliation: 'Camera Intelligence Lab, Peking University',
   affiliationHref: 'https://camera.pku.edu.cn',
