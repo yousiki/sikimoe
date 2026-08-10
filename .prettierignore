@@ -4,5 +4,4 @@ node_modules
 .wrangler
 bun.lock
 test-results
-playwright-report
 screenshots

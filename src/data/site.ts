@@ -12,10 +12,5 @@ export const SITE_DESCRIPTION =
 
 export const SITE_LOCALE = 'en';
 
-/** OpenGraph image, generated at build time into `/og.svg`. */
+/** OpenGraph card, committed to `public/` by `bun run assets`. */
 export const SITE_OG_IMAGE = '/og.png';
-
-export const SITE_THEME_COLOR = {
-  light: '#f6f4ef',
-  dark: '#08080a',
-} as const;

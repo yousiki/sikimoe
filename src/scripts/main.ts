@@ -33,6 +33,4 @@ onReady(() => {
 
   const canvas = document.querySelector<HTMLCanvasElement>('[data-spike-field]');
   if (canvas) initSpikeField(canvas);
-
-  document.documentElement.dataset['jsReady'] = '';
 });

@@ -11,7 +11,6 @@ export default defineConfig([
     'node_modules/**',
     '.wrangler/**',
     'test-results/**',
-    'playwright-report/**',
     'screenshots/**',
   ]),
   js.configs.recommended,

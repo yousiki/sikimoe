@@ -7,14 +7,13 @@ interface Props {
   text: string;
   /** Milliseconds added before this block's first character animates. */
   baseDelay?: number;
-  class?: string;
 }
 
-const { text, baseDelay = 0, class: className } = Astro.props;
+const { text, baseDelay = 0 } = Astro.props;
 const characters = [...text];
 ---
 
-<span class={className} style={`--char-base:${baseDelay}ms`} aria-label={text} data-split-text>
+<span style={`--char-base:${baseDelay}ms`} aria-label={text}>
   {
     characters.map((char, index) =>
       char === ' ' ? (

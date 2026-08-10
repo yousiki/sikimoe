@@ -108,13 +108,9 @@ const createSources = (): Source[] =>
     { cx: 0.52, cy: 0.82, rx: 0.26, ry: 0.1, speed: 0.031, phase: 4.4, radius: 0.36, power: 0.6 },
   ].map((s) => ({ ...s, x: s.cx, y: s.cy }));
 
-export interface SpikeFieldHandle {
-  destroy(): void;
-}
-
-export const initSpikeField = (canvas: HTMLCanvasElement): SpikeFieldHandle | null => {
+export const initSpikeField = (canvas: HTMLCanvasElement): void => {
   const context = canvas.getContext('2d', { alpha: true });
-  if (!context) return null;
+  if (!context) return;
 
   const ctx = context;
   const sources = createSources();
@@ -332,16 +328,4 @@ export const initSpikeField = (canvas: HTMLCanvasElement): SpikeFieldHandle | nu
     intersectionObserver.observe(canvas);
     start();
   }
-
-  return {
-    destroy(): void {
-      stop();
-      resizeObserver.disconnect();
-      intersectionObserver.disconnect();
-      canvas.removeEventListener('pointermove', onPointerMove);
-      canvas.removeEventListener('pointerleave', onPointerLeave);
-      document.removeEventListener('visibilitychange', onVisibility);
-      window.removeEventListener('themechange', onThemeChange);
-    },
-  };
 };

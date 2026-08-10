@@ -9,8 +9,6 @@ export const hasFinePointer = (): boolean =>
 export const clamp = (value: number, min: number, max: number): number =>
   value < min ? min : value > max ? max : value;
 
-export const lerp = (from: number, to: number, t: number): number => from + (to - from) * t;
-
 /** `document.querySelectorAll` with a concrete element type and a real array. */
 export const queryAll = <T extends Element = HTMLElement>(
   selector: string,
@@ -19,7 +17,8 @@ export const queryAll = <T extends Element = HTMLElement>(
 
 /**
  * Runs `fn` once the document is interactive. Astro injects module scripts with
- * `defer`, but view transitions can re-run them against a live document.
+ * `defer`, so the document is usually already parsed — the branch is for the
+ * case where it is not.
  */
 export const onReady = (fn: () => void): void => {
   if (document.readyState === 'loading') {

@@ -3,10 +3,9 @@ interface Props {
   index: string;
   title: string;
   lead?: string;
-  id?: string;
 }
 
-const { index, title, lead, id } = Astro.props;
+const { index, title, lead } = Astro.props;
 ---
 
 <header class="mb-12 md:mb-16">
@@ -16,7 +15,6 @@ const { index, title, lead, id } = Astro.props;
   </div>
 
   <h2
-    id={id}
     class="font-display mt-5 text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
     data-reveal
     style="--reveal-delay:80ms"

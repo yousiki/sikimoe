@@ -6,11 +6,12 @@ const LOCAL_URL = `http://localhost:${PORT}`;
 /**
  * Playwright is kept for screenshots only — `bun run shots` captures the pages
  * for design review, and `scripts/generate-assets.ts` renders the social card.
- * Nothing here asserts anything; there is no behavioural suite to run.
+ * Nothing here asserts anything, there is no behavioural suite to run, and CI
+ * never invokes it — so there are no retry, trace or reporter knobs to set.
  *
  * Point it at a deployment instead of the local build:
  *
- *   PLAYWRIGHT_BASE_URL=https://siki-moe-preview.pages.dev bun run shots
+ *   PLAYWRIGHT_BASE_URL=https://siki.moe bun run shots
  *
  * The local static server is skipped when an external target is given.
  */
@@ -19,20 +20,11 @@ const BASE_URL = EXTERNAL_URL ?? LOCAL_URL;
 
 export default defineConfig({
   testDir: './tests/visual',
-  outputDir: './test-results',
   fullyParallel: true,
-  forbidOnly: !!process.env['CI'],
-  retries: process.env['CI'] ? 2 : 0,
-  // Left unset off CI so Playwright picks a worker count from the machine.
-  ...(process.env['CI'] ? { workers: 2 } : {}),
-  reporter: process.env['CI'] ? [['github'], ['html', { open: 'never' }]] : [['list']],
-  timeout: 30_000,
-  expect: { timeout: 7_000 },
+  reporter: [['list']],
 
   use: {
     baseURL: BASE_URL,
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
   },
 
   projects: [
@@ -51,7 +43,7 @@ export default defineConfig({
         webServer: {
           command: `bun run scripts/serve.ts ${PORT}`,
           url: LOCAL_URL,
-          reuseExistingServer: !process.env['CI'],
+          reuseExistingServer: true,
           timeout: 120_000,
           stdout: 'ignore' as const,
           stderr: 'pipe' as const,

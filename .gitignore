@@ -1,21 +1,16 @@
 # build output
 dist/
 .astro/
-.output/
 
 # dependencies
 node_modules/
 
 # tooling / caches
 .wrangler/
-.vercel/
-.netlify/
 *.tsbuildinfo
 
 # test artifacts
 test-results/
-playwright-report/
-blob-report/
 playwright/.cache/
 screenshots/
 
