@@ -3,9 +3,12 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
+      interval: monthly
+    open-pull-requests-limit: 3
+    # TypeScript 7 drops the JS compiler API that eslint and `astro check` need.
+    ignore:
+      - dependency-name: typescript
+        versions: ['>= 7']
     groups:
       astro:
         patterns: ['astro', '@astrojs/*']
