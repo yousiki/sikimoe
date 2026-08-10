@@ -86,8 +86,8 @@ bun run cv            # pull the latest release into public/cv/
 `bun run build` runs it first, so a deploy always ships the newest CV it can
 reach. The PDFs are committed, like `public/og.png` — a build with no GitHub
 credentials keeps the vendored copies and only warns. `SKIP_CV_SYNC=1` skips the
-sync entirely. Authentication is `gh auth login` locally, or `CV_GITHUB_TOKEN` as
-a build variable in Cloudflare.
+sync entirely. Authentication is `gh auth login` locally, or a `CV_GITHUB_TOKEN`
+repository secret in CI.
 
 Regenerate the social card after changing the name, role, or palette:
 
@@ -121,27 +121,46 @@ declared in [`wrangler.jsonc`](wrangler.jsonc) as a `routes` entry with
 deploy. `siki.moe` is therefore version-controlled rather than a dashboard
 setting nobody remembers clicking. Pages has no equivalent field.
 
-Cloudflare builds and deploys straight from this repository — Workers Builds,
-connected to `main`:
+GitHub Actions does the deploying — not Workers Builds, which must stay
+disconnected from this repository or the two will publish over each other.
 
-| Build setting  | Value                 |
-| -------------- | --------------------- |
-| Build command  | `bun run build`       |
-| Deploy command | `npx wrangler deploy` |
-| Git branch     | `main`                |
-| Build variable | `CV_GITHUB_TOKEN`     |
+| Trigger                  | Workflow      | Command                    | Result                                |
+| ------------------------ | ------------- | -------------------------- | ------------------------------------- |
+| Pull request             | `ci.yml`      | `wrangler versions upload` | `pr-<n>-siki-moe.yousiki.workers.dev` |
+| Push to `main`           | `ci.yml`      | `wrangler versions upload` | `main-siki-moe.yousiki.workers.dev`   |
+| GitHub Release published | `release.yml` | `wrangler deploy`          | `siki.moe`                            |
 
-So **every push to `main` publishes**. There is no manual gate and no deploy
-workflow; `.github/workflows/ci.yml` runs format, lint, typecheck, unit tests and
-build on every push and pull request, and that is all GitHub does. Nothing waits
-for it — keep `bun run verify` green before pushing.
+So **`main` no longer publishes**. Only a release does, and only through
+`wrangler deploy` — the one command that applies the `routes` entry above.
+`wrangler versions upload` has no `--routes`, `--domain` or `--triggers` flag, so
+a preview is structurally incapable of touching `siki.moe`; that guarantee comes
+from the command rather than from a conditional someone could get wrong.
 
-`CV_GITHUB_TOKEN` is a _build_ variable, not a runtime one. Without it the build
-keeps the CV PDFs committed to `public/cv/` and only warns.
+Both workflows call [`verify.yml`](.github/workflows/verify.yml) first, so a
+deploy is gated on the same format, lint, typecheck, test and build run that a
+pull request gets, and `dist/` is built exactly once and handed on as an
+artifact — the bytes that were verified are the bytes that ship.
 
-To preview a branch instead of publishing it, enable non-production branch builds
-and set that deploy command to `npx wrangler versions upload`, which returns a
-preview URL without touching the active deployment.
+`workflow_dispatch` on `release.yml` deploys whichever ref you pick, which is how
+the site gets restored when there is no good version to roll back to. To roll
+back to one that exists:
+
+```bash
+wrangler versions list --name siki-moe
+wrangler versions deploy <version-id>@100% -y
+```
+
+Two repository secrets are required. `CLOUDFLARE_ACCOUNT_ID`, and a
+`CLOUDFLARE_API_TOKEN` holding Workers Scripts: Edit and Account Settings: Read
+on the account, plus Workers Routes: Edit and DNS: Edit on the `siki.moe` zone —
+the last one because `custom_domain` writes the DNS record itself.
+
+`CV_GITHUB_TOKEN` is optional, and a _build_ secret rather than a runtime one.
+Without it the build keeps the CV PDFs committed to `public/cv/` and only warns.
+
+`workers_dev` is off so the site answers on `siki.moe` and nowhere else;
+`preview_urls` has to then be turned back on explicitly, because it defaults to
+whatever `workers_dev` is. Only `wrangler deploy` writes either setting.
 
 `public/_headers` sets a strict Content-Security-Policy and immutable caching for
 fingerprinted assets; Workers parses it rather than serving it, and applies it at

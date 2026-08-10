@@ -21,4 +21,16 @@
    * deploy fails — see README.md § Deployment.
    */
   "routes": [{ "pattern": "siki.moe", "custom_domain": true }],
+  /*
+   * The site answers on siki.moe and nowhere else: `siki-moe.yousiki.workers.dev`
+   * would be a second indexable copy of the same pages.
+   *
+   * `preview_urls` defaults to whatever `workers_dev` is, so it has to be turned
+   * back on explicitly — the per-version URLs it controls are how `main` and every
+   * pull request get looked at before a release. They live at
+   * `<alias>-siki-moe.yousiki.workers.dev`; only `wrangler deploy` writes either
+   * of these settings, never `wrangler versions upload`.
+   */
+  "workers_dev": false,
+  "preview_urls": true,
 }
