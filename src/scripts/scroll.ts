@@ -1,10 +1,19 @@
-import Lenis from 'lenis';
-
 import { prefersReducedMotion, queryAll } from './env';
 
 /** Momentum scrolling, unless the visitor asked for reduced motion. */
-export const initSmoothScroll = (): void => {
+export const initSmoothScroll = async (): Promise<void> => {
   if (prefersReducedMotion()) return;
+
+  /*
+   * ~8 kB gzipped, and unreachable for anyone who asked for reduced motion.
+   * Importing it after the guard keeps it out of the entry chunk.
+   *
+   * The cost is that the anchor handlers below bind a moment after first paint:
+   * a hash link clicked before then takes the browser's native jump — same
+   * destination, no easing. That is a better trade than making every visitor
+   * download Lenis before the page can respond to anything.
+   */
+  const { default: Lenis } = await import('lenis');
 
   const lenis = new Lenis({
     duration: 1.05,

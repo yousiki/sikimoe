@@ -31,8 +31,25 @@ reduced motion.
 | Tests     | Vitest (units). Playwright is kept for screenshots only — there is no browser suite                                                         |
 | Hosting   | Cloudflare Workers, assets-only — the custom domain lives in `wrangler.jsonc`                                                               |
 
-Total shipped JavaScript is one ~30 kB gzipped module; the page renders and reads
-completely without it.
+The page renders and reads completely without JavaScript. What it does ship is
+split along the guards the code already had, so nobody downloads an animation
+library that could not have run for them:
+
+| Visitor                          | Chunks requested     | gzipped     |
+| -------------------------------- | -------------------- | ----------- |
+| `prefers-reduced-motion: reduce` | entry + spike canvas | **5.9 kB**  |
+| Touch device                     | + Lenis              | **11.3 kB** |
+| Pointer-fine desktop             | + Motion             | 32.5 kB     |
+
+The entry module is 3.9 kB; Motion (21.2 kB) and Lenis (5.4 kB) are `import()`ed
+_after_ `hasFinePointer()` and `prefersReducedMotion()` have decided whether they
+can be used at all. Previously both were static imports, which put all 29.0 kB of
+them in the entry module — on the critical path, for every visitor, including the
+ones whose device made them unreachable.
+
+A desktop visitor now transfers slightly _more_ in total (32.5 kB against 31.0 kB),
+because three chunks compress a little worse than one. That is the trade: the
+blocking path shrinks 7.5×, and phones drop by two thirds.
 
 ## Getting started
 
@@ -165,6 +182,55 @@ whatever `workers_dev` is. Only `wrangler deploy` writes either setting.
 `public/_headers` sets a strict Content-Security-Policy and immutable caching for
 fingerprinted assets; Workers parses it rather than serving it, and applies it at
 the edge.
+
+Its `script-src` names the two inline scripts — the theme bootstrap and the
+JSON-LD block — by SHA-256 rather than allowing `'unsafe-inline'`. Those hashes
+cannot live in the template, because they change whenever `BaseHead.astro` or
+`src/data/profile.ts` does, so `public/_headers` carries a `{{SCRIPT_HASHES}}`
+placeholder and [`scripts/build-headers.ts`](scripts/build-headers.ts) substitutes
+the real values into `dist/_headers` at the end of every build, reading them out
+of the HTML that was actually emitted. It exits non-zero rather than write a
+policy with nothing in that slot.
+
+This is worth knowing because of how the failure looks: a CSP carrying any hash
+makes browsers ignore `'unsafe-inline'` altogether, so a stale hash does not
+degrade to the old permissive policy — it blocks the theme bootstrap, and the site
+paints the wrong palette for one frame before correcting itself. Nothing about the
+build fails. `bun run serve` therefore applies `dist/_headers` as Cloudflare would,
+which makes that class of mistake visible in a local browser console instead of
+only in production. Two zone settings can reintroduce it from outside the
+repository: **Rocket Loader** and any HTML-minifying feature rewrite inline
+scripts after the hashes were computed, so both need to stay off.
+
+## Analytics
+
+Page views and Core Web Vitals come from [Cloudflare Web
+Analytics](https://developers.cloudflare.com/web-analytics/), enabled on the
+`siki.moe` zone with **automatic injection** — the default when you add a proxied
+hostname under Web Analytics in the dashboard. It is the one piece of this site's
+configuration that is not in this repository, which is a real cost; it buys three
+things that the manual JS snippet does not:
+
+- The beacon reports to `siki.moe/cdn-cgi/rum`, first-party, so `connect-src` in
+  the CSP stays `'self'`. A manual snippet reports to `cloudflareinsights.com` and
+  would need that origin allowed.
+- Cloudflare adds an `integrity` attribute to the injected tag. The docs are
+  explicit that manual embeds cannot be given SRI, because the beacon is not
+  version-pinned.
+- Preview deploys land on `*.workers.dev`, which is not on the zone and so is
+  never injected. Because `dist/` is built once in `verify.yml` and handed to both
+  the preview and the production deploy, a token committed to the repository would
+  necessarily report from previews too.
+
+No cookies, no page-view sampling, and query strings are not logged. The only
+trace in this repository is `static.cloudflareinsights.com/beacon.min.js` in the
+`script-src` above.
+
+Two things silently break it. An HTML response carrying `Cache-Control: public,
+no-transform` stops the injection outright — so if HTML caching is ever added to
+`public/_headers`, leave `no-transform` out of it. And the dashboard's **Manage
+site** must stay on automatic rather than "Enable with JS Snippet installation";
+the modes are alternatives, and running both would double-count.
 
 ## Licence
 

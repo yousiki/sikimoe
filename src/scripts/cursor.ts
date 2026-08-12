@@ -1,5 +1,3 @@
-import { animate } from 'motion';
-
 import { hasFinePointer, prefersReducedMotion, queryAll } from './env';
 
 /**
@@ -68,10 +66,21 @@ export const initCursor = (): void => {
 };
 
 /** Elements tagged `data-magnetic` drift toward the pointer while it is near. */
-export const initMagnetic = (): void => {
+export const initMagnetic = async (): Promise<void> => {
   if (!hasFinePointer() || prefersReducedMotion()) return;
 
-  for (const el of queryAll<HTMLElement>('[data-magnetic]')) {
+  const targets = queryAll<HTMLElement>('[data-magnetic]');
+  if (targets.length === 0) return;
+
+  /*
+   * `motion` is ~16 kB gzipped and this is the only place that reaches for it,
+   * behind a guard no touch device and no reduced-motion visitor ever passes.
+   * Importing it *after* the guard keeps it out of the entry chunk, so those
+   * visitors never download a library that could not have run for them.
+   */
+  const { animate } = await import('motion');
+
+  for (const el of targets) {
     const strength = Number(el.dataset['magnetic'] || 0.32);
 
     const onMove = (event: PointerEvent): void => {
