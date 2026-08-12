@@ -27,9 +27,15 @@ onReady(() => {
   initTilt();
   initCopy();
   initCursor();
-  initMagnetic();
   initScrollUi();
-  initSmoothScroll();
+
+  /*
+   * These two load their animation library after their own device guards, so
+   * they settle a tick later than everything above. Deliberately not awaited:
+   * nothing here depends on them, and awaiting would hold up the rest.
+   */
+  void initMagnetic();
+  void initSmoothScroll();
 
   const canvas = document.querySelector<HTMLCanvasElement>('[data-spike-field]');
   if (canvas) initSpikeField(canvas);
