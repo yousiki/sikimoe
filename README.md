@@ -25,7 +25,7 @@ reduced motion.
 | Framework | [Astro 7](https://astro.build) — fully static output, zero client framework                                                                 |
 | Styling   | [Tailwind CSS 4](https://tailwindcss.com) with a CSS-variable palette                                                                       |
 | Animation | [Motion](https://motion.dev), [Lenis](https://lenis.darkroom.engineering), CSS, and a hand-written canvas simulation                        |
-| Type      | Instrument Serif · Geist · Geist Mono, self-hosted via Fontsource                                                                           |
+| Type      | Instrument Serif · Geist · Geist Mono, self-hosted via Fontsource; the italic and CJK faces are subset in-repo                              |
 | Language  | TypeScript everywhere — including `astro.config.ts`, `eslint.config.ts` and `prettier.config.ts`. There is no `.js` file in this repository |
 | Runtime   | [Bun](https://bun.com) for installs, scripts, and the local static server                                                                   |
 | Tests     | Vitest (units). Playwright is kept for screenshots only — there is no browser suite                                                         |
@@ -60,19 +60,20 @@ bun run dev          # http://localhost:4321
 
 ### Everyday commands
 
-| Command          | What it does                                    |
-| ---------------- | ----------------------------------------------- |
-| `bun run dev`    | Dev server with HMR                             |
-| `bun run build`  | Static build into `dist/`                       |
-| `bun run serve`  | Serve `dist/` exactly as it will ship           |
-| `bun run check`  | `astro check` — types across `.ts` and `.astro` |
-| `bun run lint`   | ESLint 10, flat config                          |
-| `bun run format` | Prettier                                        |
-| `bun run test`   | Vitest unit tests                               |
-| `bun run shots`  | Write review screenshots to `screenshots/`      |
-| `bun run assets` | Regenerate `public/og.png` and the icons        |
-| `bun run cv`     | Pull the CV PDFs into `public/cv/`              |
-| `bun run verify` | Everything above that can fail CI, in order     |
+| Command                | What it does                                        |
+| ---------------------- | --------------------------------------------------- |
+| `bun run dev`          | Dev server with HMR                                 |
+| `bun run build`        | Static build into `dist/`                           |
+| `bun run serve`        | Serve `dist/` exactly as it will ship               |
+| `bun run check`        | `astro check` — types across `.ts` and `.astro`     |
+| `bun run lint`         | ESLint 10, flat config                              |
+| `bun run format`       | Prettier                                            |
+| `bun run test`         | Vitest unit tests                                   |
+| `bun run shots`        | Write review screenshots to `screenshots/`          |
+| `bun run assets`       | Regenerate `public/og.png` and the icons            |
+| `bun run cv`           | Pull the CV PDFs into `public/cv/`                  |
+| `bun run fonts:italic` | Rebuild the italic subset after italic text changes |
+| `bun run verify`       | Everything above that can fail CI, in order         |
 
 Before the first `shots` or `assets` run, which drive a real browser:
 
@@ -124,6 +125,33 @@ It screenshots the real `/og` route, so the card can never drift from the site.
   inline script before first paint, and falls back to the OS preference.
 - The full-screen index on narrow viewports traps focus and returns it to its
   trigger on close.
+
+## The LCP element
+
+The hero paragraph is the largest thing on the page, so it is what Chrome times
+LCP against — and it is the one element on the site that deliberately does _not_
+use the `data-reveal` scroll animation. Two properties of that rule each cost
+about a second, both measured at 1638 kbps / 150 ms RTT / CPU 4×, median of five
+loads:
+
+| Entrance                                | LCP       |
+| --------------------------------------- | --------- |
+| `data-reveal`, 560 ms delay, 0.9 s fade | 2664 ms   |
+| the same with no delay                  | 2516 ms   |
+| CSS animation, `opacity: 0 → 1`         | 2504 ms   |
+| CSS animation, `opacity: 0.35 → 1`      | **= FCP** |
+
+Chrome will not accept a fully transparent element as an LCP candidate, so a fade
+from zero defers LCP until the fade has run. That penalty is a flat ~1100 ms — the
+same whether the fade lasts 0.2 s or 0.9 s, and whether the delay is 0 or 560 ms,
+which is why shortening either one barely moved it. Starting at 0.35 keeps the
+element eligible from its first paint and still reads as a fade. `data-reveal` is
+also released by JS, so it waited on the module as well; the replacement is pure
+CSS.
+
+`tests/unit/lcp.test.ts` fails if the element goes back to `data-reveal` or if
+that 0.35 becomes 0 — neither would break the page, or any other test, or the
+build.
 
 ## Deployment
 
