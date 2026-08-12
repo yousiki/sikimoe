@@ -64,7 +64,12 @@ import { profile } from '../../data/profile';
         <span class="block pl-[0.08em] italic"><SplitText text="Yang" baseDelay={380} /></span>
       </h1>
 
-      <div class="mt-2" data-reveal style="--reveal-delay:560ms">
+      {
+        /* The largest element on the page, and therefore the LCP element — which
+           is why it animates through `hero-intro` below rather than `data-reveal`
+           like everything else. See the note on that rule. */
+      }
+      <div class="hero-intro mt-2">
         <p class="text-muted max-w-md text-base leading-relaxed sm:text-lg">
           {profile.role} at the{' '}
           <a
@@ -136,6 +141,45 @@ import { profile } from '../../data/profile';
 </section>
 
 <style>
+  /*
+   * The hero paragraph is the LCP element, so this is deliberately not
+   * `data-reveal`. Two properties of that rule each cost about a second, and
+   * both were measured (mobile throttling: 1638 kbps, 150 ms RTT, CPU 4×):
+   *
+   *   - `data-reveal` starts at `opacity: 0`, and Chrome refuses a fully
+   *     transparent element as an LCP candidate. The element only becomes
+   *     eligible once it has faded in, which costs a flat ~1100 ms — the same
+   *     whether the fade runs for 0.2 s or 0.9 s, and whether the delay is 0 ms
+   *     or 560 ms. Starting at 0.35 instead keeps it eligible from the first
+   *     paint, and 0.35 → 1 still reads as a fade.
+   *   - `data-reveal` is released by JS (`initReveal`), so it also waits for the
+   *     module to load and run. A CSS animation does not.
+   *
+   * Together: LCP 2664 ms → equal to FCP, with the entrance kept. If this ever
+   * goes back to `data-reveal`, or the 0.35 becomes 0, the site returns to a
+   * "needs improvement" LCP and nothing fails to tell you.
+   */
+  .hero-intro {
+    animation: hero-intro 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes hero-intro {
+    from {
+      opacity: 0.35;
+      transform: translate3d(0, 1.75rem, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-intro {
+      animation: none;
+    }
+  }
+
   /* Pinned to the one weight LXGW WenKai TC ships. The Song face this replaced
      was variable, and carried its horizontals as hairlines that needed 500 to
      survive light-on-dark; a kai face is brush-derived and holds an even stroke,

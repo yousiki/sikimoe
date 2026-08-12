@@ -1,6 +1,6 @@
 {
   "name": "siki-moe",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "private": true,
   "type": "module",
   "description": "Personal site of Siqi Yang (YouSiki) — siki.moe",
@@ -17,6 +17,7 @@
     "cv": "bun run scripts/sync-cv.ts",
     "assets": "bun run build && bun run scripts/generate-assets.ts",
     "fonts:cjk": "bun run scripts/fetch-cjk-font.ts",
+    "fonts:italic": "bun run scripts/fetch-italic-font.ts",
     "sync": "astro sync",
     "check": "astro check",
     "lint": "eslint .",
