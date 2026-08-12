@@ -44,15 +44,20 @@ describe('content security policy', () => {
   it('admits the analytics beacon and nothing else third-party', () => {
     /*
      * Cloudflare Web Analytics is injected into the HTML by the zone, not by this
-     * repository, so `script-src` has to name its origin (see README § Analytics).
-     * Its beacon reports to siki.moe/cdn-cgi/rum, which is why `connect-src` below
-     * is still first-party only.
+     * repository (see README § Analytics). Its beacon reports to
+     * siki.moe/cdn-cgi/rum, which is why `connect-src` below is first-party only.
+     *
+     * The *origin*, deliberately, not the `/beacon.min.js` path the Cloudflare
+     * docs suggest: automatic injection appends a rotating version segment
+     * (`/beacon.min.js/v4513226…`), and a CSP path not ending in `/` must match
+     * exactly — so the documented value blocked the beacon in production. Do not
+     * "tighten" this back to a path.
      *
      * This started life as "refuses third-party script outright". It is narrowed
-     * rather than deleted so it keeps refusing the *second* third-party script.
+     * rather than deleted so it keeps refusing the *second* third-party origin.
      */
     expect(directives.get('script-src')?.filter((v) => v.startsWith('http'))).toEqual([
-      'https://static.cloudflareinsights.com/beacon.min.js',
+      'https://static.cloudflareinsights.com',
     ]);
     expect(directives.get('connect-src')).toEqual(["'self'"]);
     expect(directives.get('frame-ancestors')).toEqual(["'none'"]);

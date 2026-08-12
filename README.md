@@ -223,8 +223,16 @@ things that the manual JS snippet does not:
   necessarily report from previews too.
 
 No cookies, no page-view sampling, and query strings are not logged. The only
-trace in this repository is `static.cloudflareinsights.com/beacon.min.js` in the
+trace in this repository is the `static.cloudflareinsights.com` origin in the
 `script-src` above.
+
+That is the origin and not the `/beacon.min.js` path the Cloudflare docs suggest,
+which is worth knowing before anyone tightens it: automatic injection appends a
+rotating version segment (`/beacon.min.js/v4513226…`), and a CSP source whose path
+does not end in `/` has to match exactly. The documented value therefore blocks
+the beacon — it did, in production, for the few minutes between v2.2.0 and
+v2.2.1. A trailing slash is not the fix either, since it would then miss the bare
+unversioned URL. `headers.test.ts` pins the origin form.
 
 Two things silently break it. An HTML response carrying `Cache-Control: public,
 no-transform` stops the injection outright — so if HTML caching is ever added to
