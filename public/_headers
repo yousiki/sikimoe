@@ -31,10 +31,18 @@
   # HTML by the zone rather than by this repository (see README.md § Analytics).
   # Its beacon reports to siki.moe/cdn-cgi/rum, so `connect-src` stays 'self'.
   #
+  # The origin is allowed rather than the `/beacon.min.js` path the Cloudflare
+  # docs suggest, because automatic injection appends a version segment —
+  # `/beacon.min.js/v4513226…` — and a CSP path not ending in `/` must match
+  # exactly. Pinning the path blocked the beacon in production. A trailing slash
+  # would then miss the bare unversioned URL, and the version rotates whenever
+  # Cloudflare ships a new beacon, so the origin is the only stable form. That
+  # host serves nothing but this script.
+  #
   # `style-src` keeps 'unsafe-inline': Astro's `inlineStylesheets: 'auto'` puts
   # small stylesheets straight into the document, and component `<style>` blocks
   # are inline by nature.
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' {{SCRIPT_HASHES}} https://static.cloudflareinsights.com/beacon.min.js; connect-src 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' {{SCRIPT_HASHES}} https://static.cloudflareinsights.com; connect-src 'self'; object-src 'none'; upgrade-insecure-requests
 
 # Fingerprinted build output — safe to keep forever.
 /_astro/*
