@@ -20,6 +20,7 @@ import geistSans from '@fontsource-variable/geist/files/geist-latin-wght-normal.
 import geistMono from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url';
 import serifRoman from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
 
+import avatar from '../assets/avatar.jpg';
 import { SITE_DESCRIPTION, SITE_LOCALE, SITE_OG_IMAGE, SITE_TITLE, SITE_URL } from '../data/site';
 import { profile } from '../data/profile';
 
@@ -33,6 +34,16 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE_URL).href;
 const ogImage = new URL(SITE_OG_IMAGE, Astro.site ?? SITE_URL).href;
 
+/*
+ * `Person.image` and `og:image` are not the same picture. The card is a
+ * typographic banner, which is right for a link unfurl and wrong for the slot a
+ * knowledge panel reserves for a face — so the schema gets the avatar the header
+ * already shows. The bare import rather than `getImage`: the file is a 460×460
+ * JPEG at 24 kB, nothing a crawler needs is improved by re-encoding it, and this
+ * way there is one avatar on disk instead of two.
+ */
+const avatarImage = new URL(avatar.src, Astro.site ?? SITE_URL).href;
+
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -41,7 +52,7 @@ const personSchema = {
   jobTitle: profile.role,
   email: `mailto:${profile.email}`,
   url: SITE_URL,
-  image: ogImage,
+  image: avatarImage,
   description: SITE_DESCRIPTION,
   affiliation: {
     '@type': 'CollegeOrUniversity',
