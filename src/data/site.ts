@@ -5,7 +5,16 @@
 
 export const SITE_URL = 'https://siki.moe';
 
-export const SITE_TITLE = 'Siki';
+/*
+ * The name first, because the overwhelming majority of queries that reach this
+ * site are the name — and because this string is what a bookmark, a shared
+ * link, and a recruiter's browser history all keep. The three subjects after it
+ * are the ones the page is actually about; a bare `Siki` matched none of them
+ * and identified nobody. Long enough that a search result will clip the tail,
+ * which costs nothing: the match runs against the whole title either way, and
+ * everything load-bearing is in front of the dash.
+ */
+export const SITE_TITLE = 'Siqi Yang (YouSiki) — Spike Cameras, Video Generation & World Models';
 
 export const SITE_DESCRIPTION =
   'Ph.D. candidate at Peking University working on neuromorphic imaging, video generation, and world models.';

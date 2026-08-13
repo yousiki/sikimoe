@@ -1,0 +1,41 @@
+# Routes the previous multi-page site served, pointed at the part of the single
+# page that absorbed them. Everything here 404s otherwise: the rebuild in
+# e32628c dropped the pages, and the assets-only Worker has no route left to
+# match, so a bookmark or a search result from before the rebuild dead-ends.
+#
+# 301 rather than 302 on all of them — these moved for good, and a permanent
+# redirect is what tells a crawler to replace the old URL with the new one
+# instead of keeping both.
+#
+# Each path is listed twice: bare, and with a `/*` splat. The splat is what
+# catches the trailing slash the old build format emitted (`/about/`), and for
+# the collections it also catches their entries and their paginated pages, all of
+# which now live inside the section they belonged to.
+#
+# Cloudflare's limit is 100 redirects with a splat or a placeholder in them —
+# these are dynamic rules under that rule, so keep the list short by widening a
+# pattern rather than by enumerating slugs.
+
+# The three standalone pages. `/terms` had no content worth keeping; the home
+# page is a better answer to it than a 404.
+/about        /#research      301
+/about/*      /#research      301
+/contact      /#contact       301
+/contact/*    /#contact       301
+/terms        /               301
+/terms/*      /               301
+
+# The collections. Publications kept their section; projects were folded into
+# the interests cards, which is the nearest thing the page still has to them.
+/publications    /#publications  301
+/publications/*  /#publications  301
+/projects        /#interests     301
+/projects/*      /#interests     301
+
+# The blog, its tag index, and its feed. Nothing replaced them, so they go to the
+# top of the page rather than to a section that would only half-answer the link.
+/blog       /  301
+/blog/*     /  301
+/tags       /  301
+/tags/*     /  301
+/rss.xml    /  301

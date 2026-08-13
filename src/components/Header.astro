@@ -6,24 +6,44 @@ import Icon from './Icon.astro';
 import avatar from '../assets/avatar.jpg';
 import { profile } from '../data/profile';
 
+interface NavSection {
+  readonly id: string;
+  readonly label: string;
+  /** What the desktop bar shows when the full label would crowd its neighbours. */
+  readonly short?: string;
+  /** The number the section heading prints in the body; the hero prints none. */
+  readonly index?: string;
+  /** Whether the desktop bar has room for it. The overlay always lists it. */
+  readonly bar?: boolean;
+}
+
 /**
  * `About` is the hero itself — the name, the role and the affiliation are the
  * whole of it, so the link goes to the top of the page rather than to a section
- * of its own. `short` is what the desktop bar shows when the full label would
- * crowd its neighbours; the overlay always sets the full one.
+ * of its own, and it carries no number because the hero shows none.
+ *
+ * `index` repeats what the section heading prints rather than deriving it from
+ * the array position: the two are not the same sequence, since `About` occupies
+ * a row here and no number there. Deriving it is what made the overlay call
+ * Contact 06 while the section called itself 07, and every row in between off by
+ * one the same way.
+ *
+ * `bar` is the other half of that split. The overlay is the complete index —
+ * it is what the button opening it says it is — while the desktop bar takes the
+ * curated subset that fits between the avatar and the CV menu at 768 px.
  */
-const sections = [
-  { id: 'top', label: 'About' },
-  { id: 'research', label: 'Research' },
-  { id: 'interests', label: 'Interests' },
-  { id: 'path', label: 'Path' },
-  { id: 'publications', label: 'Publication', short: 'Pub' },
-  { id: 'contact', label: 'Contact' },
-] as const;
+const sections: readonly NavSection[] = [
+  { id: 'top', label: 'About', bar: true },
+  { id: 'research', label: 'Research', index: '01', bar: true },
+  { id: 'interests', label: 'Interests', index: '02', bar: true },
+  { id: 'path', label: 'Path', index: '03', bar: true },
+  { id: 'publications', label: 'Publications', short: 'Papers', index: '04', bar: true },
+  { id: 'recognition', label: 'Recognition', index: '05' },
+  { id: 'toolkit', label: 'Toolkit', index: '06' },
+  { id: 'contact', label: 'Contact', index: '07', bar: true },
+];
 
-/** The bar shows the abbreviation; the accessible name stays the full word. */
-const abbreviated = (section: (typeof sections)[number]): { text: string; label?: string } =>
-  'short' in section ? { text: section.short, label: section.label } : { text: section.label };
+const barSections = sections.filter((section) => section.bar);
 ---
 
 <div
@@ -62,15 +82,15 @@ const abbreviated = (section: (typeof sections)[number]): { text: string; label?
 
     <ul class="hidden items-center gap-1 md:flex">
       {
-        sections.map((section) => (
+        barSections.map((section) => (
           <li>
             <a
               href={`#${section.id}`}
               data-section-link
-              aria-label={abbreviated(section).label}
+              aria-label={section.short ? section.label : undefined}
               class="text-muted hover:text-ink relative rounded-full px-3 py-1.5 font-mono text-xs tracking-wider whitespace-nowrap uppercase transition-colors duration-300"
             >
-              {abbreviated(section).text}
+              {section.short ?? section.label}
             </a>
           </li>
         ))
@@ -130,7 +150,11 @@ const abbreviated = (section: (typeof sections)[number]): { text: string; label?
             href={`#${section.id}`}
             class="flex items-baseline gap-5 py-4 transition-colors duration-300"
           >
-            <span class="text-faint font-mono text-xs tabular-nums">0{index + 1}</span>
+            {/* Fixed width so the unnumbered `About` row leaves the column
+                standing instead of pulling its label left. */}
+            <span class="text-faint inline-block w-4 font-mono text-xs tabular-nums">
+              {section.index}
+            </span>
             <span class="font-display text-4xl leading-tight">{section.label}</span>
           </a>
         </li>
