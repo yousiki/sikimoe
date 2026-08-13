@@ -33,4 +33,32 @@
    */
   "workers_dev": false,
   "preview_urls": true,
+  /*
+   * Observability is otherwise per-Worker dashboard state, so it is spelled out
+   * here — including the values that already are the defaults — to make every
+   * deploy re-assert the same settings instead of inheriting whatever the
+   * account or a past dashboard click left behind.
+   *
+   * The nested `enabled` flags win over the top-level one, so this is: logs on,
+   * traces off. Both keep `persist: true`, which is what makes a record
+   * queryable in the dashboard rather than merely streamed to `wrangler tail`.
+   *
+   * Assets-only means no script is invoked, so nothing here has anything to
+   * report today; it is a floor for the day this Worker grows a `main`.
+   */
+  "observability": {
+    "enabled": false,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true,
+    },
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1,
+    },
+  },
 }
