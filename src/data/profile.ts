@@ -53,6 +53,21 @@ export interface SkillGroup {
   readonly items: readonly string[];
 }
 
+export interface OpenSourceLink {
+  readonly label: string;
+  readonly href: string;
+}
+
+export interface OpenSourceEntry {
+  readonly kind: 'own' | 'upstream';
+  readonly label: string;
+  readonly name: string;
+  readonly description: string;
+  readonly href: string;
+  readonly tags: readonly string[];
+  readonly links?: readonly OpenSourceLink[];
+}
+
 export interface CvEdition {
   /** Matches the `resume-<id>.typ` entry point and the released asset name. */
   readonly id: 'en' | 'zh' | 'en-zh';
@@ -91,6 +106,7 @@ export interface Profile {
   readonly publications: readonly Publication[];
   readonly awards: readonly Award[];
   readonly skills: readonly SkillGroup[];
+  readonly openSource: readonly OpenSourceEntry[];
   readonly service: readonly SkillGroup[];
 }
 
@@ -496,6 +512,119 @@ export const profile: Profile = {
       items: ['NeRF', '3DGS', 'Differentiable Rendering', 'Spike Sensor Pipeline'],
     },
     { label: 'Infrastructure', items: ['Docker', 'Ray', 'Cloudflare', 'GCP', 'Git'] },
+  ],
+
+  openSource: [
+    {
+      kind: 'own',
+      label: 'Own project',
+      name: 'cloudflare-zotero-mcp',
+      description:
+        'A remote Zotero MCP server on Cloudflare Workers, with full metadata and WebDAV PDF read/write, OAuth, and hybrid semantic search.',
+      href: 'https://github.com/yousiki/cloudflare-zotero-mcp',
+      tags: ['TypeScript', 'Cloudflare Workers', 'MCP', 'Zotero', 'WebDAV'],
+    },
+    {
+      kind: 'upstream',
+      label: 'Upstream contribution',
+      name: 'junhoyeo/tokscale',
+      description:
+        'Added Jcode support, then fixed cached-token accounting and macOS configuration paths.',
+      href: 'https://github.com/junhoyeo/tokscale',
+      tags: ['Rust', 'CLI', 'Coding Agents'],
+      links: [
+        { label: '#468 · merged', href: 'https://github.com/junhoyeo/tokscale/pull/468' },
+        { label: '#718 · merged', href: 'https://github.com/junhoyeo/tokscale/pull/718' },
+        { label: '#937 · merged', href: 'https://github.com/junhoyeo/tokscale/pull/937' },
+      ],
+    },
+    {
+      kind: 'own',
+      label: 'Own project',
+      name: 'cloudflare-workers-mikan',
+      description:
+        'A serverless mirror of Mikan on Cloudflare Workers, including account flows, custom domains and a live deployment.',
+      href: 'https://github.com/yousiki/cloudflare-workers-mikan',
+      tags: ['TypeScript', 'Cloudflare Workers', 'Hono', 'Serverless'],
+    },
+    {
+      kind: 'upstream',
+      label: 'Upstream commit · 2019',
+      name: 'WakeupSchedule_Kotlin',
+      description:
+        'Fixed PKU course imports by skipping unselected rows, correcting week parsing and restoring the elective-system URL.',
+      href: 'https://github.com/tKM9WsmQUaUgNttn3DGUsHkxG8/WakeupSchedule_Kotlin',
+      tags: ['Kotlin', 'Android', 'PKU'],
+      links: [
+        {
+          label: 'e26d321 · commit',
+          href: 'https://github.com/tKM9WsmQUaUgNttn3DGUsHkxG8/WakeupSchedule_Kotlin/commit/e26d32185fc3460f10d4246945df8243e42fb64d',
+        },
+      ],
+    },
+    {
+      kind: 'own',
+      label: 'Learning project',
+      name: 'PKU-Racket',
+      description:
+        'Functional-programming exercises spanning SICP, continuations, interpreters, amb evaluation and register machines.',
+      href: 'https://github.com/yousiki/PKU-Racket',
+      tags: ['Racket', 'SICP', 'Functional Programming'],
+    },
+    {
+      kind: 'upstream',
+      label: 'Upstream contribution',
+      name: 'numtide/treefmt-nix',
+      description: 'Added isort as a supported formatter, including its Nix module and checks.',
+      href: 'https://github.com/numtide/treefmt-nix',
+      tags: ['Nix', 'isort', 'Formatting'],
+      links: [{ label: '#87 · merged', href: 'https://github.com/numtide/treefmt-nix/pull/87' }],
+    },
+    {
+      kind: 'own',
+      label: 'Learning project',
+      name: 'SoftwareFoundations',
+      description:
+        'Coq proofs and exercises from Software Foundations, covering induction, tactics, logic, proof objects and IMP.',
+      href: 'https://github.com/yousiki/SoftwareFoundations',
+      tags: ['Coq', 'Formal Methods', 'Proofs'],
+    },
+    {
+      kind: 'upstream',
+      label: 'Upstream contribution',
+      name: 'kaitranntt/ccs',
+      description:
+        'Corrected Codex and Claude quota parsing across additional rate limits and utilization payloads.',
+      href: 'https://github.com/kaitranntt/ccs',
+      tags: ['TypeScript', 'Codex', 'Claude'],
+      links: [
+        { label: '#1113 · merged', href: 'https://github.com/kaitranntt/ccs/pull/1113' },
+        { label: '#1114 · merged', href: 'https://github.com/kaitranntt/ccs/pull/1114' },
+      ],
+    },
+    {
+      kind: 'own',
+      label: 'Learning project',
+      name: 'PyTorch-FBS',
+      description:
+        'A PyTorch implementation of Feature Boosting and Suppression for input-dependent dynamic channel pruning.',
+      href: 'https://github.com/yousiki/PyTorch-FBS',
+      tags: ['Python', 'PyTorch', 'Dynamic Pruning'],
+    },
+    {
+      kind: 'upstream',
+      label: 'Upstream contribution',
+      name: 'yuhp/opencode-models-discovery',
+      description: 'Fixed models.dev matching for models served by custom providers.',
+      href: 'https://github.com/yuhp/opencode-models-discovery',
+      tags: ['TypeScript', 'OpenCode', 'models.dev'],
+      links: [
+        {
+          label: '#39 · merged',
+          href: 'https://github.com/yuhp/opencode-models-discovery/pull/39',
+        },
+      ],
+    },
   ],
 
   service: [

@@ -35,12 +35,13 @@ interface NavSection {
 const sections: readonly NavSection[] = [
   { id: 'top', label: 'About', bar: true },
   { id: 'research', label: 'Research', index: '01', bar: true },
-  { id: 'interests', label: 'Interests', index: '02', bar: true },
+  { id: 'interests', label: 'Interests', index: '02' },
   { id: 'path', label: 'Path', index: '03', bar: true },
   { id: 'publications', label: 'Publications', short: 'Papers', index: '04', bar: true },
   { id: 'recognition', label: 'Recognition', index: '05' },
   { id: 'toolkit', label: 'Toolkit', index: '06' },
-  { id: 'contact', label: 'Contact', index: '07', bar: true },
+  { id: 'open-source', label: 'Open Source', short: 'OSS', index: '07', bar: true },
+  { id: 'contact', label: 'Contact', index: '08', bar: true },
 ];
 
 const barSections = sections.filter((section) => section.bar);

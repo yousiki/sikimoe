@@ -84,7 +84,7 @@ bunx playwright install chromium
 ## Editing the content
 
 Everything is in `src/data/profile.ts`: bio, research interests, timeline,
-publications, awards, skills, links. It is fully typed, and the unit tests assert
+publications, awards, skills, open-source work, links. It is fully typed, and the unit tests assert
 the invariants that the layout quietly depends on — the timeline is
 reverse-chronological, every publication lists the author, every link is absolute
 and HTTPS, equal-contribution asterisks come with a matching note. Adding a paper

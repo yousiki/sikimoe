@@ -34,6 +34,10 @@ describe('links', () => {
     ...profile.socials.map((s) => s.href),
     ...profile.timeline.flatMap((t) => (t.href ? [t.href] : [])),
     ...publicationsByYear.flatMap((p) => (p.href ? [p.href] : [])),
+    ...profile.openSource.flatMap((entry) => [
+      entry.href,
+      ...(entry.links?.map((link) => link.href) ?? []),
+    ]),
     profile.affiliationHref,
   ];
 
@@ -145,6 +149,14 @@ describe('interests', () => {
     for (const interest of profile.interests) {
       expect(areas.has(interest.title.toLowerCase()), interest.title).toBe(false);
     }
+  });
+});
+
+describe('open source', () => {
+  it('alternates five own projects with five upstream contributions', () => {
+    expect(profile.openSource.map((entry) => entry.kind)).toEqual(
+      Array.from({ length: 10 }, (_, index) => (index % 2 === 0 ? 'own' : 'upstream')),
+    );
   });
 });
 

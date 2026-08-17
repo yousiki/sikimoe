@@ -1,0 +1,146 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeading from '../SectionHeading.astro';
+import { profile } from '../../data/profile';
+---
+
+<section id="open-source" class="container-page scroll-mt-24 py-24 md:py-36">
+  <SectionHeading
+    index="07 — Open Source"
+    title="Built for myself. Patched for everyone."
+    lead="I build the tools I need, and send fixes upstream when the tools I use have rough edges — small, practical changes that keep shared software useful."
+  />
+
+  <div class="mb-5 flex justify-end" data-reveal>
+    <p
+      class="text-faint shrink-0 font-mono text-[0.65rem] tracking-[0.14em] uppercase"
+      aria-hidden="true"
+    >
+      Scroll to explore →
+    </p>
+  </div>
+
+  <ol
+    class="project-rail"
+    aria-label="Selected own projects and upstream contributions"
+    tabindex="0"
+  >
+    {
+      profile.openSource.map((entry) => (
+        <li class="project-card" data-kind={entry.kind} data-reveal data-reveal-group="projects">
+          <div class="project-card__glow" aria-hidden="true" />
+          <article class="relative flex h-full flex-col">
+            <p class="eyebrow">{entry.label}</p>
+            <h3 class="font-display mt-4 text-2xl leading-tight sm:text-3xl">
+              <a
+                href={entry.href}
+                target="_blank"
+                rel="noopener"
+                class="link-underline inline-flex items-center gap-3"
+              >
+                {entry.name}
+                <Icon name="arrow" size={17} class="text-faint" />
+              </a>
+            </h3>
+            <p class="text-muted mt-3 text-sm leading-relaxed sm:text-base">{entry.description}</p>
+
+            <div class="mt-auto pt-6">
+              <ul class="flex flex-wrap gap-2" aria-label="Technologies and topics">
+                {entry.tags.map((tag) => (
+                  <li class="border-line text-muted rounded-full border px-3 py-1 font-mono text-[0.7rem] tracking-[0.08em]">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="mt-5 flex flex-wrap items-center gap-2">
+                <a
+                  href={entry.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-muted hover:text-ink mr-2 inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
+                >
+                  <Icon name="github" size={14} />
+                  <span class="link-underline">
+                    {entry.kind === 'own' ? 'Source' : 'Repository'}
+                  </span>
+                </a>
+                {entry.links?.map((link) => (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener"
+                    class="border-line text-faint hover:border-ink hover:text-ink inline-flex rounded-full border px-2.5 py-1 font-mono text-[0.65rem] tracking-[0.08em] transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </article>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .project-rail {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 0.125rem;
+    scroll-snap-type: inline proximity;
+    scrollbar-color: var(--line-strong) transparent;
+    scrollbar-width: thin;
+    padding: 0.25rem 0.125rem 1.25rem;
+  }
+
+  .project-rail:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 0.35rem;
+  }
+
+  .project-card {
+    position: relative;
+    flex: 0 0 min(27rem, calc(100vw - 3rem));
+    min-height: 23rem;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background-color: color-mix(in oklab, var(--raised) 72%, transparent);
+    padding: 1.5rem;
+    scroll-snap-align: start;
+    transition:
+      border-color 0.4s ease,
+      background-color 0.4s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--line-strong);
+    background-color: color-mix(in oklab, var(--raised) 95%, transparent);
+  }
+
+  .project-card__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(32rem circle at 10% 0%, var(--glow), transparent 68%);
+    opacity: 0.7;
+    transition: opacity 0.4s ease;
+  }
+
+  .project-card:hover .project-card__glow {
+    opacity: 1;
+  }
+
+  .project-card[data-kind='upstream'] .project-card__glow {
+    background: radial-gradient(32rem circle at 90% 0%, var(--glow), transparent 68%);
+  }
+
+  @media (width >= 640px) {
+    .project-card {
+      padding: 2rem;
+    }
+  }
+</style>

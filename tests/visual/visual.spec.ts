@@ -23,6 +23,7 @@ const SECTIONS = [
   'publications',
   'recognition',
   'toolkit',
+  'open-source',
   'contact',
 ] as const;
 
@@ -94,6 +95,14 @@ for (const viewport of VIEWPORTS) {
           await section.scrollIntoViewIfNeeded();
           await page.waitForTimeout(900);
           await page.screenshot({ path: `${OUT}/section-${id}-${theme}.png` });
+
+          if (id === 'open-source') {
+            await section.locator('.project-rail').evaluate((element) => {
+              element.scrollLeft = element.scrollWidth;
+            });
+            await page.waitForTimeout(500);
+            await page.screenshot({ path: `${OUT}/section-${id}-end-${theme}.png` });
+          }
         }
       }
     });

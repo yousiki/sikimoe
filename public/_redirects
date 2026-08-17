@@ -25,12 +25,11 @@
 /terms        /               301
 /terms/*      /               301
 
-# The collections. Publications kept their section; projects were folded into
-# the interests cards, which is the nearest thing the page still has to them.
+# The collections. Publications and projects now each have their own section.
 /publications    /#publications  301
 /publications/*  /#publications  301
-/projects        /#interests     301
-/projects/*      /#interests     301
+/projects        /#open-source   301
+/projects/*      /#open-source   301
 
 # The blog, its tag index, and its feed. Nothing replaced them, so they go to the
 # top of the page rather than to a section that would only half-answer the link.
