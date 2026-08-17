@@ -4,7 +4,7 @@ import SplitText from '../SplitText.astro';
 import { profile } from '../../data/profile';
 ---
 
-<section id="top" class="relative isolate flex min-h-[100svh] flex-col overflow-hidden" data-hero>
+<section id="top" class="hero relative isolate flex flex-col overflow-hidden" data-hero>
   {/* Simulated spike-camera sensor. Purely decorative. */}
   <canvas
     data-spike-field
@@ -27,7 +27,7 @@ import { profile } from '../../data/profile';
     <span class="hero-margin__rule"></span>
   </div>
 
-  <div class="container-page flex flex-1 flex-col justify-between pt-28 pb-10 md:pt-32 md:pb-14">
+  <div class="hero__container container-page flex flex-1 flex-col justify-between">
     {/* ── status strip ─────────────────────────────────────────────── */}
     <div
       class="text-faint flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[0.7rem] tracking-[0.16em] uppercase"
@@ -48,7 +48,7 @@ import { profile } from '../../data/profile';
     </div>
 
     {/* ── name block ───────────────────────────────────────────────── */}
-    <div class="flex flex-col gap-6 py-12 md:py-16">
+    <div class="hero__middle flex flex-col gap-6 py-12 md:py-16">
       {
         /* No `font-mono` here: the string is pure Han, so the mono family never
           applied to it — the kai face answers for it instead. Set larger and
@@ -59,7 +59,9 @@ import { profile } from '../../data/profile';
         <SplitText text={profile.nameLocal} baseDelay={120} />
       </p>
 
-      <h1 class="font-display text-[clamp(3.4rem,15vw,11.5rem)] leading-[0.82] tracking-[-0.03em]">
+      <h1
+        class="hero__name font-display text-[clamp(3.4rem,15vw,11.5rem)] leading-[0.82] tracking-[-0.03em]"
+      >
         <span class="block italic"><SplitText text="Siqi" baseDelay={220} /></span>
         <span class="block pl-[0.08em] italic"><SplitText text="Yang" baseDelay={380} /></span>
       </h1>
@@ -103,11 +105,11 @@ import { profile } from '../../data/profile';
 
     {/* ── footer of the hero ───────────────────────────────────────── */}
     <div
-      class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
+      class="hero__footer flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
       data-reveal
       style="--reveal-delay:720ms"
     >
-      <ul class="flex flex-wrap items-center gap-x-5 gap-y-3">
+      <ul class="hero__socials flex flex-wrap items-center gap-x-5 gap-y-3">
         {
           profile.socials.map((social) => (
             <li>
@@ -127,7 +129,7 @@ import { profile } from '../../data/profile';
 
       <a
         href="#research"
-        class="text-faint hover:text-ink group inline-flex items-center gap-3 self-start font-mono text-[0.7rem] tracking-[0.2em] uppercase transition-colors sm:self-auto"
+        class="hero__scroll text-faint hover:text-ink group inline-flex items-center gap-3 self-start font-mono text-[0.7rem] tracking-[0.2em] uppercase transition-colors sm:self-auto"
       >
         Scroll
         <span
@@ -141,6 +143,24 @@ import { profile } from '../../data/profile';
 </section>
 
 <style>
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
+  }
+
+  .hero__container {
+    padding-top: calc(7rem + env(safe-area-inset-top));
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+  }
+
+  @media (width >= 48rem) {
+    .hero__container {
+      padding-top: calc(8rem + env(safe-area-inset-top));
+      padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+    }
+  }
+
   /*
    * The hero paragraph is the LCP element, so this is deliberately not
    * `data-reveal`. Two properties of that rule each cost about a second, and
@@ -219,10 +239,69 @@ import { profile } from '../../data/profile';
     }
   }
 
-  /* Below this the column would run into the header and the scroll cue. */
-  @media (height < 40rem) {
+  @media (height < 44rem) and (orientation: portrait) {
+    .hero__container {
+      padding-top: calc(5.5rem + env(safe-area-inset-top));
+      padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+
+    .hero__middle {
+      gap: 1rem;
+      padding-block: 1.5rem;
+    }
+
+    .hero__footer {
+      gap: 1rem;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+
+  /* A width-sized title becomes two screens tall on a phone held sideways. */
+  @media (height < 40rem) and (orientation: landscape) {
     .hero-margin {
       display: none;
+    }
+
+    .hero__container {
+      padding-top: calc(4.5rem + env(safe-area-inset-top));
+      padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+
+    .name-local {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .hero__middle {
+      gap: 0.5rem;
+      padding-block: 0;
+    }
+
+    .hero__name {
+      font-size: clamp(2.8rem, 13vh, 5rem);
+    }
+
+    .hero-intro {
+      margin-top: 0;
+    }
+
+    .hero-intro p {
+      max-width: 42rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .hero__footer {
+      gap: 1rem;
+    }
+  }
+
+  @media (height < 40rem) and (orientation: landscape) and (width >= 48rem) {
+    .hero__container {
+      padding-top: calc(5.5rem + env(safe-area-inset-top));
     }
   }
 
@@ -294,6 +373,13 @@ import { profile } from '../../data/profile';
     .rotator__item[data-current] {
       opacity: 1;
       transform: none;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .hero__socials a,
+    .hero__scroll {
+      min-height: 2.75rem;
     }
   }
 </style>

@@ -21,7 +21,7 @@ const { title, description } = Astro.props;
   <body class="grain antialiased">
     <a
       href="#main"
-      class="bg-raised border-line focus:ring-accent sr-only rounded-full border px-4 py-2 focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-100"
+      class="skip-link bg-raised border-line focus:ring-accent sr-only rounded-full border px-4 py-2 focus:not-sr-only focus:fixed focus:z-100"
     >
       Skip to content
     </a>
@@ -40,3 +40,10 @@ const { title, description } = Astro.props;
     </script>
   </body>
 </html>
+
+<style>
+  .skip-link:focus {
+    top: max(1rem, env(safe-area-inset-top));
+    left: max(1rem, env(safe-area-inset-left));
+  }
+</style>

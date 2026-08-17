@@ -158,6 +158,11 @@ const { id, label = 'CV', align = 'end', size = 'md', class: className } = Astro
   }
 
   @media (pointer: coarse) {
+    .cv__summary,
+    .cv__item {
+      min-height: 2.75rem;
+    }
+
     .cv__arrow {
       opacity: 1;
       transform: none;

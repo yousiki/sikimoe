@@ -64,7 +64,7 @@ const barSections = sections.filter((section) => section.bar);
   >
     <a
       href="#top"
-      class="group flex items-center gap-3"
+      class="group flex min-h-11 min-w-11 items-center gap-3"
       aria-label={`${profile.name} — back to top`}
     >
       <span class="avatar">
@@ -104,7 +104,7 @@ const barSections = sections.filter((section) => section.bar);
       <button
         type="button"
         data-theme-toggle
-        class="border-line hover:border-ink relative grid size-9 place-items-center rounded-full border transition-colors duration-300"
+        class="border-line hover:border-ink relative grid size-11 place-items-center rounded-full border transition-colors duration-300"
         aria-label="Switch theme"
         aria-pressed="false"
       >
@@ -117,9 +117,9 @@ const barSections = sections.filter((section) => section.bar);
         data-menu-toggle
         aria-controls="section-index"
         aria-expanded="false"
-        class="border-line hover:border-ink grid size-9 place-items-center rounded-full border transition-colors duration-300 md:hidden"
+        aria-label="Open section index"
+        class="border-line hover:border-ink grid size-11 place-items-center rounded-full border transition-colors duration-300 md:hidden"
       >
-        <span class="sr-only">Open section index</span>
         <span class="burger" aria-hidden="true">
           <span></span>
           <span></span>
@@ -136,6 +136,8 @@ const barSections = sections.filter((section) => section.bar);
   hidden
   aria-hidden="true"
   aria-label="Section index"
+  aria-modal="true"
+  role="dialog"
   class="menu md:hidden"
 >
   {
@@ -189,6 +191,10 @@ const barSections = sections.filter((section) => section.bar);
 </div>
 
 <style>
+  header {
+    padding-top: env(safe-area-inset-top);
+  }
+
   header[data-scrolled] {
     background-color: color-mix(in oklab, var(--paper) 72%, transparent);
   }
@@ -312,7 +318,8 @@ const barSections = sections.filter((section) => section.bar);
     inset: 0;
     z-index: 39;
     background-color: var(--paper);
-    padding-top: 4rem;
+    padding-top: calc(4rem + env(safe-area-inset-top));
+    padding-bottom: env(safe-area-inset-bottom);
     overflow-y: auto;
     overscroll-behavior: contain;
     opacity: 0;

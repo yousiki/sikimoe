@@ -39,7 +39,7 @@ const scholar = profile.socials.find((s) => s.icon === 'scholar');
       data-label-open="Show fewer"
       aria-expanded="false"
       aria-controls="all-publications"
-      class="border-line hover:border-ink group inline-flex items-center gap-2.5 rounded-full border px-5 py-2.5 font-mono text-xs tracking-[0.14em] uppercase transition-colors duration-300"
+      class="publications__action border-line hover:border-ink group inline-flex items-center gap-2.5 rounded-full border px-5 py-2.5 font-mono text-xs tracking-[0.14em] uppercase transition-colors duration-300"
     >
       <span data-disclosure-label>Show all {publicationsByYear.length}</span>
       <span
@@ -53,7 +53,7 @@ const scholar = profile.socials.find((s) => s.icon === 'scholar');
           href={scholar.href}
           target="_blank"
           rel="noopener"
-          class="text-muted hover:text-ink inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
+          class="publications__action text-muted hover:text-ink inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase transition-colors"
         >
           <span class="link-underline">Google Scholar</span>
           <Icon name="arrow" size={13} />
@@ -62,3 +62,11 @@ const scholar = profile.socials.find((s) => s.icon === 'scholar');
     }
   </div>
 </section>
+
+<style>
+  @media (pointer: coarse) {
+    .publications__action {
+      min-height: 2.75rem;
+    }
+  }
+</style>

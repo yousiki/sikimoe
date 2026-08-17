@@ -8,7 +8,7 @@ const buildDate = new Date().toISOString().slice(0, 10);
 
 <footer class="border-line border-t">
   <div
-    class="container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between"
+    class="footer__inner container-page flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between"
   >
     {
       /* One expression: a line break between two of them collapses to nothing,
@@ -33,3 +33,15 @@ const buildDate = new Date().toISOString().slice(0, 10);
     </div>
   </div>
 </footer>
+
+<style>
+  .footer__inner {
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (pointer: coarse) {
+    a {
+      min-height: 2.75rem;
+    }
+  }
+</style>

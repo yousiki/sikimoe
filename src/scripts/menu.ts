@@ -9,14 +9,23 @@ export const initMenu = (): void => {
   const panel = document.querySelector<HTMLElement>('[data-menu]');
   if (!toggle || !panel) return;
 
-  const focusables = (): HTMLElement[] =>
-    queryAll<HTMLElement>('a[href], button:not([disabled])', panel);
+  const background = [
+    ...queryAll<HTMLElement>('body > :not(header):not([data-menu])'),
+    ...queryAll<HTMLElement>('header a, header details, header button:not([data-menu-toggle])'),
+  ];
+
+  const focusables = (): HTMLElement[] => [
+    toggle,
+    ...queryAll<HTMLElement>('a[href], button:not([disabled])', panel),
+  ];
 
   const setOpen = (open: boolean, moveFocus = true): void => {
     toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', `${open ? 'Close' : 'Open'} section index`);
     panel.dataset['open'] = String(open);
     panel.setAttribute('aria-hidden', String(!open));
     document.documentElement.style.overflow = open ? 'hidden' : '';
+    for (const element of background) element.inert = open;
 
     if (!moveFocus) {
       panel.hidden = !open;
@@ -25,7 +34,8 @@ export const initMenu = (): void => {
 
     if (open) {
       panel.hidden = false;
-      focusables()[0]?.focus();
+      document.querySelector<HTMLDetailsElement>('header details[open]')?.removeAttribute('open');
+      focusables()[1]?.focus();
     } else {
       // Always hand focus back to the control that opened the panel. Safari
       // does not focus a <button> on click, so remembering the previously

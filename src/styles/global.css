@@ -163,13 +163,16 @@
   margin-inline: auto;
   max-width: 76rem;
   padding-inline: 1.5rem;
+  padding-inline: max(1.5rem, env(safe-area-inset-left)) max(1.5rem, env(safe-area-inset-right));
 
   @media (width >= 48rem) {
     padding-inline: 3rem;
+    padding-inline: max(3rem, env(safe-area-inset-left)) max(3rem, env(safe-area-inset-right));
   }
 
   @media (width >= 80rem) {
     padding-inline: 4rem;
+    padding-inline: max(4rem, env(safe-area-inset-left)) max(4rem, env(safe-area-inset-right));
   }
 }
 
